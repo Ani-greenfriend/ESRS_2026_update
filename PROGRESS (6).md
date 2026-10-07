@@ -72,5 +72,5 @@ Open: headshots for the profile cards; who updates the "rules status" date on co
 [Rule: deferred and approved items live here, nowhere else. When a new stage starts or the spec is revised, review this list: an item now in scope is promoted into Remaining work and removed from here, with a Build decisions line saying so. Nothing here is built without being promoted.]
 
 ## Notes for next session
-None.
+Netlify variables were entered by hand, not by the extension. Verify the names and that the values start with sb_ on the first live build.
 [Rule: the builder writes here between sessions. Claude Code reads these aloud at session start, acts on them, then clears this section.]
