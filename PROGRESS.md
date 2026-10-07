@@ -4,58 +4,63 @@
 > anything. Update it at every save point. Replace content — do not append.
 > History lives in git.
 
-**Session:** 0 — build not started
-**Last updated:** 7 October 2026 — by Project Governor, pre-build
+**Session:** 1
+**Last updated:** 7 October 2026
 **Live URL:** none yet [Rule: fill in after the first successful deploy]
 **Stage:** business logic and database [Rule: one of — business logic and database / second screen and access design / login and access rules together / deploy and maintain. Advance it when that stage's items are absorbed into Current state. The stage is decided by what exists, never by a week or a version number.]
-**Supabase project:** exists and empty — "ESRS 2026 update tool", ref jfalwveuccerzeffxftx, URL https://jfalwveuccerzeffxftx.supabase.co (confirm the ref with the builder in session 1; never create a second project) [Rule: the only place project existence is recorded; CLAUDE.md never carries it]
+**Supabase project:** exists and built — "ESRS 2026 update tool", ref jfalwveuccerzeffxftx, URL https://jfalwveuccerzeffxftx.supabase.co, confirmed with the builder in session 1 [Rule: the only place project existence is recorded; CLAUDE.md never carries it]
 
 ## Current state
-Nothing built. Repo contains CLAUDE.md, PROGRESS.md, product-spec.md, access-matrix.md, user-stories.md, prototype-reference.html.
-[Rule: this section describes what exists and works right now — never what is planned. Completed checklist items get absorbed here in compressed form.]
+- Docs in place: docs/product-spec.md (v1.1), access-matrix.md, user-stories.md, supabase-setup.md, reference/prototype-reference.html.
+- Frontend (React 18 + Vite 6 + Tailwind 3) builds with `npm run build`: cover, sticky chapter menu, what changed, datapoints (fact sheet, estimator, drill-down), who reports when, scope check, non-EU groups, example cases, FY2026 options, unlock section and dialog, who we are, footer, /privacy. Matches prototype version A in light and dark; no sideways scroll at 375 px.
+- Logic in src/lib as pure functions: scope.js, route.js, estimator.js (hand-checked: defaults 569 → 237, −58%, 163; all topics 783 → 292, 195; example answers → Route B; ties go to the earlier route; every scope verdict path).
+- Gating: scope reasons, route reasons, cases 3–7 "Why" and requirements beyond 3 are blurred until unlock; `esrs-unlocked` flag kept across reloads.
+- Export: one-page A4 PDF built in the browser with bundled jsPDF 4.2.1, downloads right after a successful unlock; "Download again" stays.
+- Submit: netlify/functions/submit-unlock.mjs (16 KB limit, strict validation, lower-cased email, insert plus supersede, secret key). Tested against a mock database: valid, bad email, oversized, unknown field, bad values, GET.
+- Database: `unlocks` and `profiles` built with RLS on, no policy and no grant for anon or authenticated; Anika's profile seeded; pg_cron enabled. The built-in `rls_auto_enable()` RPC is no longer executable by anon.
+- Browser bundle checked: no Supabase key or client, no "ESRS26_" strings, only same-site requests, no "Preview" or "Lock again" leftovers.
 
 ## Last session
-None — the first build session has not happened yet.
-[Rule: 3–5 lines maximum. Replace each session — what was built, changed, or fixed.]
+Session 1: First Session Setup (docs moved), then the whole frontend, the PDF, the submit function and the database tables. The clean-up job migration was written but not applied (the builder skipped the DELETE confirmation). The refusal test ran inside the database as `anon` (all refused); the HTTP version is still to do because this container cannot reach supabase.co. Work is pushed to branch claude/determined-hawking-moo4nu, not main.
 
 ## Remaining work
-- [ ] First Session Setup: create docs/ and docs/reference/, move the spec, the two access files and the prototype into them and check each is there, commit (see CLAUDE.md Session Protocol)
-- [ ] Builder: create the GitHub repo, connect it to a Netlify site (one-time), connect Supabase to the site with the Supabase extension (the project already exists; this can happen before session 1)
-- [ ] Connect to Supabase project jfalwveuccerzeffxftx via MCP: confirm the ref with the builder, check the project is still empty, never create a new one
-- [ ] Build tables `unlocks` and `profiles` (named migrations saved in supabase/migrations/) with RLS on from creation, login-ready columns, anon grants revoked and the short-form rules from docs/access-matrix.md; no Auth, no screen reads a table; then write docs/supabase-setup.md following the structure in CLAUDE.md
-- [ ] Build the pg_cron clean-up job (named migration): daily 03:00 Europe/Amsterdam; anonymise no-consent rows after 30 days, delete rows after 24 months; execute revoked from everyone but the job
-- [ ] Set up the React + Vite + Tailwind project: self-hosted fonts (WOFF2), colour tokens and dark mode from CLAUDE.md Brand, pure logic functions for scope, route and estimator, data tables from the prototype
-- [ ] Build Cover — hook and urgency, "greenfriend." brand line, colour planes, alert strip
-- [ ] Build Sticky chapter menu — jump links, active chapter highlighted, scrolls sideways on phones
-- [ ] Build What changed — six expandable cards and the key-dates timeline
-- [ ] Build Datapoints — fact sheet and buckets, own-number estimator, standard-by-standard drill-down (requirements beyond 3 locked)
-- [ ] Build Who reports when — threshold cards and the cohort timeline table
-- [ ] Build Check your scope — questionnaire, "Your reading" panel, verdict (reasons locked)
-- [ ] Build Non-EU groups — two route cards and the three-step flow
-- [ ] Build Example cases — seven tabs with org charts (tabs 3–7 and their "Why" locked)
-- [ ] Build FY2026 options — three route cards, seven questions, recommendation panel (reasons locked)
-- [ ] Build Unlock section and Unlock dialog — form, consent logic, short notice, "Download again"
-- [ ] Build Who we are and how we help — pitch, three cards, two profile cards with initials avatars
-- [ ] Build Footer — CTA box, disclaimer, data source line, sources, link to /privacy
-- [ ] Build Privacy notice view at /privacy — full notice, version 2026-10-07
-- [ ] Wire Export: browser-generated one-page A4 PDF (bundled jsPDF), downloads right after a successful unlock, per spec Section 3
-- [ ] Wire Submit function `submit-unlock`: 16 KB body limit, every field validated, supersede rule, insert with the secret key; the form posts here only
-- [ ] Public endpoint protections before the first public deploy: confirm no anon policy or grant on any table, the browser bundle holds no Supabase key or client, and the function refuses bad email and oversized bodies. No rate limit, no bot check.
-- [ ] Show the confirmed short data notice under the form, and the consent checkbox (not pre-ticked, `consent_at` and `notice_version` recorded with the row)
-- [ ] Local test pass — full walkthrough of every view and every scope path, desktop and 375 px
-- [ ] Acceptance criteria pass — verify all 18 criteria in spec Section 13 before deploy
-- [ ] Builder: check the Supabase variable values in Netlify start with `sb_`, add the custom domain check.greenfriend.org in Netlify and the CNAME in Wix DNS; redeploy
-- [ ] Push to main → Netlify auto-deploys
+- [ ] Apply the clean-up job: supabase/pending/create_cleanup_job.sql via apply_migration (name create_cleanup_job); the builder approves the Supabase confirmation for its DELETE; then move the file into supabase/migrations/ with the recorded version, test with aged test rows, update docs/supabase-setup.md
+- [ ] Merge branch claude/determined-hawking-moo4nu into main (Netlify deploys from main)
+- [ ] Builder: confirm the Netlify site is connected to the repo and the Supabase variables exist with the exact names in docs/supabase-setup.md §8, values starting with `sb_`; redeploy
+- [ ] HTTP refusal test as a logged-out visitor with the publishable key (REST read/insert/update/delete on unlocks and profiles, RPC, GraphQL); paste the result into "Refusal test record" in docs/supabase-setup.md §3
+- [ ] Live test of submit-unlock on the deployed site: one row with correct fields; a second unlock with the same email in different case supersedes the first
+- [ ] Acceptance criteria pass — verify all 18 criteria in spec Section 13 on the deployed site
+- [ ] Builder: add the custom domain check.greenfriend.org in Netlify and the CNAME in Wix DNS
 [Rule: completed items leave this list and are absorbed into Current state. This list only shrinks.]
 
 ## Build decisions
-None yet.
+- Prototype CSS ported as one global stylesheet (src/styles/app.css); Tailwind is set up with brand tokens and preflight off, so the prototype's look is exact.
+- Prototype data tables extracted verbatim into src/lib/data.js; shared constants (industries, interests, notice version, rules date, email check) in src/lib/constants.js, imported by both the browser and the function.
+- Vite `envPrefix` is `PUBLIC_`, so no `VITE_SUPABASE_*` value can reach the browser bundle.
+- Fonts: Latin WOFF2 files for Literata 500/500i/700/800, Figtree 400–700 and DM Mono 400/500 committed in src/fonts with OFL.txt; no font package at runtime.
+- jsPDF 4.2.1 (versions ≤ 4.2.0 have security advisories), loaded on demand only when a PDF is built.
+- Industry and interests are stored as their display labels, so the CSV export reads plainly.
+- `notice_version` and `consent_at` are set by the function, not trusted from the browser.
+- The function sends no data back except `{ok}` or an error code; it never logs email or IP.
+- The privacy link under the form opens /privacy in a new tab so the visitor keeps their answers; /privacy is served by a Netlify rewrite to the single page.
+- `route_from_example` turns false when the visitor changes any FY2026 answer (clicking the already selected answer does not count).
+- The case-tab lock uses an inline SVG instead of the prototype's emoji (no emoji rule).
+- The PDF shrinks body text in steps (down to 80%) if needed so it always stays on one page.
+- The clean-up job runs at 01:00 and 02:00 UTC and acts only in the hour that is 03:00 in Amsterdam (pg_cron uses UTC; this follows daylight saving).
+- The clean-up function lives in a non-exposed `private` schema.
+- Applied migration files are named after the versions Supabase recorded; an unapplied migration waits in supabase/pending/.
+- Work is pushed to branch claude/determined-hawking-moo4nu (the session's assigned branch) instead of directly to main; main receives it by merge.
+- Netlify headers: a Content-Security-Policy that allows only same-site scripts, fonts and connections.
 [Rule: one line per decision made during the build that is not in the spec — prompt structures, field formats, naming choices, library picks. Future sessions depend on these to stay consistent.]
 
 ## Known issues
 Before going public (builder): send EFRAG (digital-reporting@efrag.org) the courtesy note on using datapoint counts with attribution; have an auditor or partner read the scope logic; privacy contact signs off the notice.
-Unit tests for the logic are in the spec but not seeded here (see Backlog); the local test pass covers every scope path by hand.
-Open: headshots for the profile cards; who updates the "rules status" date on cover and PDF; final EFRAG list (end 2026) may change the counts.
+Clean-up job not applied: until it is, no anonymisation after 30 days or deletion after 24 months happens.
+The project still has an enabled legacy anon JWT key (eyJ…). It reaches nothing (no grants), but Netlify must hold the `sb_` keys.
+Anonymisation counts 30 days from created_at; a manual consent withdrawal on an older row is anonymised at the next run.
+Gated content is blurred in the page, not withheld from it (as in the prototype); a technical visitor can read it in the page source.
+Unit tests for the logic are in the spec but not seeded here (see Backlog); the logic was checked by hand against every scope path in session 1.
+Open: headshots for the profile cards; who updates the "rules status" date on cover and PDF (src/lib/constants.js RULES_DATE); final EFRAG list (end 2026) may change the counts.
 [Rule: bugs, edge cases, and deferred fixes. One line each. Remove when resolved.]
 
 ## Backlog
@@ -72,5 +77,4 @@ Open: headshots for the profile cards; who updates the "rules status" date on co
 [Rule: deferred and approved items live here, nowhere else. When a new stage starts or the spec is revised, review this list: an item now in scope is promoted into Remaining work and removed from here, with a Build decisions line saying so. Nothing here is built without being promoted.]
 
 ## Notes for next session
-Netlify variables were entered by hand, not by the extension. Verify the names and that the values start with sb_ on the first live build.
 [Rule: the builder writes here between sessions. Claude Code reads these aloud at session start, acts on them, then clears this section.]

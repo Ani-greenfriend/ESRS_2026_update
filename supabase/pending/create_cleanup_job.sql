@@ -1,7 +1,8 @@
+-- NOT APPLIED YET. Apply with apply_migration (name: create_cleanup_job) once the builder approves the
+-- Supabase confirmation for the DELETE statement, then move this file to migrations/ with the recorded version.
 -- Scheduled clean-up (spec Section 3, access matrix row 5). Database-only, no email, no external call.
 -- (1) Rows older than 30 days without contact consent: email and company removed, anonymised_at set.
 -- (2) Rows older than 24 months: deleted, whatever the consent.
-create extension if not exists pg_cron with schema pg_catalog;
 
 -- Kept out of the API-exposed schema, and runnable by the job owner only.
 create schema if not exists private;
