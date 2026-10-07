@@ -1,0 +1,1147 @@
+<title>Revised ESRS Check</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500;7..72,700;7..72,800&family=Figtree:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a dark teal cover band, then one calm reading column with seven chapters and a sticky nav. Yellow highlight and coral are kept for deadlines, verdicts and the user's own numbers. */
+:root{
+  --bg:#eef3f0; --surface:#ffffff; --sunk:#e3ebe7; --line:#d0dcd6;
+  --fg:#17302e; --muted:#566b67;
+  --olive:#17635c; --olive-soft:#d6ebe5;     /* primary: deep sea teal */
+  --terra:#e2553f; --terra-soft:#fde3dc;     /* attention: coral */
+  --sand:#b9c9c2;
+  --info:#6c5fc7; --ok:#2f8a5f; --warn:#d98a1c; --no:#c2463a;   /* lilac for reliefs / non-EU */
+  --mark:#ffe066;                            /* highlighter band */
+  --mark-solid:#ffe066; --on-mark:#2a2400;
+  --band:#17302e; --on-band:#eef3f0;         /* cover band */
+  --serif:"Literata", Georgia, "Times New Roman", serif;
+  --sans:"Figtree", "Avenir Next", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:"DM Mono", ui-monospace, Menlo, monospace;
+  --r:12px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1f1e; --surface:#162a28; --sunk:#0c1918; --line:#27403d; --fg:#e6f0ec; --muted:#9db3ae;
+  --olive:#5fcbb8; --olive-soft:#1d3a36; --terra:#ff8a72; --terra-soft:#3b2421; --sand:#3d5a55;
+  --info:#a99cff; --ok:#6fd19c; --warn:#f2b45a; --no:#ff8a7a; --mark:#6e5f17; --band:#0a1716; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1f1e; --surface:#162a28; --sunk:#0c1918; --line:#27403d; --fg:#e6f0ec; --muted:#9db3ae;
+  --olive:#5fcbb8; --olive-soft:#1d3a36; --terra:#ff8a72; --terra-soft:#3b2421; --sand:#3d5a55;
+  --info:#a99cff; --ok:#6fd19c; --warn:#f2b45a; --no:#ff8a7a; --mark:#6e5f17; --band:#0a1716; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:16px;line-height:1.6;margin:0}
+.wrap{max-width:1060px;margin:0 auto;padding-inline:20px}
+h1,h2,h3{font-family:var(--serif);font-weight:700;text-wrap:balance;line-height:1.15;margin:0;letter-spacing:-.01em}
+h1{font-size:clamp(2.2rem,5.6vw,3.6rem);font-weight:800}
+h2{font-size:clamp(1.55rem,3.4vw,2.2rem)}
+h3{font-size:1.18rem}
+p{margin:0}
+.lede{color:var(--muted);max-width:62ch;font-size:1.06rem}
+.eyebrow{font-size:.74rem;letter-spacing:.09em;text-transform:uppercase;color:var(--terra);font-weight:700;display:flex;gap:8px;align-items:center}
+.chead .eyebrow::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--terra)}
+.num{font-variant-numeric:tabular-nums}
+.mk{background:linear-gradient(transparent 60%,var(--mark) 60% 94%,transparent 94%);padding-inline:.08em;color:inherit}
+a{color:var(--olive)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--terra);outline-offset:2px}
+
+header.top{padding-block:40px 28px;display:grid;gap:14px}
+.brand{font-family:var(--serif);font-size:1.05rem;color:var(--olive)}
+.brand b{color:var(--terra);font-weight:normal}
+.stamp{display:flex;flex-wrap:wrap;gap:8px;font-size:.82rem;color:var(--muted)}
+.stamp span{border:1px solid var(--line);border-radius:999px;padding:3px 10px;background:var(--surface)}
+
+nav.chapters{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-block:1px solid var(--line)}
+nav.chapters .wrap{display:flex;gap:4px;overflow-x:auto;padding-block:8px;scrollbar-width:none}
+nav.chapters a{white-space:nowrap;text-decoration:none;color:var(--muted);font-size:.9rem;padding:6px 12px;border-radius:999px}
+nav.chapters a:hover,nav.chapters a.on{background:var(--olive-soft);color:var(--fg)}
+
+section.ch{padding-block:56px 20px;display:grid;gap:22px;scroll-margin-top:60px}
+.chead{display:grid;gap:8px}
+
+/* overview chunks */
+.chunks{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.chunk{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:grid;gap:8px;align-content:start;text-align:left;cursor:pointer}
+.chunk:hover{border-color:var(--sand)}
+.chunk .k{font-family:var(--serif);font-size:1.9rem;color:var(--olive);line-height:1}
+.chunk .t{font-weight:700}
+.chunk .s{color:var(--muted);font-size:.92rem}
+.chunk .more{font-size:.84rem;color:var(--terra);font-weight:600}
+.chunk[aria-expanded="true"]{border-color:var(--olive)}
+.chunk .detail{font-size:.92rem;border-top:1px dashed var(--line);padding-top:10px;display:grid;gap:6px}
+.chunk .detail li{margin-left:-6px}
+.chunk ul{margin:0;padding-left:18px;display:grid;gap:4px}
+
+/* key dates */
+.dates{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px 16px 14px}
+.dates-in{min-width:760px;position:relative}
+.dline{height:2px;background:var(--line);position:absolute;left:0;right:0;top:9px}
+.dpts{display:grid;grid-template-columns:repeat(7,1fr);position:relative;gap:8px}
+.dpt{display:grid;gap:6px;justify-items:start}
+.dot{width:20px;height:20px;border-radius:50%;background:var(--surface);border:3px solid var(--olive)}
+.dpt.now .dot{background:var(--terra);border-color:var(--terra)}
+.dpt.future .dot{border-style:dashed;border-color:var(--sand)}
+.dpt b{font-size:.86rem}
+.dpt span{font-size:.8rem;color:var(--muted)}
+
+/* datapoints */
+.dp-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:28px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px}
+@media (max-width:760px){.dp-hero{grid-template-columns:1fr}}
+.dotgrid{display:grid;grid-template-columns:repeat(20,1fr);gap:4px;max-width:100%}
+.dotgrid i{aspect-ratio:1;border-radius:50%;background:var(--line);transition:background .4s}
+.dotgrid i.keep{background:var(--olive)}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:.85rem;color:var(--muted);margin-top:12px}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle;background:var(--line)}
+.legend span.k::before{background:var(--olive)}
+.bigfig{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-end}
+.bigfig div{display:grid}
+.bigfig strong{font-family:var(--serif);font-weight:normal;font-size:clamp(2.2rem,6vw,3.2rem);line-height:1;color:var(--olive)}
+.bigfig .was{color:var(--muted);text-decoration:line-through;text-decoration-thickness:2px;text-decoration-color:var(--terra)}
+.bigfig small{color:var(--muted);font-size:.82rem}
+.toggle{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;background:var(--sunk);gap:2px}
+.toggle button{border:0;background:none;padding:5px 12px;border-radius:999px;cursor:pointer;font-size:.86rem}
+.toggle button[aria-pressed="true"]{background:var(--surface);box-shadow:0 1px 2px rgba(0,0,0,.08);font-weight:600}
+
+.stds{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.std{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:12px;text-align:left;cursor:pointer;display:grid;gap:4px}
+.std .code{font-weight:700;font-size:.95rem}
+.std .nm{font-size:.82rem;color:var(--muted);line-height:1.3}
+.std .tag{font-size:.72rem;justify-self:start;padding:1px 8px;border-radius:999px;background:var(--olive-soft);color:var(--olive);font-weight:600}
+.std .tag.ph{background:var(--terra-soft);color:var(--terra)}
+.std[aria-pressed="true"]{border-color:var(--olive);box-shadow:inset 0 0 0 1px var(--olive)}
+.stdpanel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:grid;gap:16px}
+.stdpanel .rows{display:grid;gap:10px}
+.chg{display:grid;grid-template-columns:110px minmax(0,1fr);gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.chg:first-child{border-top:0}
+@media (max-width:520px){.chg{grid-template-columns:1fr;gap:4px}}
+.pill{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:2px 9px;border-radius:999px;justify-self:start;align-self:start}
+.p-cut{background:var(--terra-soft);color:var(--terra)}
+.p-new{background:var(--olive-soft);color:var(--olive)}
+.p-relief{background:color-mix(in srgb,var(--info) 16%,transparent);color:var(--info)}
+.p-same{background:var(--sunk);color:var(--muted)}
+.est{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px}
+@media (max-width:760px){.est{grid-template-columns:1fr}}
+.estpick{display:grid;gap:12px;align-content:start}
+.estboxes{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
+.estboxes label{display:flex;gap:8px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:7px 10px;cursor:pointer;font-size:.88rem;background:var(--bg)}
+.estboxes label:has(input:checked){border-color:var(--olive);background:var(--olive-soft)}
+.estboxes input{accent-color:var(--olive)}
+.estout{display:grid;gap:14px;align-content:start}
+.bars{display:grid;gap:10px}
+.bar{display:grid;grid-template-columns:96px minmax(0,1fr) 48px;gap:10px;align-items:center;font-size:.85rem}
+.bar .tr{height:16px;background:var(--sunk);border-radius:4px;overflow:hidden}
+.bar .tr i{display:block;height:100%;border-radius:4px;transition:width .4s}
+.bar b{text-align:right}
+.headline{font-family:var(--serif);font-size:1.5rem;line-height:1.25}
+.headline em{font-style:normal;color:var(--terra)}
+.cmp{display:grid;gap:6px}
+.drs{display:grid;gap:6px}
+.dr{border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+.dr>button{width:100%;display:flex;justify-content:space-between;gap:10px;align-items:center;border:0;background:none;padding:10px 12px;cursor:pointer;text-align:left}
+.dr>button .c{font-weight:700;white-space:nowrap}
+.dr>button .h{color:var(--muted);font-size:.84rem;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dr>button .n{font-size:.8rem;color:var(--muted);white-space:nowrap}
+.dplist{list-style:none;margin:0;padding:0 12px 10px;display:grid;gap:0}
+.dplist li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:.86rem}
+.dplist .id{font-size:.72rem;color:var(--muted);font-family:ui-monospace,Menlo,monospace}
+.chips{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end;align-content:start;max-width:220px}
+.chip{font-size:.68rem;padding:1px 7px;border-radius:999px;background:var(--sunk);color:var(--muted);white-space:nowrap}
+.chip.cond{background:var(--terra-soft);color:var(--terra)}
+.chip.ph{background:color-mix(in srgb,var(--info) 16%,transparent);color:var(--info);white-space:normal}
+.chip.tech{background:var(--olive-soft);color:var(--olive)}
+.dpctl{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:.86rem}
+.dpctl select,.dpctl input[type=search]{font:inherit;padding:5px 8px;border-radius:6px;border:1px solid var(--line);background:var(--bg);color:var(--fg)}
+.dpctl input[type=search]{min-width:0;flex:1 1 160px}
+.slot{border:1px dashed var(--sand);border-radius:8px;padding:12px 14px;font-size:.88rem;color:var(--muted);background:var(--sunk)}
+
+/* who reports */
+.thr{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.thrcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:grid;gap:12px;align-content:start}
+.gate{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.gate .g{border:1.5px solid var(--olive);border-radius:8px;padding:8px 12px;font-weight:700;font-size:.95rem;background:var(--olive-soft)}
+.gate .op{font-size:.78rem;font-weight:700;color:var(--terra);letter-spacing:.08em}
+.thrcard .was{font-size:.84rem;color:var(--muted)}
+.gantt{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.gantt table{border-collapse:collapse;width:100%;min-width:780px;font-size:.88rem}
+.gantt th,.gantt td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+.gantt thead th{font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.gantt td.who{width:30%}
+.gantt td.who b{display:block}
+.gantt td.who span{color:var(--muted);font-size:.8rem}
+.cell{height:28px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700}
+.c-rep{background:var(--olive);color:var(--surface)}
+.c-new{background:var(--olive);color:var(--surface);background-image:repeating-linear-gradient(45deg,transparent 0 6px,rgba(255,255,255,.18) 6px 12px)}
+.c-opt{background:var(--terra-soft);color:var(--terra);border:1px dashed var(--terra)}
+.c-out{background:var(--sunk);color:var(--muted)}
+.c-40a{background:var(--info);color:var(--surface)}
+.gkey{display:flex;flex-wrap:wrap;gap:14px;font-size:.8rem;color:var(--muted);padding:12px 12px 14px}
+.gkey span{display:inline-flex;gap:6px;align-items:center}
+.gkey i{width:16px;height:12px;border-radius:3px;display:inline-block}
+
+/* quiz */
+.quiz{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);gap:18px;align-items:start}
+@media (max-width:820px){.quiz{grid-template-columns:1fr}}
+.qbox,.rbox{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:grid;gap:16px}
+.rbox{background:var(--sunk)}
+.qstep{font-size:.8rem;color:var(--muted)}
+.qprog{height:4px;background:var(--line);border-radius:2px;overflow:hidden}
+.qprog i{display:block;height:100%;background:var(--terra);transition:width .3s}
+.qtext{font-family:var(--serif);font-size:1.3rem;line-height:1.3}
+.qhelp{font-size:.88rem;color:var(--muted)}
+.opts{display:grid;gap:8px}
+.opt{border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:12px 14px;text-align:left;cursor:pointer;display:grid;gap:2px}
+.opt:hover{border-color:var(--olive)}
+.opt b{font-weight:600}
+.opt span{font-size:.84rem;color:var(--muted)}
+.qnav{display:flex;gap:10px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 16px;cursor:pointer;font-size:.9rem}
+.btn.pri{background:var(--olive);border-color:var(--olive);color:var(--bg);font-weight:600}
+.verdict{display:grid;gap:10px}
+.vbadge{justify-self:start;font-weight:700;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;padding:4px 12px;border-radius:999px}
+.v-in{background:var(--olive);color:var(--bg)}
+.v-maybe{background:var(--warn);color:var(--bg)}
+.v-out{background:var(--sunk);color:var(--muted);border:1px solid var(--line)}
+.v-40a{background:var(--info);color:var(--bg)}
+.vlist{margin:0;padding-left:18px;display:grid;gap:6px;font-size:.93rem}
+.answers{font-size:.82rem;color:var(--muted);display:grid;gap:2px}
+
+/* non-EU */
+.flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;align-items:stretch}
+@media (max-width:760px){.flow{grid-template-columns:1fr}}
+.fstep{background:var(--surface);border:1px solid var(--line);padding:18px;display:grid;gap:8px;align-content:start;position:relative}
+.fstep:first-child{border-radius:var(--r) 0 0 var(--r)}
+.fstep:last-child{border-radius:0 var(--r) var(--r) 0}
+@media (max-width:760px){.fstep:first-child{border-radius:var(--r) var(--r) 0 0}.fstep:last-child{border-radius:0 0 var(--r) var(--r)}}
+.fstep .n{font-family:var(--serif);color:var(--terra);font-size:1.4rem}
+.twoways{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.way{border-left:3px solid var(--info);background:var(--surface);border-radius:0 var(--r) var(--r) 0;padding:16px 18px;display:grid;gap:6px}
+.way.eu{border-left-color:var(--olive)}
+
+/* cases */
+.cases-tabs{display:flex;gap:6px;flex-wrap:wrap}
+.cases-tabs button{border:1px solid var(--line);background:var(--surface);padding:6px 12px;border-radius:999px;cursor:pointer;font-size:.86rem}
+.cases-tabs button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.case{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:24px}
+@media (max-width:820px){.case{grid-template-columns:1fr}}
+.org{display:grid;gap:0;justify-items:center;overflow-x:auto;padding-bottom:4px}
+.node{border:1.5px solid var(--line);border-radius:9px;padding:10px 12px;background:var(--bg);min-width:150px;max-width:220px;display:grid;gap:4px;text-align:center}
+.node .nm{font-weight:700;font-size:.9rem}
+.node .fig{font-size:.78rem;color:var(--muted)}
+.node .st{font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:999px;justify-self:center}
+.node.rep{border-color:var(--olive)} .node.rep .st{background:var(--olive);color:var(--bg)}
+.node.ex{border-color:var(--sand)} .node.ex .st{background:var(--olive-soft);color:var(--olive)}
+.node.out .st{background:var(--sunk);color:var(--muted)}
+.node.a40{border-color:var(--info)} .node.a40 .st{background:var(--info);color:var(--bg)}
+.node.opt .st{background:var(--terra-soft);color:var(--terra)}
+.node.nonEU{border-style:dashed}
+.stem{width:2px;height:18px;background:var(--line)}
+.kids{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;border-top:2px solid var(--line);padding-top:18px;position:relative}
+.eulabel{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:6px 0}
+.case .why{display:grid;gap:10px;align-content:start}
+
+/* option picker */
+.opts3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:760px){.opts3{grid-template-columns:1fr}}
+.o3{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:grid;gap:8px;align-content:start;transition:border-color .3s, transform .3s}
+.o3 .L{font-family:var(--serif);font-size:2rem;line-height:1;color:var(--terra)}
+.o3 h3{font-size:1.1rem}
+.o3 p{font-size:.9rem;color:var(--muted)}
+.o3 .meter{height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+.o3 .meter i{display:block;height:100%;background:var(--olive);transition:width .4s}
+.o3.best{border-color:var(--olive);box-shadow:inset 0 0 0 1px var(--olive)}
+.o3 .bestlbl{font-size:.74rem;font-weight:700;color:var(--olive);text-transform:uppercase;letter-spacing:.08em}
+.pick{display:grid;gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px}
+.pq{display:grid;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.pq:last-child{border-bottom:0;padding-bottom:0}
+.pq .q{font-weight:600}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{border:1px solid var(--line);background:var(--bg);padding:6px 12px;border-radius:999px;cursor:pointer;font-size:.86rem}
+.seg button[aria-pressed="true"]{background:var(--olive);color:var(--bg);border-color:var(--olive)}
+.pickres{background:var(--olive-soft);border-radius:var(--r);padding:20px;display:grid;gap:10px}
+.pickres ul{margin:0;padding-left:18px;display:grid;gap:4px}
+
+footer{padding-block:48px 64px;display:grid;gap:18px}
+.cta{background:var(--olive);color:var(--bg);border-radius:var(--r);padding:26px;display:grid;gap:10px}
+.cta h2{color:var(--bg)}
+.cta p{opacity:.9;max-width:60ch}
+.cta .addr{font-family:var(--serif);font-size:1.2rem;user-select:all}
+.fine{font-size:.8rem;color:var(--muted);max-width:80ch;display:grid;gap:8px}
+.fine a{color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* ---- brand layer ---- */
+.cover{background:var(--band);color:var(--on-band);position:relative;overflow:hidden}
+.cover header.top{position:relative;z-index:1;padding-block:44px 40px}
+.cover h1{color:var(--on-band)}
+.cover .lede{color:color-mix(in srgb,var(--on-band) 78%,transparent)}
+.brand{font-family:var(--serif);font-weight:700;font-size:1rem;color:var(--on-band);display:flex;gap:10px;align-items:center;letter-spacing:.02em}
+.brand::before{content:"";width:9px;height:9px;border-radius:50%;background:#ffe066}
+.brand span{opacity:.75;font-family:var(--sans);font-weight:600;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase}
+.stamp span{border:1px solid color-mix(in srgb,var(--on-band) 30%,transparent);background:transparent;color:color-mix(in srgb,var(--on-band) 85%,transparent);font-family:var(--mono);font-size:.74rem}
+.alert{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;border-left:4px solid #ffe066;background:color-mix(in srgb,#000 18%,transparent);padding:12px 16px;border-radius:0 8px 8px 0;font-size:.95rem;max-width:720px}
+.alert b{color:#ffe066}
+.alert a{color:var(--on-band);font-weight:700;text-underline-offset:3px}
+nav.chapters{background:var(--bg)}
+nav.chapters a{font-weight:600}
+nav.chapters a.on{background:var(--olive);color:var(--bg)}
+.chunk{border-radius:var(--r)}
+.chunk:hover{border-color:var(--olive)}
+.chunk .k{font-family:var(--serif);font-weight:800;font-size:2rem;color:var(--olive)}
+.chunk .more{color:var(--terra)}
+.dpt.now .dot{background:var(--terra);border-color:var(--terra)}
+.dpt.now b{color:var(--terra)}
+.dpt.hot .dot{border-color:var(--terra);border-style:solid}
+.dpt.hot b{color:var(--terra)}
+.dpt b{font-family:var(--mono);font-weight:500;font-size:.8rem}
+.dotgrid i{border-radius:2px}
+.bigfig strong{font-family:var(--serif);font-weight:800;color:var(--olive)}
+#fig-pct{color:var(--terra)}
+.toggle button[aria-pressed="true"]{background:var(--olive);color:var(--bg)}
+.std[aria-pressed="true"]{background:var(--olive-soft);border-color:var(--olive)}
+.headline{font-family:var(--serif);font-weight:700;font-size:1.55rem}
+.headline em{background:linear-gradient(transparent 58%,var(--mark) 58% 94%,transparent 94%);color:var(--fg);font-weight:800}
+.est{border-top:4px solid var(--olive)}
+.gate .g{border-radius:8px;background:var(--surface);border:1.5px solid var(--olive);font-family:var(--serif)}
+.gate .op{color:var(--terra)}
+.c-rep,.c-new{background:var(--olive);color:var(--bg)}
+.c-40a{background:var(--info);color:var(--bg)}
+.c-opt{background:var(--mark-solid);color:var(--on-mark);border:0}
+.qbox{border-top:4px solid var(--terra)}
+.qtext{font-family:var(--serif);font-weight:700;font-size:1.35rem}
+.qprog i{background:var(--terra)}
+.opt{border-radius:10px}
+.opt:hover{border-color:var(--olive);background:var(--olive-soft)}
+.btn{font-weight:600}
+.btn.pri{background:var(--terra);border-color:var(--terra);color:#fff}
+.vbadge{font-size:.82rem;padding:5px 13px}
+.v-in{background:var(--olive);color:var(--bg)}
+.v-maybe{background:var(--mark-solid);color:var(--on-mark)}
+.v-40a{background:var(--info);color:var(--bg)}
+.verdict h3{font-size:1.4rem}
+.rbox{background:var(--olive-soft);border:0}
+.fstep .n{font-family:var(--serif);font-weight:800;font-size:1.8rem;color:var(--terra)}
+.node{border-radius:10px;border-width:2px}
+.node.rep .st{background:var(--olive);color:var(--bg)}
+.node.opt{border-color:var(--warn)} .node.opt .st{background:var(--mark-solid);color:var(--on-mark)}
+.node.a40 .st{background:var(--info);color:var(--bg)}
+.cases-tabs button[aria-pressed="true"]{background:var(--olive);color:var(--bg);border-color:var(--olive)}
+.o3 .L{font-family:var(--serif);font-weight:800;font-size:2.3rem;color:var(--sand)}
+.o3.best{border:2px solid var(--olive)}
+.o3.best .L{color:var(--terra)}
+.o3 .bestlbl{background:var(--mark-solid);color:var(--on-mark);justify-self:start;padding:2px 9px;border-radius:999px}
+.seg button[aria-pressed="true"]{background:var(--olive);border-color:var(--olive);color:var(--bg)}
+.pickres{background:var(--band);color:var(--on-band)}
+.pickres .eyebrow{color:#ffe066!important}
+.pickres .qhelp{color:color-mix(in srgb,var(--on-band) 75%,transparent)}
+.pickres h3{font-size:1.5rem}
+.dplist .id{font-family:var(--mono)}
+
+/* who we are */
+.about{background:var(--surface);border-block:1px solid var(--line);margin-top:56px}
+.about .wrap{padding-block:56px;display:grid;gap:30px}
+.pitch{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:28px;align-items:end}
+@media (max-width:820px){.pitch{grid-template-columns:1fr}}
+.pitch blockquote{margin:0;font-family:var(--serif);font-style:italic;font-size:1.25rem;line-height:1.4;color:var(--muted);border-left:3px solid var(--terra);padding-left:16px}
+.people{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.person{display:grid;grid-template-columns:64px minmax(0,1fr);gap:16px;align-items:start;border:1px solid var(--line);border-radius:var(--r);padding:20px;background:var(--bg)}
+.avatar{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font-family:var(--serif);font-weight:800;font-size:1.5rem;color:var(--bg);background:var(--olive)}
+.person:nth-child(2) .avatar{background:var(--terra)}
+.person h3{font-size:1.25rem}
+.person .role{font-size:.88rem;color:var(--terra);font-weight:600}
+.person ul{margin:8px 0 0;padding-left:18px;display:grid;gap:3px;font-size:.92rem}
+.person a{font-size:.86rem;font-weight:600}
+.steps{display:grid;gap:0;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--bg)}
+.step{display:grid;grid-template-columns:72px minmax(0,1.1fr) minmax(0,1fr) minmax(0,1fr);gap:20px;padding:22px 20px;border-top:1px solid var(--line);align-items:start}
+.step:first-child{border-top:0}
+@media (max-width:860px){.step{grid-template-columns:52px minmax(0,1fr)}.step .col{grid-column:2}}
+.step .no{font-family:var(--serif);font-weight:800;font-size:2.2rem;line-height:1;color:var(--terra)}
+.step h3{font-size:1.15rem}
+.step .plain{font-size:.95rem;margin-top:4px}
+.step .lbl{font-size:.7rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:4px}
+.step ul{margin:0;padding-left:16px;display:grid;gap:3px;font-size:.9rem}
+.step.zero{background:var(--olive-soft)}
+.ppp{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:760px){.ppp{grid-template-columns:1fr}}
+.ppp div{display:grid;gap:4px}
+.ppp b{font-family:var(--serif);font-size:1.15rem;color:var(--olive)}
+.ppp p{font-size:.92rem;color:var(--muted)}
+.cta{background:var(--band);border-radius:var(--r);position:relative;overflow:hidden}
+.cta h2{color:var(--on-band)}
+.cta,.cta p{color:color-mix(in srgb,var(--on-band) 88%,transparent)}
+.cta .addr{font-family:var(--mono);background:var(--mark-solid);color:var(--on-mark);justify-self:start;padding:4px 12px;border-radius:6px}
+
+/* one-pager */
+.op{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--terra);border-radius:var(--r);padding:26px}
+@media (max-width:820px){.op{grid-template-columns:1fr}}
+.op-text{display:grid;gap:12px;align-content:start}
+.op-list{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:6px;font-size:.92rem}
+.op-list li{display:flex;gap:8px;align-items:baseline}
+.op-list li::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--sand);transform:translateY(-1px)}
+.op-list li.done::before{background:var(--olive)}
+.op-list a{font-weight:600}
+.op-form{display:grid;gap:10px;align-content:start}
+.op-form label{font-size:.85rem;font-weight:600}
+.op-form label span{font-weight:400;color:var(--muted)}
+.op-form input[type=email],.op-form input[type=text]{width:100%;font:inherit;padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg)}
+.op-form input:focus{outline:none;border-color:var(--olive)}
+.op-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:460px){.op-row{grid-template-columns:1fr}}
+.op-row>div{display:grid;gap:6px}
+.op-check{display:flex;gap:8px;align-items:flex-start;font-weight:400!important;font-size:.88rem!important;color:var(--muted)}
+.op-check input{margin-top:4px;accent-color:var(--olive)}
+.op-form .btn.pri{justify-self:start;padding:10px 20px;font-size:.95rem}
+.op-form .btn.pri:disabled{opacity:.6;cursor:wait}
+.op-msg{font-size:.9rem;min-height:1.2em}
+.op-msg.err{color:var(--no)}
+.op-msg.ok{color:var(--ok)}
+.pdfbtn{justify-self:start;font-size:.88rem}
+
+.mock{font-size:.66rem;letter-spacing:.06em;background:var(--mark-solid);color:var(--on-mark);padding:2px 8px;border-radius:999px;margin-left:6px}
+.pv{max-width:620px;justify-self:center;width:100%;background:#fff;color:#17302e;border:1px solid var(--line);border-radius:6px;box-shadow:0 10px 30px -12px rgba(0,0,0,.25);overflow:hidden;font-size:.86rem}
+.pv-head{background:#17302e;color:#eef3f0;padding:16px 20px;display:grid;gap:2px}
+.pv-head b{font-family:var(--serif);font-size:1.25rem}
+.pv-head span{font-size:.75rem;opacity:.8}
+.pv-brand{text-transform:uppercase;letter-spacing:.08em;font-weight:700;opacity:1!important}
+.pv-body{padding:16px 20px;display:grid;gap:14px}
+.pv-sec{display:grid;gap:4px}
+.pv-k{font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:#e2553f;font-weight:700}
+.pv-box{background:#d6ebe5;border-radius:6px;padding:8px 10px;display:grid}
+.pv-box small{font-weight:700;color:#17635c;text-transform:uppercase;font-size:.66rem}
+.pv ul{margin:2px 0 0;padding-left:16px;display:grid;gap:2px}
+.pv-num{font-family:var(--serif);font-size:1.5rem}
+.pv-num .t{color:#17635c}
+.pv-num span{font-family:var(--sans);font-size:.8rem;background:#ffe066;color:#2a2400;padding:2px 8px;border-radius:4px;vertical-align:middle}
+.pv-muted{color:#566b67;font-size:.8rem}
+.pv-foot{background:#17302e;color:#eef3f0;padding:12px 20px;font-size:.8rem}
+#onepager{gap:22px}
+
+/* overlapping colour planes (replaces circles) */
+.planes{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.planes i{position:absolute;display:block;mix-blend-mode:screen;opacity:.9;transform-origin:center}
+.planes .p1{width:62%;height:150%;right:-14%;top:-30%;background:linear-gradient(160deg,#17635c 0%,#5fcbb8 100%);clip-path:polygon(38% 0,100% 0,100% 100%,0 100%);opacity:.55}
+.planes .p2{width:46%;height:140%;right:6%;top:-20%;background:linear-gradient(200deg,#e2553f 0%,rgba(226,85,63,.15) 85%);clip-path:polygon(55% 0,100% 0,45% 100%,0 100%);opacity:.6}
+.planes .p3{width:30%;height:120%;right:-2%;top:-10%;background:linear-gradient(180deg,#ffe066 0%,rgba(255,224,102,.1) 90%);clip-path:polygon(62% 0,100% 0,38% 100%,0 100%);opacity:.5}
+.planes .p4{width:40%;height:130%;right:22%;top:-15%;background:linear-gradient(170deg,rgba(108,95,199,.75) 0%,rgba(108,95,199,0) 80%);clip-path:polygon(70% 0,92% 0,30% 100%,8% 100%);opacity:.6}
+.cover .planes{left:auto;width:48%}
+.cover .planes .p1{width:100%;right:-20%;opacity:.7}
+.cover .planes .p2{width:80%;right:18%;opacity:.8}
+.cover .planes .p3{width:52%;right:2%;opacity:.75}
+.cover .planes .p4{width:70%;right:42%;opacity:.7}
+@media (max-width:900px){.cover .planes{width:60%}.planes i{opacity:.3!important}}
+.cta .planes .p1{opacity:.35}.cta .planes .p2{opacity:.45}.cta .planes .p3{opacity:.35}.cta .planes .p4{opacity:.4}
+.cta>*:not(.planes){position:relative;z-index:1}
+.pickres{position:relative;overflow:hidden}
+.pickres>*:not(.planes){position:relative;z-index:1}
+.pickres .planes i{opacity:.28}
+@media (prefers-reduced-motion:no-preference){.cover .planes i{animation:drift 14s ease-in-out infinite alternate}.cover .planes .p2{animation-duration:17s}.cover .planes .p3{animation-duration:11s}}
+@keyframes drift{from{transform:translateX(0)}to{transform:translateX(-18px)}}
+
+.diff{display:grid;gap:14px}
+.diff h3{font-size:1.3rem}
+.diff ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;counter-reset:d}
+@media (max-width:820px){.diff ol{grid-template-columns:1fr}}
+.diff li{counter-increment:d;display:grid;gap:6px;align-content:start;padding:18px;border-radius:var(--r);background:var(--bg);border:1px solid var(--line);font-size:.95rem;color:var(--muted)}
+.diff li::before{content:counter(d);font-family:var(--serif);font-weight:800;font-size:1.6rem;line-height:1;color:var(--terra)}
+.diff li b{color:var(--fg);font-size:1.02rem;display:block}
+
+/* unlock gate */
+.gated{position:relative}
+.gated .blur{filter:blur(5px);user-select:none;pointer-events:none;opacity:.7;max-height:150px;overflow:hidden}
+.gated .lockbar{position:absolute;inset:auto 0 0 0;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:center;padding:14px;background:linear-gradient(transparent,var(--gate-bg,var(--surface)) 45%)}
+.gated .lockbar span{font-size:.88rem;font-weight:600}
+.unlock{border:0;background:var(--terra);color:#fff;font-weight:700;padding:8px 16px;border-radius:999px;cursor:pointer;font-size:.9rem}
+.unlock:hover{filter:brightness(1.08)}
+.rbox .gated{--gate-bg:var(--olive-soft)}
+.pickres .gated{--gate-bg:var(--band)}
+.pickres .gated .lockbar span{color:var(--on-band)}
+.case .gated{--gate-bg:var(--surface)}
+.dplock{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:space-between;padding:12px;border:1.5px dashed var(--terra);border-radius:8px;background:var(--terra-soft);font-size:.9rem}
+.casetab-lock::after{content:" \1F512";font-size:.75em}
+.gate-modal{position:fixed;inset:0;z-index:50;background:rgba(10,20,19,.55);display:grid;place-items:center;padding:16px}
+.gate-modal[hidden]{display:none}
+.gate-card{position:relative;width:min(440px,100%);background:var(--surface);color:var(--fg);border-radius:var(--r);border-top:4px solid var(--terra);padding:24px;display:grid;gap:10px;box-shadow:0 20px 50px -20px rgba(0,0,0,.5)}
+.gate-card h3{font-size:1.4rem}
+.gate-card label{font-size:.85rem;font-weight:600}
+.gate-card label span{font-weight:400;color:var(--muted)}
+.gate-card input{width:100%;font:inherit;padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg)}
+.gate-card .btn.pri{justify-self:start;padding:10px 22px}
+.gate-x{position:absolute;top:10px;right:12px;border:0;background:none;font-size:1.5rem;line-height:1;color:var(--muted);cursor:pointer}
+.op-note{font-size:.8rem;color:var(--muted)}
+.mockctl{display:flex;gap:10px;align-items:center}
+.mockctl .btn{padding:3px 12px;font-size:.8rem}
+
+.dotgrid{grid-template-columns:repeat(18,1fr)}
+.dotgrid i.gdr{background:var(--info)}
+.dotgrid i.vol{background:transparent;box-shadow:inset 0 0 0 1.5px var(--sand)}
+.legend span.g::before{background:var(--info)}
+.legend span.v::before{background:transparent;box-shadow:inset 0 0 0 1.5px var(--sand)}
+.buckets{display:grid;gap:14px;min-width:0}
+.buckets table{width:100%;border-collapse:collapse;font-size:.92rem}
+.buckets th{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;padding:6px 8px;border-bottom:1.5px solid var(--line)}
+.buckets td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.buckets .r{text-align:right;white-space:nowrap}
+.buckets .tag{font-size:.72rem;color:var(--muted);font-family:var(--mono)}
+.buckets .sub2{display:block;font-size:.78rem;color:var(--muted)}
+.buckets tr.sub td{font-size:.82rem;color:var(--muted);padding-top:2px;padding-left:20px}
+.buckets tr.tot td{font-weight:700;border-top:2px solid var(--fg);border-bottom:0;font-size:1rem}
+.buckets tr.tot td:last-child{color:var(--olive);font-family:var(--serif);font-size:1.3rem}
+.buckets .muted{color:var(--muted);font-size:.8rem}
+.buckets .bigfig strong{font-size:clamp(1.8rem,4.5vw,2.4rem)}
+
+.drrow{display:grid;grid-template-columns:90px 110px minmax(0,1fr);gap:10px;align-items:start;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);font-size:.88rem}
+@media (max-width:560px){.drrow{grid-template-columns:80px minmax(0,1fr)}.drrow .chips{grid-column:1/-1;justify-content:flex-start}}
+.drrow .c{font-weight:700}
+.drrow .n{color:var(--muted)}
+.drrow .chips{justify-content:flex-start;max-width:none}
+.hub{font-size:.88rem;font-weight:600;margin-top:4px;justify-self:start}
+
+.drrow{grid-template-columns:72px minmax(0,1fr) 100px!important}
+.drrow .dt{display:grid;gap:2px;min-width:0}
+.drrow .dt b{font-weight:600}
+.drrow .dt small{color:var(--muted);font-size:.76rem}
+.drrow .chips{grid-column:2/-1}
+@media (max-width:560px){.drrow{grid-template-columns:60px minmax(0,1fr)!important}.drrow .n{grid-column:2}}
+</style>
+
+<div class="cover"><div class="planes" aria-hidden="true"><i class="p1"></i><i class="p4"></i><i class="p2"></i><i class="p3"></i></div><header class="wrap top">
+  <div class="brand">greenfriend. <span>Elena &amp; Anika</span></div>
+  <h1>The revised ESRS, in five minutes</h1>
+  <p class="lede">What changed, which datapoints fall away, who reports when, and which route to take for FY2026. Check your own company as you go.</p>
+  <div class="alert" role="note"><span>The revised ESRS apply from <b>10 Nov 2026</b>. Reporting on FY2026? Choose your route now.</span><a href="#fy2026">Choose your route</a></div>
+  <div class="stamp"><span>Omnibus I · Directive (EU) 2026/470</span><span>Revised ESRS · Reg. (EU) 2026/1563</span><span>Status 7 Oct 2026</span></div>
+</header></div>
+
+<nav class="chapters" aria-label="Sections"><div class="wrap">
+  <a href="#overview">What changed</a><a href="#datapoints">Datapoints</a><a href="#who">Who reports when</a><a href="#scope">Check your scope</a><a href="#noneu">Non-EU groups</a><a href="#cases">Example cases</a><a href="#fy2026">FY2026 options</a><a href="#onepager">Get the PDF</a><a href="#about">Who we are</a>
+</div></nav>
+
+<main class="wrap">
+
+<!-- OVERVIEW -->
+<section class="ch" id="overview">
+  <div class="chead"><div class="eyebrow">What changed</div><h2>Six changes that matter</h2><p class="lede">Tap a card for the detail.</p></div>
+  <div class="chunks" id="chunks"></div>
+  <h3 style="margin-top:10px">Key dates</h3>
+  <div class="dates"><div class="dates-in"><div class="dline"></div><div class="dpts" id="dates"></div></div></div>
+</section>
+
+<!-- DATAPOINTS -->
+<section class="ch" id="datapoints">
+  <div class="chead"><div class="eyebrow">Datapoints</div><h2>From 1,052 datapoints to 323</h2><p class="lede">The 2023 ESRS had 783 mandatory and 269 voluntary datapoints. The revised ESRS keep 292 mandatory ones, delete every voluntary one, and add 31 general datapoints for policies, actions, targets and metrics. Everything that remains still passes through your materiality assessment.</p></div>
+  <div class="dp-hero">
+    <div>
+      <div class="dotgrid" id="dotgrid" aria-label="Each dot is about 10 datapoints"></div>
+      <div class="legend"><span class="k">Mandatory, kept</span><span class="g">New: policies, actions, targets, metrics</span><span>Mandatory, removed</span><span class="v">Voluntary, removed</span></div>
+      <p class="qhelp" style="margin-top:6px">Each dot is about 10 datapoints.</p>
+    </div>
+    <div class="buckets">
+      <table>
+        <thead><tr><th>Bucket</th><th class="r">ESRS 2023</th><th class="r">Revised</th></tr></thead>
+        <tbody>
+          <tr><td>Mandatory <span class="tag">"shall"</span></td><td class="r num">783</td><td class="r num"><b>292</b></td></tr>
+          <tr class="sub"><td>of which apply whenever the topic is material</td><td class="r num">–</td><td class="r num">195</td></tr>
+          <tr><td>Voluntary <span class="tag">"may"</span></td><td class="r num">269</td><td class="r num"><b>0</b></td></tr>
+          <tr><td>Policies, actions, targets, metrics <span class="sub2">repeated per item you report</span></td><td class="r num muted">separate*</td><td class="r num"><b>31</b></td></tr>
+          <tr class="tot"><td>Total</td><td class="r num">1,052*</td><td class="r num">323</td></tr>
+        </tbody>
+      </table>
+      <div class="bigfig">
+        <div><small>Mandatory</small><strong class="num" id="fig-pct">−63%</strong></div>
+        <div><small>Mandatory + voluntary</small><strong class="num">−72%</strong></div>
+      </div>
+      <p class="qhelp">* In 2023 the policy, action and target datapoints sat inside each topical standard and EFRAG counted them separately, so the 1,052 excludes them. Like for like, mandatory plus voluntary falls from 1,052 to 292. The Commission's own headline figures are about −60% mandatory and −70% in total.</p>
+    </div>
+  </div>
+
+  <h3>Your own number</h3>
+  <div class="est">
+    <div class="estpick">
+      <p class="qhelp">Tick the topics that are material for you. ESRS 2 always applies.</p>
+      <div class="estboxes" id="estboxes"></div>
+    </div>
+    <div class="estout" id="estout"></div>
+  </div>
+
+  <h3>Standard by standard</h3>
+  <p class="qhelp">Pick a standard to see the count, what changed, and how many datapoints sit under each disclosure requirement. Requirement titles come from the revised ESRS (Delegated Regulation (EU) 2026/1563); the plain-language summaries are ours. Datapoint counts are derived from EFRAG's draft list (non-authoritative; final list expected end of 2026). For the full text, use EFRAG's ESRS Knowledge Hub.</p>
+  <div class="stds" id="stds"></div>
+  <div class="stdpanel" id="stdpanel"></div>
+</section>
+
+<!-- WHO -->
+<section class="ch" id="who">
+  <div class="chead"><div class="eyebrow">Who reports when</div><h2>Two tests decide almost everything</h2><p class="lede">Omnibus I replaced the old waves with one size test from FY2027. Both limbs must be exceeded.</p></div>
+  <div class="thr">
+    <div class="thrcard">
+      <div class="eyebrow" style="color:var(--olive)">EU companies, groups and EU-listed issuers</div>
+      <div class="gate"><span class="g">&gt; 1,000 employees</span><span class="op">AND</span><span class="g">&gt; €450M net turnover</span></div>
+      <p class="qhelp">Tested on the balance sheet date: net turnover above €450M and on average more than 1,000 employees during the financial year. A parent tests consolidated group figures. First report on FY2027, published in 2028.</p>
+      <p class="was">Before: 250 employees and €50M turnover (any two of three criteria).</p>
+    </div>
+    <div class="thrcard">
+      <div class="eyebrow" style="color:var(--info)">Non-EU groups (Article 40a)</div>
+      <div class="gate"><span class="g">&gt; €450M EU turnover, 2 years</span><span class="op">AND</span><span class="g">EU subsidiary or branch &gt; €200M</span></div>
+      <p class="qhelp">No headcount test. First report on FY2028, published in 2029, through the EU subsidiary or branch.</p>
+      <p class="was">Before: €150M EU turnover and a €40M branch or large subsidiary.</p>
+    </div>
+  </div>
+  <div class="gantt">
+    <table>
+      <thead><tr><th>Who</th><th>FY2024</th><th>FY2025</th><th>FY2026</th><th>FY2027</th><th>FY2028</th></tr></thead>
+      <tbody id="gantt"></tbody>
+    </table>
+    <div class="gkey">
+      <span><i class="c-rep"></i>Reports (existing ESRS / options)</span>
+      <span><i class="c-new"></i>Reports under revised ESRS</span>
+      <span><i class="c-opt"></i>Member State may exempt</span>
+      <span><i class="c-40a"></i>Article 40a group report</span>
+      <span><i class="c-out"></i>Out of mandatory scope</span>
+    </div>
+  </div>
+  <p class="qhelp">The year shown is the financial year covered. The report is published the following year. Member States must transpose Omnibus I by 19 March 2027, so check national law for the FY2025–2026 exemption.</p>
+</section>
+
+<!-- SCOPE QUIZ -->
+<section class="ch" id="scope">
+  <div class="chead"><div class="eyebrow">Check your scope</div><h2>Are you in, and from when?</h2><p class="lede">Six questions or fewer. Use group figures if you are the parent of a group.</p></div>
+  <div class="quiz">
+    <div class="qbox" id="qbox" aria-live="polite"></div>
+    <div class="rbox" id="rbox"></div>
+  </div>
+</section>
+
+<!-- NON-EU -->
+<section class="ch" id="noneu">
+  <div class="chead"><div class="eyebrow">Non-EU groups</div><h2>International groups: two separate routes into scope</h2><p class="lede">A US, UK, Swiss or Asian group can be caught twice: once through a large EU subsidiary from FY2027, and once at group level under Article 40a from FY2028. These are separate tests.</p></div>
+  <div class="twoways">
+    <div class="way eu"><div class="eyebrow" style="color:var(--olive)">Route 1 · from FY2027</div><h3>A large EU subsidiary</h3><p class="qhelp">Any EU subsidiary, or EU sub-group parent, that exceeds 1,000 employees and €450M turnover on its own (consolidated) figures reports like any EU company. It can be exempt if the non-EU parent voluntarily publishes a consolidated report under the full ESRS (or an equivalent standard) that covers it.</p></div>
+    <div class="way"><div class="eyebrow" style="color:var(--info)">Route 2 · from FY2028</div><h3>Article 40a group report</h3><p class="qhelp">The non-EU ultimate parent is caught when the group makes more than €450M in the EU in each of the last two years and has an EU subsidiary or branch above €200M. The EU subsidiary or branch publishes a report covering the whole group.</p></div>
+  </div>
+  <div class="flow">
+    <div class="fstep"><span class="n">1</span><b>Add up EU turnover</b><p class="qhelp">Group net turnover generated in the EU, for each of the last two consecutive financial years. Above €450M both years?</p></div>
+    <div class="fstep"><span class="n">2</span><b>Find the anchor entity</b><p class="qhelp">An EU subsidiary or EU branch with more than €200M net turnover. If there is none, Article 40a does not apply.</p></div>
+    <div class="fstep"><span class="n">3</span><b>Plan the report</b><p class="qhelp">First report covers FY2028. Dedicated standards for non-EU groups are expected from October 2027 at the earliest. Financial holding undertakings can opt out.</p></div>
+  </div>
+  </section>
+
+<!-- CASES -->
+<section class="ch" id="cases">
+  <div class="chead"><div class="eyebrow">Example cases</div><h2>Parent, subsidiary, or neither?</h2><p class="lede">Seven fictional groups and how the rules land on each entity.</p></div>
+  <div class="cases-tabs" id="casetabs" role="group" aria-label="Example cases"></div>
+  <div class="case" id="case"></div>
+</section>
+
+<!-- FY2026 -->
+<section class="ch" id="fy2026">
+  <div class="chead"><div class="eyebrow">FY2026 options</div><h2>Which route for your FY2026 report?</h2><p class="lede">For a financial year starting in 2026, companies in scope choose one of three routes (Article 2 of the delegated act of 3 July 2026). Whichever you pick, the report must state which version you applied.</p></div>
+  <div class="opts3" id="opts3"></div>
+  <div class="pick" id="pick"></div>
+  <div class="pickres" id="pickres"></div>
+</section>
+
+
+<!-- ONE-PAGER -->
+<section class="ch" id="onepager">
+  <div class="op">
+    <div class="op-text">
+      <div class="eyebrow">Your action plan <span class="mock">Preview</span></div>
+      <h2>Unlock your full action plan</h2>
+      <p class="lede">See every detail of your result and get it as a one-page PDF for your CFO, auditor or board. One email unlocks everything.</p>
+      <ul class="op-list op-what"><li class="done">Your full scope result and next steps</li><li class="done">The reasons behind your FY2026 route</li><li class="done">Every disclosure requirement for your material topics, with datapoint counts and phase-ins</li><li class="done">All seven example group cases</li><li class="done">Your one-page PDF</li></ul>
+      <ul class="op-list" id="op-status"></ul>
+    </div>
+    <form class="op-form" id="op-form" novalidate>
+      <label for="op-email">Work email</label>
+      <input type="email" id="op-email" autocomplete="email" placeholder="name@company.com" required>
+      <label for="op-company">Company <span>(optional)</span></label>
+      <input type="text" id="op-company" autocomplete="organization">
+      <button type="submit" class="btn pri" id="op-submit">Unlock my action plan</button>
+      <p class="op-note">We send your one-pager and may follow up once about your results. No newsletter unless you ask.</p>
+      <p class="op-msg" id="op-msg" role="status"></p>
+    </form>
+  </div>
+  <div class="pv" id="op-preview" hidden></div>
+</section>
+</main>
+
+<section class="about" id="about" style="scroll-margin-top:60px"><div class="wrap">
+  <div class="pitch">
+    <div class="chead" style="display:grid;gap:10px"><div class="eyebrow">Who we are</div>
+      <h2>We help companies report what they actually do</h2>
+      <p class="lede">We help you turn your double materiality assessment into a plan your company actually uses: clear owners, roadmaps for each team, and a report that shows real progress. Our own AI tools speed up the work along the way.</p></div>
+    <blockquote>Most consultancies hand over a 100-page manual that nobody uses. We build lean frameworks your teams can work with.</blockquote>
+  </div>
+
+  <div class="diff">
+    <h3>How we work differently</h3>
+    <ol>
+      <li><b>You work with us, not a junior team.</b> Elena and Anika do all the work themselves. The people you meet are the people who deliver.</li>
+      <li><b>Inside experience, consulting and tech in one team.</b> We have led sustainability inside large companies, advised many others, and build our own tools. So our solutions work in practice and save manual work.</li>
+      <li><b>Strategy first, box-ticking last.</b> We go beyond compliance and help you build a strategy that creates real value for your business and the people who depend on it.</li>
+    </ol>
+  </div>
+
+  <div class="people">
+    <div class="person"><div class="avatar" aria-hidden="true">A</div><div>
+      <h3>Anika Lerch, MSc</h3><div class="role">Founder, greenfriend · Strategy, governance and CSRD</div>
+      <ul><li>Built the global sustainability function at Just Eat Takeaway across 23 countries, including its first Responsible Business Strategy and governance set-up</li><li>Advises energy, automotive, FMCG and industrial companies from double materiality to implementation roadmap, with board-ready and audit-ready deliverables</li><li>Co-founded Caribou, a B2B CSRD software start-up</li><li>Builds custom AI tools that automate IRO scoring, data synthesis and audit trails</li></ul>
+      <a href="https://www.linkedin.com/in/anikalerch/">LinkedIn profile</a></div></div>
+    <div class="person"><div class="avatar" aria-hidden="true">E</div><div>
+      <h3>Elena Zayakova, MSc</h3><div class="role">Founder, CoreWorks Consultancy · Strategy, reporting and governance</div>
+      <ul><li>Former Senior Director of Sustainability at Sage, a FTSE 100 tech company</li><li>Led award-winning ESG disclosures in Europe and the Middle East, building reporting teams and processes from scratch</li><li>Works with finance, legal, audit and risk teams across CSRD, ISSB, TCFD, CDP, GRI and the EU Taxonomy</li><li>Co-author of the first Climate Competitiveness Index (2010) with UNEP</li></ul>
+      <a href="https://www.linkedin.com/in/elenavlzayakova/">LinkedIn profile</a></div></div>
+  </div>
+
+  <div style="display:grid;gap:10px"><h3 style="font-size:1.4rem">How we help, step by step</h3>
+  <p class="qhelp">Each step builds on the one before. You can start at any of them.</p></div>
+  <div class="steps">
+    <div class="step zero"><span class="no">0</span><div><h3>Know where you stand</h3><p class="plain">Are you in scope, from when, and which route fits FY2026?</p></div>
+      <div class="col"><div class="lbl">What we do</div><ul><li>Check your scope and timeline</li><li>Compare the three FY2026 routes</li></ul></div>
+      <div class="col"><div class="lbl">You get</div><ul><li>This tool, for free</li><li>A 20-minute call if you want a second opinion</li></ul></div></div>
+    <div class="step"><span class="no">1</span><div><h3>Find what really matters</h3><p class="plain">We work out which sustainability topics matter for your business, quickly and in a way your auditor accepts.</p></div>
+      <div class="col"><div class="lbl">What we do</div><ul><li>Map your value chain from your own documents</li><li>Shortlist impacts, risks and opportunities</li><li>Score them with your experts</li><li>Keep your auditor involved along the way</li></ul></div>
+      <div class="col"><div class="lbl">You get</div><ul><li>A value chain map</li><li>A signed-off list of material topics</li><li>A live dashboard and an audit-ready method file</li></ul></div></div>
+    <div class="step"><span class="no">2</span><div><h3>Turn topics into goals</h3><p class="plain">Each material topic gets a clear objective, a starting point and a target your teams can work towards.</p></div>
+      <div class="col"><div class="lbl">What we do</div><ul><li>Run a strategy workshop with your experts</li><li>Check which projects you already have, and what is missing</li><li>Estimate budget for the gaps</li></ul></div>
+      <div class="col"><div class="lbl">You get</div><ul><li>A one-page strategy framework</li><li>Objectives, KPIs and targets per topic</li><li>Input for your yearly goals or OKRs</li></ul></div></div>
+    <div class="step"><span class="no">3</span><div><h3>Make clear who owns what</h3><p class="plain">We close the accountability gap. Every material topic gets an owner in the business, and your board gets the information it needs.</p></div>
+      <div class="col"><div class="lbl">What we do</div><ul><li>Agree with your teams who is responsible, accountable, consulted and informed for each topic and IRO</li><li>Run team workshops on dependencies and day-to-day ways of working</li><li>Help prepare quarterly board and committee updates, and review the papers</li><li>Compare your set-up with peers: committees, board oversight, and who owns disclosures (CFO, sustainability, legal or investor relations)</li><li>Train each team on what reporting means for them, for example ESRS for finance or greenwashing risks for marketing</li></ul></div>
+      <div class="col"><div class="lbl">You get</div><ul><li>A one-page map of who owns what</li><li>An ownership register for topics and IROs</li><li>A board sustainability information pack</li><li>A peer benchmark with the pros and cons of each ownership model</li><li>Training made for each team</li></ul></div></div>
+    <div class="step"><span class="no">4</span><div><h3>Report what you did</h3><p class="plain">Your report shows progress and evidence, not only plans and promises.</p></div>
+      <div class="col"><div class="lbl">What we do</div><ul><li>Check your reporting process and data</li><li>List the gaps per disclosure</li><li>Test key figures for assurance</li><li>Check your sustainability claims for greenwashing risk</li></ul></div>
+      <div class="col"><div class="lbl">You get</div><ul><li>A gap list with owners and priorities</li><li>A map of what goes in which report</li><li>An evidence file for your auditor</li></ul></div></div>
+  </div>
+
+</div></section>
+
+<div class="gate-modal" id="gate" hidden role="dialog" aria-modal="true" aria-labelledby="gate-h">
+  <form class="gate-card" id="gate-form" novalidate>
+    <button type="button" class="gate-x" id="gate-x" aria-label="Close">×</button>
+    <div class="eyebrow">Your action plan <span class="mock">Preview</span></div>
+    <h3 id="gate-h">Unlock your full action plan</h3>
+    <p class="qhelp">Your full result, the reasons behind your route, every disclosure requirement for your topics, all example cases and a one-page PDF. One email unlocks everything.</p>
+    <label for="gate-email">Work email</label>
+    <input type="email" id="gate-email" autocomplete="email" placeholder="name@company.com" required>
+    <label for="gate-company">Company <span>(optional)</span></label>
+    <input type="text" id="gate-company" autocomplete="organization">
+    <button type="submit" class="btn pri">Unlock</button>
+    <p class="op-msg" id="gate-msg" role="status"></p>
+    <p class="op-note">We send your one-pager and may follow up once about your results.</p>
+  </form>
+</div>
+
+<footer class="wrap">
+  <div class="cta"><div class="planes" aria-hidden="true"><i class="p1"></i><i class="p4"></i><i class="p2"></i><i class="p3"></i></div>
+    <h2>Report what you do.</h2>
+    <p>Not sure about your FY2026 route, or how to slim down your double materiality assessment under the revised ESRS? Book a free 20-minute call with Elena and Anika.</p>
+    <div class="addr">greenfriend.org</div>
+  </div>
+  <div class="fine">
+    <p class="mockctl">Mockup controls: <button type="button" class="btn" id="relock">Lock again</button></p>
+    <p>This tool gives an indicative reading of Directive (EU) 2026/470 (Omnibus I) and the revised ESRS (Delegated Regulation (EU) 2026/1563). It is not legal advice. National transposition is due by 19 March 2027 and may differ by Member State, especially for the FY2025–2026 exemption. Confirm your position with your auditor or legal adviser.</p>
+    <p>Data: EFRAG Secretariat, 2026 Draft List of ESRS Datapoints (28 Aug 2026), non-authoritative supporting material; final version expected end of 2026.</p><p>Sources: <a href="https://finance.ec.europa.eu/news/commission-adopts-revised-sustainability-reporting-standards-reduce-administrative-burdens-eu-2026-07-03_en">European Commission, 3 July 2026</a> · <a href="https://eur-lex.europa.eu/eli/dir/2026/470/oj">Directive (EU) 2026/470</a> · <a href="https://www.efrag.org/en/news-and-calendar/news/efrag-secretariat-releases-2026-draft-list-of-datapoints-for-revised-esrs">EFRAG 2026 Draft List of Datapoints</a> · <a href="https://sustainablefutures.linklaters.com/post/102o1ou/eu-csrd-revised-esrs-and-voluntary-reporting-standard-are-published-in-the-offic">Linklaters, 21 Sept 2026</a></p>
+  </div>
+</footer>
+
+<script>
+const $=s=>document.querySelector(s);
+let UNLOCKED=false;try{UNLOCKED=localStorage.getItem("esrs-unlocked")==="1";}catch(e){}
+function gateWrap(inner,label){return UNLOCKED?inner:`<div class="gated"><div class="blur" aria-hidden="true">${inner}</div><div class="lockbar"><span>${label}</span><button type="button" class="unlock">Unlock your action plan</button></div></div>`;}
+const esc=s=>String(s);
+
+/* ---------- OVERVIEW ---------- */
+const CHUNKS=[
+ {k:"~80%",t:"Fewer companies in scope",s:"Only groups above 1,000 employees and €450M turnover.",d:["Both limbs must be exceeded, on a consolidated basis for parents.","Listed SMEs are out of mandatory scope.","Financial holding undertakings can opt out of consolidated reporting.","Non-EU groups: €450M EU turnover plus a €200M EU subsidiary or branch."]},
+ {k:"323",t:"Datapoints in total",s:"Down from 1,052: 292 mandatory, 0 voluntary, 31 new general ones.",d:["All voluntary datapoints are deleted.","Counted by EFRAG: 783 \u201cshall\u201d datapoints in 2023, 292 in the revised ESRS.","More numbers, less narrative: quantitative datapoints are preferred.","Sector-specific ESRS are replaced by guidance."]},
+ {k:"Top-down",t:"A lighter materiality assessment",s:"Conclude at topic level instead of testing every IRO.",d:["ESRS 1 explicitly allows a top-down approach, alone or mixed with bottom-up.","Information that is not material shall not be reported, with narrow exceptions.","Fair presentation applies to the statement as a whole, not datapoint by datapoint.","More discretion on geographic disaggregation."]},
+ {k:"VSME cap",t:"Protection for smaller suppliers",s:"Value chain requests are capped from FY2027.",d:["A new voluntary standard, based on VSME, entered into force on 24 Sept 2026.","Value chain partners with on average up to 1,000 employees in the previous year can refuse requests that go beyond that standard.","Missing value chain data: explain efforts and plans during the first three years."]},
+ {k:"3 routes",t:"A choice for FY2026",s:"Old ESRS, old ESRS plus reliefs, or revised ESRS in full.",d:["Eight reliefs (Article 2 of the delegated act): top-down materiality, undue cost and value chain limits in the assessment, acquisitions and disposals, non-significant activities, partial value chain scope, joint operations, Taxonomy in a separate appendix, and an executive summary.","The report must state which version was applied.","From FY2027 the revised ESRS are mandatory for everyone in scope."]},
+ {k:"Limited",t:"Assurance stays limited",s:"The planned move to reasonable assurance is dropped.",d:["The Commission must adopt a limited assurance standard by 1 July 2027.","GHG boundary: financial control or operational control.","Anticipated financial effects can be updated later without counting as an error."]}
+];
+$("#chunks").innerHTML=CHUNKS.map((c,i)=>`<button class="chunk" aria-expanded="false" data-i="${i}">
+ <span class="k num">${c.k}</span><span class="t">${c.t}</span><span class="s">${c.s}</span>
+ <span class="more">Show detail</span><div class="detail" hidden><ul>${c.d.map(x=>`<li>${x}</li>`).join("")}</ul></div></button>`).join("");
+document.querySelectorAll(".chunk").forEach(b=>b.addEventListener("click",()=>{
+ const open=b.getAttribute("aria-expanded")!=="true";b.setAttribute("aria-expanded",open);
+ b.querySelector(".detail").hidden=!open;b.querySelector(".more").textContent=open?"Hide detail":"Show detail";}));
+
+const DATES=[
+ {d:"26 Feb 2026",t:"Omnibus I published",c:""},
+ {d:"18 Mar 2026",t:"Omnibus I in force",c:""},
+ {d:"3 Jul 2026",t:"Revised ESRS adopted",c:""},
+ {d:"21 Sep 2026",t:"Published in the OJ",c:""},
+ {d:"10 Nov 2026",t:"Revised ESRS in force",c:"now"},
+ {d:"19 Mar 2027",t:"Transposition deadline",c:"future hot"},
+ {d:"FY2027",t:"Revised ESRS mandatory",c:"future"}];
+$("#dates").innerHTML=DATES.map(x=>`<div class="dpt ${x.c}"><i class="dot"></i><b class="num">${x.d}</b><span>${x.t}</span></div>`).join("");
+
+/* ---------- DATAPOINTS ---------- */
+// DP: EFRAG 2026 Draft List of Datapoints (28 Aug 2026). Row: [id, DR, name, dataType, cond(1)/alt(2), phaseWave1Above, phaseWave1Below, phaseOther, virtualGDR]
+const DP=null; // EFRAG datapoint names removed (reuse rights). Counts per disclosure requirement below are facts derived from EFRAG's 2026 draft list.
+const DRT={"BP-1":["Basis for preparation of the sustainability statement","How your statement is put together: scope of consolidation, value chain coverage and any information you left out."],"BP-2":["Specific information if the undertaking uses phasing-in options","Which phase-in reliefs you use, if any."],"GOV-1":["The role of the administrative, management and supervisory bodies in relation to sustainability","Who on the board and management oversees sustainability, and how."],"GOV-2":["Integration of sustainability-related performance in incentive schemes","Whether executive pay is linked to sustainability targets."],"GOV-3":["Statement on due diligence","Where your due diligence process is described in the report."],"GOV-4":["Risk management and internal controls over sustainability reporting","How you manage risks and controls around the reporting itself."],"SBM-1":["Strategy, business model and value chain","What you do, where you sell, and what your value chain looks like."],"SBM-2":["Interests and views of stakeholders","How you listen to stakeholders and use what you hear."],"SBM-3":["Interaction of material impacts, risks and opportunities with strategy and business model, and financial effects","Your material impacts, risks and opportunities, and what they mean for strategy and finances."],"IRO-1":["Description of the process to identify and assess material impacts, risks and opportunities and material information to be reported","How you ran your double materiality assessment."],"IRO-2":["Material impacts, risks and opportunities and disclosure requirements included in the sustainability statement","An index of which disclosures you report, based on materiality."],"GDR":["General Disclosure Requirements for policies, actions, metrics and targets","Which material topics your policies, actions and targets cover."],"GDR-P":["General Disclosure Requirement for policies","What each policy covers, who owns it and how it is applied."],"GDR-A":["General Disclosure Requirement for actions and resources","Key actions per topic, their timing and the money behind them."],"GDR-M":["General Disclosure Requirement for metrics","How each metric is defined, measured and checked."],"GDR-T":["General Disclosure Requirement for targets","Each target, its baseline, timeline and progress."],"E1-1":["Transition plan for climate change mitigation","Your plan to cut emissions in line with climate goals, and whether it fits 1.5°C."],"E1-2":["Identification of climate-related risks and scenario analysis","Which climate risks you face and which scenarios you used to test them."],"E1-3":["Resilience in relation to climate change","How resilient your strategy and business model are to climate change."],"E1-4":["Policies related to climate change mitigation and adaptation","Your climate policies."],"E1-5":["Actions and resources in relation to climate change mitigation and adaptation","What you are doing on climate, and the resources behind it."],"E1-6":["Targets related to climate change","Your emission reduction and other climate targets."],"E1-7":["Energy consumption and mix","How much energy you use and how much of it is renewable."],"E1-8":["Gross scope 1, 2, 3 GHG emissions","Your Scope 1, 2 and 3 emissions and total GHG emissions."],"E1-9":["GHG removals and GHG mitigation projects financed through carbon credits","Carbon removals and any carbon credits you use."],"E1-10":["Internal carbon pricing","Whether and how you put an internal price on carbon."],"E1-11":["Anticipated financial effects from material physical and transition risks and potential climate-related opportunities","The money at stake from climate risks and opportunities."],"E2-1":["Policies related to pollution","Your pollution policies."],"E2-2":["Actions and resources related to pollution","What you are doing to reduce pollution."],"E2-3":["Targets related to pollution","Your pollution targets."],"E2-4":["Pollution of air, water and soil","How much you emit to air, water and soil, for the pollutants that are material."],"E2-5":["Substances of concern and substances of very high concern","Hazardous substances you produce, use or sell."],"E3-1":["Policies related to water","Your water policies."],"E3-2":["Actions and resources related to water","What you are doing on water."],"E3-3":["Targets related to water","Your water targets."],"E3-4":["Water metrics","How much water you use, especially in water-stressed areas."],"E4-1":["Biodiversity and ecosystems transition plan","Your plan to align with nature and biodiversity goals, if you have one."],"E4-2":["Policies related to biodiversity and ecosystems","Your biodiversity policies."],"E4-3":["Actions and resources related to biodiversity and ecosystems","What you are doing for biodiversity."],"E4-4":["Targets related to biodiversity and ecosystems","Your biodiversity targets."],"E4-5":["Metrics related to biodiversity and ecosystems change","Your sites near sensitive areas and other biodiversity figures."],"E5-1":["Policies related to resource use and circular economy","Your circular economy policies."],"E5-2":["Actions and resources related to resource use and circular economy","What you are doing on resource use and circularity."],"E5-3":["Targets related to resource use and circular economy","Your circularity targets."],"E5-4":["Resource inflows","The key materials you use and how much is recycled or renewable."],"E5-5":["Resource outflows","Your products' circularity and the waste you produce."],"S1-1":["Policies related to own workforce","Your people policies, including human rights."],"S1-2":["Engagement with own workforce and workers' representatives, existence of channels for own workforce to raise concerns or needs and approaches to remedy","How you involve employees and how they can raise concerns."],"S1-3":["Actions and resources related to own workforce","What you are doing for your workforce."],"S1-4":["Targets related to own workforce","Your workforce targets."],"S1-5":["Characteristics of the undertaking's employees","Headcount by gender, country and contract type, and staff turnover."],"S1-6":["Characteristics of non-employees in the undertaking's own workforce","How many non-employees work for you, such as contractors and agency workers."],"S1-7":["Collective bargaining coverage and social dialogue","How many employees are covered by collective agreements."],"S1-8":["Gender diversity in top management","The gender split in top management."],"S1-9":["Adequate wages","Whether everyone earns an adequate wage."],"S1-10":["Social protection","Whether employees are protected against loss of income."],"S1-11":["Persons with disabilities","The share of employees with disabilities."],"S1-12":["Training and skills development metrics","Training hours and performance reviews."],"S1-13":["Health and safety metrics","Accidents, ill health and days lost."],"S1-14":["Work-life balance metrics","Who can take family-related leave."],"S1-15":["Remuneration metrics","Gender pay gap and the ratio of top pay to median pay."],"S1-16":["Incidents of discrimination and other human rights incidents","Substantiated discrimination and human rights cases, and fines."],"S2-1":["Policies related to workers in the value chain","Your policies for workers in your value chain."],"S2-2":["Engagement with workers in the value chain, existence of channels for workers in the value chain to raise concerns or needs and approaches to remedy","How you engage value chain workers and how they can raise concerns."],"S2-3":["Actions and resources related to workers in the value chain","What you are doing for value chain workers."],"S2-4":["Targets related to workers in the value chain","Your targets for value chain workers."],"S3-1":["Policies related to affected communities","Your policies for communities affected by your operations."],"S3-2":["Engagement with affected communities, existence of channels for affected communities to raise concerns or needs and approaches to remedy","How you engage affected communities and how they can raise concerns."],"S3-3":["Actions and resources related to affected communities","What you are doing for affected communities."],"S3-4":["Targets related to affected communities","Your targets for affected communities."],"S4-1":["Policies related to consumers and end-users","Your policies for consumers and end-users."],"S4-2":["Engagement with consumers and end-users, existence of channels for consumers and end-users to raise concerns or needs and approaches to remedy","How you engage consumers and how they can raise concerns."],"S4-3":["Actions and resources related to consumers and end-users","What you are doing for consumers and end-users."],"S4-4":["Targets related to consumers and end-users","Your targets for consumers and end-users."],"G1-1":["Policies related to business conduct","Your policies on anti-corruption, whistleblowing and corporate culture."],"G1-2":["Actions related to business conduct","What you are doing on business conduct."],"G1-3":["Targets related to business conduct","Your business conduct targets."],"G1-4":["Metrics related to corruption or bribery","Corruption and bribery convictions and fines."],"G1-5":["Metrics related to political influence, including lobbying activities","Political donations and lobbying."],"G1-6":["Metrics related to payment practices","How quickly you pay your suppliers."]}; // titles from Delegated Regulation (EU) 2026/1563; plain-language lines are greenfriend's own
+const DRS={"ESRS 2":[["BP-1",6,3,[[],[],[]],0,6],["BP-2",9,9,[[],[],[]],0,0],["GOV-1",9,2,[[],[],[]],0,0],["GOV-2",3,3,[[],[],[]],0,0],["GOV-3",1,0,[[],[],[]],0,0],["GOV-4",1,0,[[],[],[]],0,0],["SBM-1",9,6,[[],[],[]],0,0],["SBM-2",3,0,[[],[],[]],0,0],["SBM-3",8,5,[["Qualitative info: prior to FY 2028 / Quantitative info: prior to FY 2030","prior to FY 2028"],["Qualitative info: prior to FY 2028 / Quantitative info: prior to FY 2030","prior to FY 2028"],["Qualitative info: first two FY of reporting / Quantitative info: first four FY of reporting","first two FY of reporting"]],0,0],["IRO-1",6,2,[[],[],[]],0,0],["IRO-2",8,3,[[],[],[]],0,0]],"ESRS 2 GDR":[["GDR",1,1,[[],[],[]],0,0],["GDR-P",6,3,[[],[],[]],0,0],["GDR-A",8,4,[[],[],[]],0,0],["GDR-M",5,1,[[],[],[]],0,0],["GDR-T",11,5,[[],[],[]],0,0]],"ESRS E1":[["E1-1",7,3,[[],["prior to FY 2027"],[]],0,0],["E1-2",10,7,[[],["prior to FY 2027"],[]],0,0],["E1-3",3,0,[[],["prior to FY 2027"],[]],0,0],["E1-4",0,0,[[],[],[]],1,0],["E1-5",3,0,[[],["prior to FY 2027"],[]],1,0],["E1-6",18,11,[[],["prior to FY 2027","prior to FY 2028","prior to FY 2029"],[]],1,0],["E1-7",11,7,[[],["prior to FY 2030","prior to FY 2027"],[]],0,0],["E1-8",6,1,[[],["prior to FY 2027"],[]],0,0],["E1-9",10,6,[[],["prior to FY 2027"],[]],0,0],["E1-10",2,1,[[],["prior to FY 2027"],[]],0,0],["E1-11",14,1,[["prior to FY 2030","prior to FY 2028"],["prior to FY 2027","prior to FY 2030","prior to FY 2028"],["first four FY of reporting","first two FY of reporting"]],0,0]],"ESRS E2":[["E2-1",0,0,[[],[],[]],1,0],["E2-2",0,0,[[],[],[]],1,0],["E2-3",0,0,[[],[],[]],1,0],["E2-4",5,0,[[],["prior to FY 2027"],[]],0,0],["E2-5",12,12,[["prior to FY 2030","Users of articles: prior to FY 2028"],["prior to FY 2030","prior to FY 2027","Users of articles: prior to FY 2028 / All others: prior to FY 2027"],["first three FY of reporting","Users of articles: first FY of reporting"]],0,0]],"ESRS E3":[["E3-1",1,1,[[],["prior to FY 2027"],[]],1,0],["E3-2",1,0,[[],["prior to FY 2027"],[]],1,0],["E3-3",0,0,[[],[],[]],1,0],["E3-4",6,0,[[],["prior to FY 2027"],[]],0,0]],"ESRS E4":[["E4-1",1,1,[["prior to FY 2027"],["prior to FY 2027"],["first two FY of reporting"]],0,0],["E4-2",2,0,[["prior to FY 2027"],["prior to FY 2027"],["first two FY of reporting"]],1,0],["E4-3",1,0,[["prior to FY 2027"],["prior to FY 2027"],["first two FY of reporting"]],1,0],["E4-4",1,1,[["prior to FY 2027"],["prior to FY 2027"],["first two FY of reporting"]],1,0],["E4-5",4,2,[["prior to FY 2027"],["prior to FY 2027"],["first two FY of reporting"]],0,0]],"ESRS E5":[["E5-1",1,1,[[],["prior to FY 2027"],[]],1,0],["E5-2",0,0,[[],[],[]],1,0],["E5-3",0,0,[[],[],[]],1,0],["E5-4",4,0,[[],["prior to FY 2027"],[]],0,0],["E5-5",10,0,[[],["prior to FY 2027"],[]],0,0]],"ESRS S1":[["S1-1",2,0,[[],["prior to FY 2027"],[]],1,0],["S1-2",6,2,[[],["prior to FY 2027"],[]],0,0],["S1-3",2,0,[[],["prior to FY 2027"],[]],1,0],["S1-4",0,0,[[],[],[]],1,0],["S1-5",7,1,[[],["prior to FY 2027"],[]],0,0],["S1-6",1,0,[["prior to FY 2027"],["prior to FY 2027"],["first FY of reporting"]],0,0],["S1-7",6,1,[["For own employees in non-EEA countries: prior to FY 2027"],["prior to FY 2027"],["For own employees in non-EEA countries: first FY of reporting"]],0,0],["S1-8",2,0,[[],["prior to FY 2027"],[]],0,0],["S1-9",3,1,[[],["prior to FY 2027"],[]],0,0],["S1-10",4,4,[["prior to FY 2027"],["prior to FY 2027"],["first FY of reporting"]],0,0],["S1-11",1,0,[["prior to FY 2027"],["prior to FY 2027"],["first FY of reporting"]],0,0],["S1-12",2,0,[["prior to FY 2027"],["prior to FY 2027"],["first FY of reporting"]],0,0],["S1-13",7,0,[["For non-employees: prior to FY 2027","prior to FY 2027"],["prior to FY 2027"],["For non-employees: first FY of reporting","first FY of reporting"]],0,0],["S1-14",1,0,[["prior to FY 2027"],["prior to FY 2027"],["first FY of reporting"]],0,0],["S1-15",2,0,[[],["prior to FY 2027"],[]],0,0],["S1-16",3,0,[[],["prior to FY 2027"],[]],0,0]],"ESRS S2":[["S2-1",3,0,[["prior to FY 2027"],["prior to FY 2027"],["first two FY of reporting"]],1,0],["S2-2",6,2,[["prior to FY 2027"],["prior to FY 2027"],["first two FY of reporting"]],0,0],["S2-3",3,1,[["prior to FY 2027"],["prior to FY 2027"],["first two FY of reporting"]],1,0],["S2-4",0,0,[[],[],[]],1,0]],"ESRS S3":[["S3-1",2,0,[["prior to FY 2027"],["prior to FY 2027"],["first two FY of reporting"]],1,0],["S3-2",7,3,[["prior to FY 2027"],["prior to FY 2027"],["first two FY of reporting"]],0,0],["S3-3",3,1,[["prior to FY 2027"],["prior to FY 2027"],["first two FY of reporting"]],1,0],["S3-4",0,0,[[],[],[]],1,0]],"ESRS S4":[["S4-1",1,0,[["prior to FY 2027"],["prior to FY 2027"],["first two FY of reporting"]],1,0],["S4-2",5,1,[["prior to FY 2027"],["prior to FY 2027"],["first two FY of reporting"]],0,0],["S4-3",3,1,[["prior to FY 2027"],["prior to FY 2027"],["first two FY of reporting"]],1,0],["S4-4",0,0,[[],[],[]],1,0]],"ESRS G1":[["G1-1",3,0,[[],["prior to FY 2027"],[]],1,0],["G1-2",7,1,[[],["prior to FY 2027"],[]],1,0],["G1-3",0,0,[[],[],[]],1,0],["G1-4",2,0,[[],["prior to FY 2027"],[]],0,0],["G1-5",3,0,[[],["prior to FY 2027"],[]],0,0],["G1-6",5,1,[[],["prior to FY 2027"],[]],0,0]]};
+// [2023 shall, revised shall, revised net of conditional] — EFRAG list, Statistics sheet (excl. GDR)
+const STAT={"ESRS 2":[127,57,27],E1:[187,84,47],E2:[44,17,5],E3:[27,8,7],E4:[54,9,5],E5:[42,15,14],S1:[127,49,48],S2:[47,12,9],S3:[45,12,8],S4:[44,9,7],G1:[39,20,18]};
+const TOT=[783,292,195];
+const dg=$("#dotgrid");
+(function(){const keep=29,gdr=3,rm=49,vol=27;let s="";
+ for(let i=0;i<keep;i++)s+='<i class="keep"></i>';for(let i=0;i<gdr;i++)s+='<i class="gdr"></i>';
+ for(let i=0;i<rm;i++)s+='<i></i>';for(let i=0;i<vol;i++)s+='<i class="vol"></i>';dg.innerHTML=s;})();
+
+
+const STDS=[
+ {c:"ESRS 2",k:"ESRS 2",n:"General disclosures",tag:"Always applies",rows:[
+  ["new","Policies, actions, targets, metrics","The per-topic minimum disclosure requirements are now 31 general datapoints (GDR) in ESRS 2. Topical standards point to them instead of repeating them."],
+  ["relief","Anticipated financial effects","Treated as estimates that can be updated later without counting as an error. Wave 1: qualitative information phased in until FY2028, quantitative until FY2030. New reporters: first two and first four years."],
+  ["same","Materiality filter","Still reported whatever the outcome of the assessment, but cut from 127 to 57 datapoints."]]},
+ {c:"GDR",k:"ESRS 2 GDR",n:"Policies, actions, targets, metrics",tag:"Per policy / action",gdr:true,rows:[
+  ["new","Reported per item","These 31 datapoints apply each time you report a policy, action, target or metric for a material topic. They replace the minimum disclosure requirements of 2023 and are not in the 292 count."]]},
+ {c:"E1",k:"ESRS E1",n:"Climate change",tag:"Changed",rows:[
+  ["new","GHG boundary","You can now use either the financial control or the operational control approach for the reporting boundary, closer to global standards."],
+  ["new","Transition plan","If targets are not compatible with a 1.5°C pathway, the company must say so."],
+  ["relief","Financial effects (E1-11)","Wave 1: methodology datapoints phased in until FY2028, most monetary amounts until FY2030. New reporters: first two and first four years."],
+  ["relief","Joint operations","Joint operations without operational control may be excluded from some metrics, with disclosure of steps to improve coverage."]]},
+ {c:"E2",k:"ESRS E2",n:"Pollution",tag:"Changed",rows:[
+  ["cut","Microplastics","Limited to primary microplastics. Secondary microplastics metrics are not required."],
+  ["new","Pollutants","Which pollutants are material is decided through a managerial assessment reflecting activities and sector."],
+  ["relief","Substances of concern","Wave 1: quantities of substances of concern phased in until FY2030 (new reporters: first three years). Users of articles with substances of very high concern: until FY2028 (new reporters: first year)."]]},
+ {c:"E3",k:"ESRS E3",n:"Water and marine resources",tag:"Trimmed",rows:[
+  ["cut","Datapoints","Cut from 27 to 8. All voluntary datapoints removed."]]},
+ {c:"E4",k:"ESRS E4",n:"Biodiversity and ecosystems",tag:"Phase-in",rows:[
+  ["relief","Phase-in","All of E4 can be deferred: wave 1 until FY2027, new reporters for their first two years."],
+  ["cut","Datapoints","Cut from 54 to 9, the deepest cut of any standard."]]},
+ {c:"E5",k:"ESRS E5",n:"Resource use and circular economy",tag:"Trimmed",rows:[
+  ["cut","Datapoints","Cut from 42 to 15. All voluntary datapoints removed."]]},
+ {c:"S1",k:"ESRS S1",n:"Own workforce",tag:"Changed",rows:[
+  ["new","Significant employment","A country counts when it has 50 or more employees and is among the 10 countries with the most employees."],
+  ["cut","Incidents","Only substantiated and verified human rights and discrimination incidents are reported; the 'severe' concept is removed."],
+  ["new","Non-employees","Characteristics of non-employees are required only if non-employees are assessed as material."],
+  ["relief","Phase-in","Wave 1: non-employees, non-EEA collective bargaining, social protection, disability, training, parts of health and safety, and family leave until FY2027. New reporters: first year."]]},
+ {c:"S2",k:"ESRS S2",n:"Workers in the value chain",tag:"Phase-in",rows:[
+  ["relief","Phase-in","Wave 1 until FY2027, new reporters for their first two years."],["cut","Datapoints","Cut from 47 to 12."]]},
+ {c:"S3",k:"ESRS S3",n:"Affected communities",tag:"Phase-in",rows:[
+  ["relief","Phase-in","Wave 1 until FY2027, new reporters for their first two years."],["cut","Datapoints","Cut from 45 to 12."]]},
+ {c:"S4",k:"ESRS S4",n:"Consumers and end-users",tag:"Phase-in",rows:[
+  ["relief","Phase-in","Wave 1 until FY2027, new reporters for their first two years."],["cut","Datapoints","Cut from 44 to 9."]]},
+ {c:"G1",k:"ESRS G1",n:"Business conduct",tag:"Trimmed",rows:[
+  ["cut","Datapoints","Cut from 39 to 20, a smaller cut than most standards."],
+  ["new","CSDDD coherence","Due diligence provisions across the ESRS are aligned with the CSDDD."]]}
+];
+const PL={cut:["p-cut","Removed"],new:["p-new","Changed"],relief:["p-relief","Relief"],same:["p-same","Unchanged"]};
+const statOf=s=>STAT[s.c];
+$("#stds").innerHTML=STDS.map((s,i)=>{const st=statOf(s);
+ return`<button class="std" data-i="${i}" aria-pressed="${i===2}"><span class="code">${s.c}</span><span class="nm">${s.n}</span><span class="num" style="font-size:.85rem">${st?`<span style="color:var(--muted);text-decoration:line-through">${st[0]}</span> → <b>${st[1]}</b>`:"31 per item"}</span><span class="tag ${s.tag==="Phase-in"?"ph":""}">${s.tag}</span></button>`;}).join("");
+
+let PH=1; // 1 wave1 above, 2 wave1 below, 3 other
+let fCond=false,fq="";
+const PHNAME={1:"Wave 1, above thresholds",2:"Wave 1, below thresholds",3:"First report FY2027 or later"};
+function phaseOf(r){return r[4+PH];}
+function shortType(t){return t.replace("semi-narrative","yes/no or list").replace("ghgemissions","tCO2e").replace("gYear","year");}
+let curStd=2;
+function showStd(i){
+ curStd=i;
+ document.querySelectorAll(".std").forEach(b=>b.setAttribute("aria-pressed",b.dataset.i==i));
+ const s=STDS[i],st=statOf(s),rows=[];
+ const max=st?st[0]:31;
+ const cmp=st?`<div class="bars">
+   <div class="bar"><span>2023</span><span class="tr"><i style="width:100%;background:var(--sand)"></i></span><b class="num">${st[0]}</b></div>
+   <div class="bar"><span>Revised</span><span class="tr"><i style="width:${st[1]/max*100}%;background:var(--olive)"></i></span><b class="num">${st[1]}</b></div>
+   <div class="bar"><span>Unconditional</span><span class="tr"><i style="width:${st[2]/max*100}%;background:var(--terra)"></i></span><b class="num">${st[2]}</b></div></div>
+   <p class="qhelp">${Math.round((1-st[1]/st[0])*100)}% fewer "shall" datapoints than in 2023.</p>`:"";
+ $("#stdpanel").innerHTML=`<div style="display:grid;gap:4px"><div class="eyebrow">${s.c}</div><h3>${s.n}</h3></div>${cmp}
+ <div class="rows">${s.rows.map(r=>`<div class="chg"><span class="pill ${PL[r[0]][0]}">${PL[r[0]][1]}</span><div><b>${r[1]}</b><p class="qhelp" style="color:var(--fg)">${r[2]}</p></div></div>`).join("")}</div>
+ <div style="display:grid;gap:10px"><h3 style="font-size:1.05rem">Disclosure requirements in ${s.c}</h3>
+ <div class="dpctl"><label for="phsel">Phase-ins for</label><select id="phsel">${[1,2,3].map(v=>`<option value="${v}" ${v===PH?"selected":""}>${PHNAME[v]}</option>`).join("")}</select>
+ <label><input type="checkbox" id="fcond" ${fCond?"checked":""}> Hide conditional</label>
+ <input type="search" id="fq" placeholder="Search, e.g. E1-6 or emissions" value="${fq.replace(/"/g,"&quot;")}" aria-label="Search disclosure requirements"></div>
+ <div class="drs" id="drs"></div></div>`;
+ $("#phsel").onchange=e=>{PH=+e.target.value;renderDRs(s,rows);};
+ $("#fcond").onchange=e=>{fCond=e.target.checked;renderDRs(s,rows);};
+ $("#fq").oninput=e=>{fq=e.target.value;renderDRs(s,rows,true);};
+ renderDRs(s,rows);}
+function renderDRs(s,rows,openAll){
+ const q=fq.trim().toLowerCase();
+ const all=(DRS[s.k]||[]).filter(g=>{const t=DRT[g[0]]||['',''];return !q||(g[0]+' '+t[0]+' '+t[1]).toLowerCase().includes(q);});
+ const groups=all.map(g=>({dr:g[0],n:fCond?g[1]-g[2]:g[1],c:fCond?0:g[2],ph:g[3][PH-1],gdr:g[4],tech:g[5]})).filter(g=>g.n>0||g.gdr>0);
+ const hub='<a class="hub" href="https://knowledgehub.efrag.org" target="_blank" rel="noopener">Read the full text in EFRAG’s ESRS Knowledge Hub ↗</a>';
+ if(!groups.length){$("#drs").innerHTML='<p class="qhelp">No disclosure requirements match.</p>';return;}
+ const row=g=>{const t=DRT[g.dr]||["",""];return`<div class="drrow"><span class="c">${g.dr}</span><span class="dt"><b>${t[1]}</b><small>${t[0]}</small></span><span class="n num">${g.n} datapoint${g.n===1?"":"s"}</span><span class="chips">${g.c?`<span class="chip cond">${g.c} conditional</span>`:""}${g.gdr?'<span class="chip tech">+ general policy/action/target datapoints</span>':""}${g.tech?'<span class="chip tech">technical</span>':""}${g.ph.map(p=>`<span class="chip ph">Phase-in: ${p}</span>`).join("")}</span></div>`;};
+ if(!UNLOCKED){const total=groups.reduce((a,g)=>a+g.n,0);
+  $("#drs").innerHTML=groups.slice(0,3).map(row).join("")+`<div class="dplock"><span>See all <b class="num">${groups.length}</b> disclosure requirements and <b class="num">${total}</b> datapoints for ${s.c}, with phase-ins and conditions</span><button type="button" class="unlock">Unlock your action plan</button></div>`+hub;return;}
+ $("#drs").innerHTML=groups.map(row).join("")+hub;}
+document.querySelectorAll(".std").forEach(b=>b.onclick=()=>showStd(+b.dataset.i));showStd(2);
+
+/* estimator */
+const TOPICS=[["E1","Climate change",1],["E2","Pollution",0],["E3","Water",0],["E4","Biodiversity",0],["E5","Resource use",1],["S1","Own workforce",1],["S2","Value chain workers",1],["S3","Communities",0],["S4","Consumers",0],["G1","Business conduct",1]];
+$("#estboxes").innerHTML=TOPICS.map(t=>`<label><input type="checkbox" id="m-${t[0]}" ${t[2]?"checked":""}> <span><b>${t[0]}</b> ${t[1]}</span></label>`).join("");
+function est(){
+ const sel=TOPICS.filter(t=>$("#m-"+t[0]).checked).map(t=>t[0]);
+ const sum=i=>STAT["ESRS 2"][i]+sel.reduce((a,c)=>a+STAT[c][i],0);
+ const o=sum(0),n=sum(1),u=sum(2),pct=Math.round((1-n/o)*100);
+ $("#estout").innerHTML=`<p class="headline">You go from <span class="num">${o}</span> to <em class="num">${n}</em> datapoints. That is <em class="num">${pct}%</em> fewer.</p>
+ <div class="bars"><div class="bar"><span>2023</span><span class="tr"><i style="width:100%;background:var(--sand)"></i></span><b class="num">${o}</b></div>
+ <div class="bar"><span>Revised</span><span class="tr"><i style="width:${n/o*100}%;background:var(--olive)"></i></span><b class="num">${n}</b></div>
+ <div class="bar"><span>Unconditional</span><span class="tr"><i style="width:${u/o*100}%;background:var(--terra)"></i></span><b class="num">${u}</b></div></div>
+ <p class="qhelp">ESRS 2 plus ${sel.length} material topic${sel.length===1?"":"s"}${sel.length?" ("+sel.join(", ")+")":""}. Counts from EFRAG's 2026 Draft List, excluding the general datapoints you repeat per policy, action, target and metric. Your real number also depends on which conditions apply to you.</p>`;}
+document.querySelectorAll("#estboxes input").forEach(i=>i.onchange=est);est();
+
+/* ---------- GANTT ---------- */
+const G=[
+ ["Wave 1, still above both thresholds","Reported since FY2024",["rep","rep","rep","new","new"],["","","Choose route","Revised",""]],
+ ["Wave 1, now below a threshold","e.g. 600 employees",["rep","opt","opt","out","out"],["","MS option","MS option","Out",""]],
+ ["Large EU company, not wave 1","&gt;1,000 employees &amp; &gt;€450M",["out","out","out","new","new"],["","","","First year",""]],
+ ["Large company below new thresholds","Old wave 2, e.g. 400 employees",["out","out","out","out","out"],["","","","Voluntary standard",""]],
+ ["Listed SME","Old wave 3",["out","out","out","out","out"],["","","","Out",""]],
+ ["Non-EU group (Art. 40a)","&gt;€450M EU turnover + €200M EU entity",["out","out","out","out","40a"],["","","","","First year"]]];
+$("#gantt").innerHTML=G.map(r=>`<tr><td class="who"><b>${r[0]}</b><span>${r[1]}</span></td>${r[2].map((c,j)=>`<td><div class="cell c-${c}">${r[3][j]||""}</div></td>`).join("")}</tr>`).join("");
+
+/* ---------- SCOPE QUIZ ---------- */
+const Q={
+ hq:{q:"Where is the ultimate parent of your group based?",o:[["eu","In the EU","Or you are a standalone EU company"],["non","Outside the EU","US, UK, Switzerland, Asia and so on"]]},
+ role:{q:"Which entity are you checking?",o:[["parent","The parent of a group","Use consolidated group figures"],["single","A standalone company","No subsidiaries"],["sub","A subsidiary in a group","Use your own figures, or your EU sub-group if you are its parent"]]},
+ emp:{q:"Average employees in the financial year?",h:"Consolidated for a parent.",o:[["y","More than 1,000",""],["n","1,000 or fewer",""]]},
+ turn:{q:"Net turnover in the financial year?",h:"Consolidated for a parent.",o:[["y","More than €450 million",""],["n","€450 million or less",""]]},
+ wave1:{q:"Did you already publish a CSRD report for FY2024?",h:"Wave 1: mostly listed companies and other public-interest entities with more than 500 employees.",o:[["y","Yes, we are wave 1",""],["n","No",""]]},
+ covered:{q:"Will a parent include you in a consolidated report under the ESRS (or an equivalent standard)?",o:[["y","Yes",""],["n","No, or not sure",""]]},
+ fhc:{q:"Is the parent a financial holding company?",h:"It does not take part in managing its subsidiaries, which run independent businesses.",o:[["n","No",""],["y","Yes",""]]},
+ euturn:{q:"Group net turnover generated in the EU, in each of the last two years?",o:[["y","More than €450 million both years",""],["n","€450 million or less in at least one year",""]]},
+ anchor:{q:"Do you have an EU subsidiary or EU branch with net turnover above €200 million?",o:[["y","Yes",""],["n","No",""]]},
+ bigsub:{q:"Does any EU subsidiary (or EU sub-group) itself exceed 1,000 employees and €450M turnover?",o:[["y","Yes",""],["n","No",""]]},
+ listed:{q:"Are your securities listed on an EU regulated market?",o:[["n","No",""],["y","Yes",""]]}
+};
+let A={},hist=[];
+function next(){
+ if(!A.hq)return"hq";
+ if(A.hq==="eu"){
+  if(!A.role)return"role";
+  if(A.role==="parent"&&!A.fhc)return"fhc";
+  if(!A.emp)return"emp"; if(!A.turn)return"turn";
+  if(!A.wave1)return"wave1";
+  if(A.role==="sub"&&!A.covered)return"covered";
+  return null;}
+ if(!A.listed)return"listed";
+ if(!A.euturn)return"euturn";
+ if(A.euturn==="y"&&!A.anchor)return"anchor";
+ if(!A.bigsub)return"bigsub";
+ return null;}
+function totalSteps(){return A.hq==="non"?4:(A.role==="sub"?6:A.role==="parent"?6:5);}
+function renderQ(){
+ const k=next(),box=$("#qbox");
+ if(!k){box.innerHTML=`<div class="qstep">Done</div><div class="qprog"><i style="width:100%"></i></div><p class="qtext">Your reading is on the right.</p><div class="qnav"><button class="btn" id="qback">Back</button><button class="btn" id="qreset">Start again</button></div>`;}
+ else{const q=Q[k],n=Object.keys(A).length+1;
+  box.innerHTML=`<div class="qstep num">Question ${n} of ${Math.max(n,totalSteps())}</div><div class="qprog"><i style="width:${(n-1)/Math.max(n,totalSteps())*100}%"></i></div>
+  <p class="qtext">${q.q}</p>${q.h?`<p class="qhelp">${q.h}</p>`:""}
+  <div class="opts">${q.o.map(o=>`<button class="opt" data-v="${o[0]}"><b>${o[1]}</b>${o[2]?`<span>${o[2]}</span>`:""}</button>`).join("")}</div>
+  <div class="qnav">${hist.length?'<button class="btn" id="qback">Back</button>':""}${hist.length?'<button class="btn" id="qreset">Start again</button>':""}</div>`;
+  box.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{A[k]=b.dataset.v;hist.push(k);renderQ();});}
+ const bk=$("#qback");if(bk)bk.onclick=()=>{const l=hist.pop();delete A[l];renderQ();};
+ const rs=$("#qreset");if(rs)rs.onclick=()=>{A={};hist=[];renderQ();};
+ renderR();}
+function verdict(){
+ if(A.hq==="eu"){
+  const big=A.emp==="y"&&A.turn==="y";
+  if(A.role==="parent"&&A.fhc==="y")return{c:"v-maybe",b:"Opt-out possible",h:"Financial holding: consolidated report optional",l:["As a financial holding undertaking, the parent may choose not to publish a consolidated sustainability report.","Each subsidiary that itself exceeds 1,000 employees and €450M turnover must still report from FY2027.",big&&A.wave1==="y"?"If you report for FY2026, see the FY2026 options below.":"Check each large subsidiary separately."]};
+  if(A.role==="sub"&&A.covered==="y")return{c:"v-out",b:"Exempt via parent",h:"Covered by your parent's consolidated report",l:["Subsidiaries included in a parent's consolidated sustainability report are exempt from their own report, subject to formal conditions (such as naming the parent and linking its report).","Omnibus I extends this exemption to subsidiaries listed on EU regulated markets.",big?"Your own figures exceed both thresholds, so the exemption is what keeps you out. Check that the parent's report really covers you.":"Your own figures are below the thresholds, so you would not have to report anyway."]};
+  if(big&&A.wave1==="y")return{c:"v-in",b:"In scope",h:"Keep reporting: FY2026 route, then revised ESRS from FY2027",l:["You stay in scope without a break.","For FY2026, choose: existing ESRS, existing ESRS plus reliefs, or revised ESRS in full.","From FY2027 the revised ESRS are mandatory.","The value chain cap applies to what you can ask suppliers with up to 1,000 employees."],fy:true};
+  if(big)return{c:"v-in",b:"In scope from FY2027",h:"First report on FY2027, published in 2028",l:["You report under the revised ESRS from the start.","Phase-ins: you may defer E4, S2, S3 and S4 for your first two years, and explain missing value chain data for three years.","Start the double materiality assessment in 2026; a top-down approach is now allowed.",A.role==="parent"?"Your EU subsidiaries are exempt if covered by your consolidated report.":"If you belong to a group, a parent's consolidated report could exempt you."]};
+  if(A.wave1==="y")return{c:"v-maybe",b:"Leaving scope",h:"Out from FY2027; FY2025–2026 depends on national law",l:["Below the new thresholds, you fall out of mandatory reporting from FY2027.","For FY2025 and FY2026, your Member State may exempt you. This is a national option, not automatic.","If your country does not use the option and you report FY2026, the FY2026 options below apply.","Afterwards, the voluntary standard is an option, and the value chain cap protects you if you have up to 1,000 employees."],fy:true};
+  return{c:"v-out",b:"Out of scope",h:"No mandatory CSRD reporting",l:["You do not exceed both thresholds, so no mandatory CSRD report.","The new voluntary standard (based on VSME) gives a simple, recognised format if customers or banks ask.",A.emp==="n"?"With up to 1,000 employees, customers in scope cannot ask you for more than the voluntary standard covers.":"Watch for growth: if you exceed both thresholds, you come into scope.","Check again if your group structure changes."]};
+ }
+ const r40=A.euturn==="y"&&A.anchor==="y";const l=[];
+ if(A.listed==="y")l.push("As an issuer listed on an EU regulated market, you are tested like an EU company: more than 1,000 employees and €450M turnover means reporting from FY2027.");
+ if(A.bigsub==="y")l.push("Your large EU subsidiary (or sub-group) reports from FY2027, unless you voluntarily publish a consolidated report under the full ESRS or an equivalent standard that covers it.");
+ if(r40)l.push("Article 40a applies: a group-level report on FY2028, published in 2029 by your EU subsidiary or branch.","Dedicated standards for non-EU groups are expected from October 2027 at the earliest.");
+ else l.push(A.euturn==="n"?"Article 40a does not apply: EU turnover is not above €450M in both of the last two years.":"Article 40a does not apply: no EU subsidiary or branch above €200M.");
+ if(r40)return{c:"v-40a",b:"In scope (Art. 40a)",h:A.bigsub==="y"?"Two obligations: EU subsidiary from FY2027, group from FY2028":"Group report from FY2028",l};
+ if(A.bigsub==="y"||A.listed==="y")return{c:"v-in",b:"Partly in scope",h:"Your EU entity reports from FY2027",l};
+ return{c:"v-out",b:"Out of scope",h:"No CSRD obligation at group level",l:l.concat(["EU customers may still ask for data; the value chain cap limits requests for EU suppliers with up to 1,000 employees."])};}
+function renderR(){
+ const r=$("#rbox");
+ if(next()){r.innerHTML=`<div class="eyebrow">Your reading</div><p class="qhelp">Answer the questions to see whether you report, from which year, and what to do next.</p><div class="answers">${hist.map(k=>`<span>${Q[k].q.replace(/\?.*/,"?")} <b>${Q[k].o.find(o=>o[0]===A[k])[1]}</b></span>`).join("")}</div>`;return;}
+ const v=verdict();
+ r.innerHTML=`<div class="verdict"><span class="vbadge ${v.c}">${v.b}</span><h3>${v.h}</h3>${gateWrap(`<ul class="vlist">${v.l.map(x=>`<li>${x}</li>`).join("")}</ul>`,"Why, and your next steps")}<div style="display:flex;gap:8px;flex-wrap:wrap">${v.fy?'<a href="#fy2026" class="btn pri" style="text-decoration:none">Pick your FY2026 route</a>':""}<a href="#onepager" class="btn pdfbtn" style="text-decoration:none">Get this as a PDF</a></div></div>
+ <div class="answers">${hist.map(k=>`<span>${Q[k].q.replace(/\?.*/,"?")} <b>${Q[k].o.find(o=>o[0]===A[k])[1]}</b></span>`).join("")}</div>
+ <p class="qhelp">Indicative only. National transposition is due by 19 March 2027.</p>`;}
+renderQ();
+
+/* ---------- CASES ---------- */
+const N=(nm,fig,st,cls,non)=>({nm,fig,st,cls,non});
+const CASES=[
+ {t:"Dutch group",p:N("Parent NV (NL)","2,400 employees · €900M group","Reports FY2027","rep"),k:[N("GmbH (DE)","700 employees · €280M","Exempt","ex"),N("BV (NL)","900 employees · €350M","Exempt","ex"),N("SAS (FR)","300 employees · €90M","Exempt","ex")],
+  w:["The group exceeds both thresholds on a consolidated basis, so the parent reports for the whole group from FY2027.","The subsidiaries are covered by the consolidated report and do not report separately.","None of the subsidiaries would be in scope on its own figures anyway."]},
+ {t:"Large daughter",p:N("Parent SE (DE)","5,000 employees · €2.1bn group","Reports","rep"),k:[N("SpA (IT)","1,800 employees · €620M","Exempt (covered)","ex"),N("BV (NL)","400 employees · €150M","Exempt","ex")],
+  w:["The Italian subsidiary exceeds both thresholds on its own, so it would have its own obligation.","Because the German parent's consolidated report covers it, it can use the subsidiary exemption.","Omnibus I lets this exemption apply even if the subsidiary is listed on an EU regulated market."]},
+ {t:"Wave 1, now too small",p:N("Listed NV (NL)","700 employees · €300M","Out from FY2027","opt"),k:[],
+  w:["The company reported for FY2024 as a wave 1 public-interest entity.","With 700 employees, it no longer exceeds the 1,000-employee threshold, so it is out from FY2027.","For FY2025 and FY2026 the Netherlands may exempt it. Until national law confirms that, plan for an FY2026 report and use the FY2026 options."]},
+ {t:"US group, mid-size EU",p:N("Inc. (US)","EU turnover €700M (2 years)","Art. 40a FY2028","a40",true),k:[N("GmbH (DE)","800 employees · €320M","Publishes group report","a40")],
+  w:["EU turnover is above €450M in both years and the German subsidiary is above €200M, so Article 40a applies.","The German subsidiary publishes a sustainability report covering the US group, on FY2028.","The German subsidiary itself has only 800 employees, so it has no separate obligation from FY2027."]},
+ {t:"US group, big EU daughter",p:N("Corp. (US)","EU turnover €2bn","Art. 40a FY2028","a40",true),k:[N("SAS (FR)","3,000 employees · €1.2bn","Reports FY2027","rep"),N("BV (NL)","200 employees · €60M","Out of scope","out")],
+  w:["The French subsidiary exceeds both thresholds on its own, so it reports from FY2027 like any EU company.","From FY2028 the group is also caught by Article 40a, with the French entity as the anchor.","If the US parent voluntarily publishes a consolidated report under the full ESRS, the French subsidiary can use the exemption and avoid a separate report."]},
+ {t:"Swiss group, below EU line",p:N("AG (CH)","EU turnover €400M","Not in scope","out",true),k:[N("GmbH (DE)","500 employees · €250M","Not in scope","out")],
+  w:["EU turnover of €400M is below the €450M Article 40a threshold, even though the German subsidiary is above €200M.","The German subsidiary does not exceed 1,000 employees or €450M, so it has no obligation of its own.","EU customers may still ask for data; the value chain cap limits what they can request."]},
+ {t:"Branch only",p:N("KK (JP)","EU turnover €500M (2 years)","Art. 40a FY2028","a40",true),k:[N("EU branch (NL)","€260M turnover","Publishes group report","a40")],
+  w:["With no EU subsidiary, an EU branch above €200M can be the anchor.","The branch publishes the group's sustainability report on FY2028.","Branches have no separate size test of their own beyond the €200M turnover threshold."]}
+];
+$("#casetabs").innerHTML=CASES.map((c,i)=>`<button data-i="${i}" aria-pressed="${i===0}">${c.t}</button>`).join("");
+function node(n){return`<div class="node ${n.cls} ${n.non?"nonEU":""}"><span class="nm">${n.nm}</span><span class="fig num">${n.fig}</span><span class="st">${n.st}</span></div>`;}
+let curCase=0;
+function showCase(i){
+ document.querySelectorAll("#casetabs button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.i==i));
+ const c=CASES[i];
+ $("#case").innerHTML=`<div class="org">${c.p.non?'<span class="eulabel">Outside the EU</span>':""}${node(c.p)}${c.k.length?`<div class="stem"></div>${c.p.non?'<span class="eulabel">In the EU</span>':""}<div class="kids">${c.k.map(node).join("")}</div>`:""}</div>
+ <div class="why"><div class="eyebrow">Why</div>${i<2?`<ul class="vlist">${c.w.map(x=>`<li>${x}</li>`).join("")}</ul>`:gateWrap(`<ul class="vlist">${c.w.map(x=>`<li>${x}</li>`).join("")}</ul>`,"Unlock all seven cases")}</div>`;
+ curCase=i;
+ document.querySelectorAll("#casetabs button").forEach(b=>b.classList.toggle("casetab-lock",!UNLOCKED&&+b.dataset.i>=2));}
+document.querySelectorAll("#casetabs button").forEach(b=>b.onclick=()=>showCase(+b.dataset.i));showCase(0);
+
+/* ---------- FY2026 PICKER ---------- */
+const OPT=[
+ {L:"A",t:"Existing ESRS",d:"Report FY2026 exactly as in FY2025. Best for consistency and teams with processes and auditor alignment already in place."},
+ {L:"B",t:"Existing ESRS plus reliefs",d:"Keep the 2023 standards and add up to eight reliefs from the revised ESRS 1: top-down materiality, undue cost and value chain limits in the assessment, acquisitions and disposals, non-significant activities, partial value chain scope, joint operations, Taxonomy appendix, executive summary."},
+ {L:"C",t:"Revised ESRS in full",d:"Switch a year early. Fewest datapoints and a head start on FY2027, but a bigger change to processes and controls now."}];
+const PQ=[
+ {id:"proc",q:"How settled are your FY2025 reporting process and controls?",o:[["solid","Running smoothly",[3,1,0]],["ok","Works, with pain points",[1,2,1]],["weak","Fragile or manual",[0,2,2]]]},
+ {id:"effort",q:"How much do you want to cut effort for FY2026?",o:[["low","Little, stability first",[3,1,0]],["mid","Some quick wins",[0,3,1]],["high","As much as possible",[0,1,3]]]},
+ {id:"dma",q:"Your current double materiality assessment is…",o:[["fine","Proportionate, works well",[2,1,1]],["heavy","Bottom-up and heavy",[0,3,2]],["redo","Due for a redo anyway",[0,1,3]]]},
+ {id:"vc",q:"Value chain data for FY2026?",o:[["good","Mostly available",[2,1,1]],["gaps","Significant gaps",[0,3,2]]]},
+ {id:"ma",q:"Acquisitions, disposals or joint operations in 2026?",o:[["no","No",[1,1,1]],["yes","Yes",[0,3,2]]]},
+ {id:"ready",q:"Systems and auditor ready for the revised structure now?",o:[["no","Not yet",[2,2,0]],["part","Partly",[1,2,1]],["yes","Yes",[0,1,3]]]},
+ {id:"comp",q:"How important is comparability with your FY2025 report?",o:[["high","Very important",[3,2,0]],["low","Less important",[0,1,2]]]}];
+let P={proc:"ok",effort:"mid",dma:"heavy",vc:"gaps",ma:"no",ready:"part",comp:"high"};
+$("#pick").innerHTML=`<div class="eyebrow">Seven quick questions · example answers pre-filled</div>`+PQ.map(q=>`<div class="pq"><span class="q">${q.q}</span><div class="seg" data-q="${q.id}">${q.o.map(o=>`<button data-v="${o[0]}" aria-pressed="${P[q.id]===o[0]}">${o[1]}</button>`).join("")}</div></div>`).join("");
+document.querySelectorAll(".seg").forEach(s=>s.querySelectorAll("button").forEach(b=>b.onclick=()=>{P[s.dataset.q]=b.dataset.v;s.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));scorePick();}));
+const REASON={
+ proc:{solid:"Your process runs smoothly, which favours keeping the existing ESRS.",weak:"A fragile process gains from fewer datapoints and the reliefs.",ok:""},
+ effort:{low:"You prioritise stability over savings.",mid:"Reliefs give quick wins without restructuring.",high:"Going straight to the revised ESRS saves the most effort."},
+ dma:{heavy:"The top-down materiality relief lightens a heavy bottom-up assessment.",redo:"If you redo the assessment anyway, do it once under the revised rules.",fine:""},
+ vc:{gaps:"The value chain limitation relief helps with your data gaps.",good:""},
+ ma:{yes:"The reliefs for acquisitions, disposals and joint operations apply to you.",no:""},
+ ready:{no:"Systems and auditor are not ready for the new structure yet.",yes:"Your systems and auditor are ready to switch now.",part:""},
+ comp:{high:"Comparability with FY2025 matters, which argues against a full switch.",low:""}};
+function scorePick(){
+ const s=[0,0,0];PQ.forEach(q=>{const o=q.o.find(o=>o[0]===P[q.id]);o[2].forEach((v,i)=>s[i]+=v);});
+ const max=Math.max(...s),best=s.indexOf(max);
+ $("#opts3").innerHTML=OPT.map((o,i)=>`<div class="o3 ${i===best?"best":""}">${i===best?'<span class="bestlbl">Best fit</span>':""}<span class="L">${o.L}</span><h3>${o.t}</h3><p>${o.d}</p><div class="meter" aria-label="Fit score ${s[i]}"><i style="width:${s[i]/max*100}%"></i></div></div>`).join("");
+ const rs=PQ.map(q=>REASON[q.id][P[q.id]]).filter(Boolean);
+ $("#pickres").innerHTML=`<div class="planes" aria-hidden="true"><i class="p1"></i><i class="p2"></i><i class="p3"></i></div><div class="eyebrow" style="color:var(--olive)">Recommendation</div><h3>Route ${OPT[best].L}: ${OPT[best].t}</h3>${gateWrap(`<ul>${rs.map(r=>`<li>${r}</li>`).join("")}</ul>`,"The reasons behind your route")}<p class="qhelp">This recommendation is our reading of your answers, not a legal requirement. Whichever route you choose, state clearly in the report which version you applied, and agree it with your auditor early.</p>`;}
+scorePick();
+
+
+/* ---------- ONE-PAGER ---------- */
+function scopeSnap(){
+ if(next())return null;
+ const v=verdict();
+ return{badge:v.b,head:v.h,list:v.l,answers:hist.map(k=>[Q[k].q.replace(/\?.*/,"?"),Q[k].o.find(o=>o[0]===A[k])[1]])};}
+function pickSnap(){
+ const s=[0,0,0];PQ.forEach(q=>{const o=q.o.find(o=>o[0]===P[q.id]);o[2].forEach((v,i)=>s[i]+=v);});
+ const best=s.indexOf(Math.max(...s));
+ return{route:"Route "+OPT[best].L+": "+OPT[best].t,desc:OPT[best].d,reasons:PQ.map(q=>REASON[q.id][P[q.id]]).filter(Boolean)};}
+function estSnap(){
+ const sel=TOPICS.filter(t=>$("#m-"+t[0]).checked);
+ const sum=i=>STAT["ESRS 2"][i]+sel.reduce((a,c)=>a+STAT[c[0]][i],0);
+ return{topics:sel.map(t=>t[0]+" "+t[1]),old:sum(0),now:sum(1),unc:sum(2)};}
+let pickTouched=false;
+document.querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>{pickTouched=true;opStatus();}));
+document.querySelectorAll("#estboxes input").forEach(b=>b.addEventListener("change",opStatus));
+function opStatus(){
+ const s=scopeSnap();
+ $("#op-status").innerHTML=
+  `<li class="${s?"done":""}">${s?`Scope: <b>${s.badge}</b>`:'Scope check not finished yet. <a href="#scope">Finish it</a>'}</li>`+
+  `<li class="${pickTouched?"done":""}">FY2026 route: <b>${pickSnap().route}</b>${pickTouched?"":' (example answers, <a href="#fy2026">adjust</a>)'}</li>`+
+  `<li class="done">Datapoints: <b>${estSnap().old} → ${estSnap().now}</b></li>`;}
+const _renderQ=renderQ;renderQ=function(){_renderQ();opStatus();};
+document.addEventListener("click",e=>{if(e.target.closest("#qbox"))setTimeout(opStatus,0);});
+opStatus();
+
+function pdfText(s){return String(s).replace(/→/g,"->").replace(/−/g,"-").replace(/[‘’]/g,"'").replace(/[“”]/g,'"').replace(/°/g," deg").replace(/[^\x00-\xff€–—•]/g,"");}
+function buildPdf(meta){
+ const {jsPDF}=window.jspdf;const d=new jsPDF({unit:"mm",format:"a4"});
+ const W=210,M=16,CW=W-2*M;let y=0;
+ const ink=[23,48,46],teal=[23,99,92],coral=[226,85,63],muted=[86,107,103],soft=[214,235,229],yellow=[255,224,102];
+ d.setFillColor(...ink);d.rect(0,0,W,34,"F");
+ d.setFillColor(...yellow);d.circle(M+1.5,11,1.5,"F");
+ d.setTextColor(238,243,240);d.setFont("helvetica","bold");d.setFontSize(9);d.text("GREENFRIEND  ·  ELENA & ANIKA",M+5,12);
+ d.setFontSize(17);d.text("Your revised ESRS one-pager",M,23);
+ d.setFont("helvetica","normal");d.setFontSize(8.5);
+ const who=[meta.name,meta.company].filter(Boolean).join(", ");
+ d.text(pdfText((who?who+"  ·  ":"")+"Prepared "+new Date().toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"})+"  ·  Status of rules: 7 Oct 2026"),M,29.5);
+ y=44;
+ const head=(t)=>{d.setFont("helvetica","bold");d.setFontSize(8);d.setTextColor(...coral);d.text(t.toUpperCase(),M,y);y+=5.5;};
+ const para=(t,size=9.5,color=ink,bold=false,indent=0)=>{d.setFont("helvetica",bold?"bold":"normal");d.setFontSize(size);d.setTextColor(...color);const ls=d.splitTextToSize(pdfText(t),CW-indent);d.text(ls,M+indent,y);y+=ls.length*size*0.42+1.2;};
+ const bullets=(arr,size=9)=>arr.forEach(t=>{d.setFillColor(...teal);d.circle(M+1.2,y-1.2,0.7,"F");para(t,size,ink,false,4);});
+ // scope
+ head("1  Are you in scope?");
+ const s=scopeSnap();
+ if(s){d.setFillColor(...soft);const ls=d.splitTextToSize(pdfText(s.head),CW-8);const bh=ls.length*5+11;d.roundedRect(M,y-4,CW,bh,2,2,"F");
+  d.setFont("helvetica","bold");d.setFontSize(8);d.setTextColor(...teal);d.text(pdfText(s.badge.toUpperCase()),M+4,y+1);
+  d.setFontSize(12);d.setTextColor(...ink);d.text(ls,M+4,y+7);y+=bh+2;
+  bullets(s.list);
+  d.setFontSize(7.5);d.setTextColor(...muted);d.setFont("helvetica","normal");
+  const ans=s.answers.map(a=>a[0]+" "+a[1]).join("  |  ");const al=d.splitTextToSize(pdfText("Your answers: "+ans),CW);d.text(al,M,y+1);y+=al.length*3.3+5;}
+ else{para("The scope check was not completed. Run it at the top of the tool to add your result.",9,muted);y+=3;}
+ // route
+ head("2  Your FY2026 route");const pk=pickSnap();
+ para(pk.route,12,ink,true);para(pk.desc,9,muted);bullets(pk.reasons);
+ if(!pickTouched)para("Based on the example answers in the tool. Adjust them for your own situation.",7.5,muted);
+ para("Whichever route you take, state in the report which version of the standards you applied (Article 2, delegated act of 3 July 2026).",7.5,muted);y+=3;
+ // datapoints
+ head("3  Your datapoints");const e=estSnap();
+ d.setFont("helvetica","bold");d.setFontSize(22);d.setTextColor(...ink);d.text(String(e.old),M,y+6);
+ d.setTextColor(...muted);d.setFontSize(14);d.text("->",M+20,y+5);
+ d.setTextColor(...teal);d.setFontSize(22);d.text(String(e.now),M+31,y+6);
+ d.setFillColor(...yellow);d.roundedRect(M+52,y-0.5,28,9,1.5,1.5,"F");d.setTextColor(42,36,0);d.setFontSize(11);d.text("-"+Math.round((1-e.now/e.old)*100)+"%",M+56,y+5.8);
+ y+=13;para("Mandatory datapoints for ESRS 2 plus "+(e.topics.length?e.topics.join(", "):"no topical standards")+". "+e.unc+" apply without conditions. Counts from EFRAG's 2026 Draft List of Datapoints, excluding the general datapoints repeated per policy, action, target and metric.",8.5,muted);y+=3;
+ // dates
+ head("4  Dates to plan around");
+ bullets(["10 Nov 2026: revised ESRS enter into force","19 Mar 2027: deadline for Member States to transpose Omnibus I (check national rules for FY2025-2026)","FY2027: revised ESRS mandatory for everyone in scope (report in 2028)","FY2028: non-EU groups under Article 40a (report in 2029)"],8.5);
+ // footer
+ const fy=297-30;d.setFillColor(...ink);d.rect(0,fy,W,30,"F");
+ d.setTextColor(238,243,240);d.setFont("helvetica","bold");d.setFontSize(11);d.text("Report what you do.",M,fy+9);
+ d.setFont("helvetica","normal");d.setFontSize(8.5);
+ d.text(pdfText("Want a second opinion? Book a free 20-minute call with Elena Zayakova and Anika Lerch at greenfriend.org"),M,fy+15);
+ d.setFontSize(6.5);d.setTextColor(180,200,195);
+ d.text(d.splitTextToSize("Indicative reading of Directive (EU) 2026/470 and the revised ESRS (Delegated Regulation (EU) 2026/1563). Not legal advice. Confirm your position with your auditor or legal adviser.",CW),M,fy+21);
+ return d.output("blob");}
+
+/* MOCKUP: no data is stored and no file is sent. buildPdf() above is kept for the live version (needs jsPDF + downloads/db capabilities). */
+function previewHTML(meta){
+ const s=scopeSnap(),pk=pickSnap(),e=estSnap(),who=[meta.name,meta.company].filter(Boolean).join(", ");
+ const li=a=>a.map(x=>`<li>${x}</li>`).join("");
+ return`<div class="pv-head"><span class="pv-brand">greenfriend · Elena &amp; Anika</span><b>Your revised ESRS one-pager</b><span>${who?who+" · ":""}Prepared ${new Date().toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"})}</span></div>
+ <div class="pv-body">
+  <div class="pv-sec"><span class="pv-k">1 Are you in scope?</span>${s?`<div class="pv-box"><small>${s.badge}</small><b>${s.head}</b></div><ul>${li(s.list)}</ul>`:'<p class="pv-muted">Scope check not completed.</p>'}</div>
+  <div class="pv-sec"><span class="pv-k">2 Your FY2026 route</span><b>${pk.route}</b><ul>${li(pk.reasons)}</ul></div>
+  <div class="pv-sec"><span class="pv-k">3 Your datapoints</span><p class="pv-num"><b>${e.old}</b> → <b class="t">${e.now}</b> <span>−${Math.round((1-e.now/e.old)*100)}%</span></p><p class="pv-muted">ESRS 2 plus ${e.topics.join(", ")||"no topical standards"}.</p></div>
+  <div class="pv-sec"><span class="pv-k">4 Dates to plan around</span><ul><li>10 Nov 2026: revised ESRS in force</li><li>19 Mar 2027: transposition deadline</li><li>FY2027: revised ESRS mandatory</li></ul></div>
+ </div>
+ <div class="pv-foot"><b>Report what you do.</b> Book a free 20-minute call with Elena and Anika at greenfriend.org</div>`;}
+$("#op-form").addEventListener("submit",e=>{
+ e.preventDefault();
+ const msg=$("#op-msg"),email=$("#op-email").value.trim();
+ msg.className="op-msg";
+ if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){msg.className="op-msg err";msg.textContent="Enter a valid email address, for example name@company.com.";$("#op-email").focus();return;}
+ const meta={email,name:"",company:$("#op-company").value.trim()};
+ const pv=$("#op-preview");pv.innerHTML=previewHTML(meta);pv.hidden=false;
+ unlock();msg.className="op-msg ok";msg.textContent="Unlocked. Your one-pager preview is below; in the live version the PDF arrives at "+email+".";
+ pv.scrollIntoView({behavior:"smooth",block:"nearest"});});
+
+/* ---------- UNLOCK (mockup) ---------- */
+function rerenderGated(){renderR();scorePick();showStd(curStd);showCase(curCase);opStatus();}
+function unlock(){UNLOCKED=true;try{localStorage.setItem("esrs-unlocked","1");}catch(e){}rerenderGated();}
+const gate=$("#gate");
+function openGate(){gate.hidden=false;$("#gate-msg").textContent="";setTimeout(()=>$("#gate-email").focus(),30);}
+function closeGate(){gate.hidden=true;}
+document.addEventListener("click",e=>{if(e.target.closest(".unlock")){e.preventDefault();openGate();}});
+$("#gate-x").onclick=closeGate;
+gate.addEventListener("click",e=>{if(e.target===gate)closeGate();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!gate.hidden)closeGate();});
+$("#gate-form").addEventListener("submit",e=>{e.preventDefault();const em=$("#gate-email").value.trim(),m=$("#gate-msg");
+ if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em)){m.className="op-msg err";m.textContent="Enter a valid email address, for example name@company.com.";return;}
+ $("#op-email").value=em;$("#op-company").value=$("#gate-company").value;unlock();closeGate();
+ $("#op-preview").innerHTML=previewHTML({email:em,name:"",company:$("#gate-company").value.trim()});$("#op-preview").hidden=false;
+ $("#op-msg").className="op-msg ok";$("#op-msg").textContent="Unlocked. In the live version your PDF arrives at "+em+".";});
+$("#relock").onclick=()=>{UNLOCKED=false;try{localStorage.removeItem("esrs-unlocked");}catch(e){}$("#op-preview").hidden=true;$("#op-msg").textContent="";rerenderGated();};
+
+/* nav highlight */
+const links=[...document.querySelectorAll("nav.chapters a")];
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle("on",a.getAttribute("href")==="#"+e.target.id));}),{rootMargin:"-40% 0px -55% 0px"});
+document.querySelectorAll("section.ch").forEach(s=>io.observe(s));
+</script>
