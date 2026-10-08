@@ -2,7 +2,7 @@
 ## Identity
 A free public lead-magnet tool that explains the revised ESRS, checks scope, recommends an FY2026 route and unlocks a one-page PDF for an email. Used by prospective clients reaching it from LinkedIn at check.greenfriend.org.
 Tier: 2 — public tool, no login, submissions persist to Supabase (D3+A1)
-Spec version governed: v1.1 — the version of docs/product-spec.md these rules were derived from.
+Spec version governed: v1.9 — the version of docs/product-spec.md these rules were derived from.
 Position: Standalone for now; a later contacts dashboard (Tool B, with a login) will share the Supabase project. This tool creates the schema and holds the canonical docs/access-matrix.md, docs/user-stories.md and docs/supabase-setup.md.
 ## Session Protocol
 At the start of every session:
@@ -45,7 +45,7 @@ Plan: Free — no backups, pauses after ~1 week idle; mitigation is the builder'
 Every schema, policy, trigger, function and cron change goes through `apply_migration` with a descriptive name AND is saved as supabase/migrations/[timestamp]_[name].sql, committed with the save point. `execute_sql` is for reads and data fixes only. The migration files can rebuild this database from nothing.
 
 Schema (authoritative until docs/supabase-setup.md exists):
-unlocks: id (uuid), created_at, email (lower-cased, max 254), company (max 120), industry, consent_contact (boolean, default false), interests (text[]), consent_at, notice_version, scope_badge, scope_headline, scope_answers (jsonb), route (A/B/C), route_from_example (boolean), route_answers (jsonb), topics (text[]), datapoints_old, datapoints_new, datapoints_unconditional (integer), utm_source, utm_campaign (max 80), superseded_by (uuid → unlocks.id, null if current), anonymised_at, created_by (→ profiles.id, empty, no login), status (current → superseded → anonymised; default current), updated_by, updated_at
+unlocks (form sends only email, consent and results in v1; company, industry, interests stay empty): id (uuid), created_at, email (lower-cased, max 254), company (max 120), industry, consent_contact (boolean, default false), interests (text[]), consent_at, notice_version, scope_badge, scope_headline, scope_answers (jsonb), route (A/B/C), route_from_example (boolean), route_answers (jsonb), topics (text[]), datapoints_old, datapoints_new, datapoints_unconditional (integer), utm_source, utm_campaign (max 80), superseded_by (uuid → unlocks.id, null if current), anonymised_at, created_by (→ profiles.id, empty, no login), status (current → superseded → anonymised; default current), updated_by, updated_at
 profiles: id (own uuid), auth_user_id (uuid, unique, empty until a login exists), email (unique, the seed key), full_name, function, role, is_admin (default false), active (default true) — seeded with Anika Lerch (anikalerch@greenfriend.org) as the later dashboard's first reader; no Auth yet
 RLS — enable on EVERY table the moment it is created; never disable it. Every rule is lifted from docs/access-matrix.md (short form, population pattern P1 public, stays anonymous); build each with the mechanism it names. `anon` has no policy and no table grant on any table (revoke after each table is created).
 unlocks: anon: create only, through the submit function; no policy, no grant. No read, no update, no delete, no export. The supersede transition (current → superseded) is done by the submit function, never by the visitor.
@@ -66,29 +66,30 @@ After setup, write docs/supabase-setup.md (ten sections: header, tables, rules w
 ## Project Structure
 Root: CLAUDE.md and PROGRESS.md only. /src (components, lib with pure logic, fonts) · /netlify/functions (submit-unlock) · /docs (spec, access-matrix, user-stories, supabase-setup, reference/prototype-reference.html) · /supabase/migrations (one .sql per applied migration) · /public/assets
 ## Brand
-No brand skill. Version "A" of docs/reference/prototype-reference.html defines the look; the calm variant is not used. Hard rules:
+No brand skill. docs/reference/prototype-reference.html (the final mockup) defines the look, copy and voice; there is no calm variant. Hard rules:
 - Background #eef3f0 (surface #ffffff, ink #17302e); dark mode follows the system setting (bg #0f1f1e) — never Tailwind gray defaults
 - Primary teal #17635c; attention coral #e2553f (deadlines and unlock buttons); highlight yellow #ffe066; lilac #6c5fc7 — never Tailwind blue defaults
 - Fonts: Literata (headings), Figtree (body), DM Mono (stamps, labels); WOFF2 self-hosted in the repo, never from Google
 - No circles in the design: overlapping translucent diagonal colour planes; 12–16 px radii; no heavy shadows; no emoji; works at 375 px with no sideways scroll; respect reduced motion
-- Text brand "greenfriend." with a yellow dot; no personal names on the cover or in the PDF. Remove the prototype's "Preview" badges and "Mockup only" controls.
+- Text brand "greenfriend." with a yellow dot; no personal names on the cover or in the PDF. Remove the mockup's "Mockup only / Lock again" footer button and the on-page PDF preview (the real PDF downloads), and replace its Google Fonts links with the self-hosted fonts.
 ## Business Rules
 - Scope check, FY2026 route scoring and the estimator are pure functions implemented exactly as spec Section 9 and the prototype (verdict(), PQ, DRS/DRT). A scope verdict shows only when every question on the path is answered.
 - Route: highest total wins; ties go to the earlier route (A before B before C); example answers keep route_from_example true until any answer changes.
-- Estimator: reduction % = round((1 − new ÷ old) × 100). Defaults (E1, E5, S1, S2, G1) give 569 → 237, 163 unconditional; all ten topics give 783 → 292, 195.
+- Estimator: reduction % = round((1 − new ÷ old) × 100). Defaults (E1, E5, S1, S2, G1) give 569 → 237, 163 unconditional; all ten topics give 783 → 292, 195. Below the result show the highlighted line "Plus 31 general datapoints" with total = new + 31 (defaults 268, all ten 323); the 31 never enter the percentage or the bars. Do not count EFRAG's 30 pointer rows (3 per topic standard) or the 6 technical BP-1 rows; keep the "Why the numbers differ between sources" note under the fact sheet. Datapoint figures come only from EFRAG's 2026 draft list and explanatory note; quote no other source's numbers.
 - Show no EFRAG datapoint names or IDs (no "ESRS26_" strings) anywhere; the drill-down uses our plain summaries and the regulation's titles.
-- Unlock: email lower-cased, standard format with a TLD of 2+ letters, max 254, no mailbox check; ticking any interest ticks consent; one unlock opens all four locked areas, remembered as `esrs-unlocked` in try/catch. Submitting before the scope check is finished is allowed; row and PDF say "not completed".
+- Unlock: email lower-cased, standard format with a TLD of 2+ letters, max 254, no mailbox check; the form asks for email and one optional unticked consent box ("greenfriend may contact me about my results (optional)"), nothing else; one unlock opens all four locked areas, remembered as `esrs-unlocked` in try/catch. Submitting before the scope check is finished is allowed; row and PDF say "not completed".
 - Supersede: a new unlock for an email (case-insensitive) with a current row inserts the new row and sets superseded_by on the old one; consent comes from the newest row.
 
 Out of scope — do not build:
 - Contacts dashboard with login; confirmation email / double opt-in; mailbox or domain verification; emailing the PDF
 - EFRAG datapoint names or IDs; updating greenfriend.org's main privacy policy; analytics or tracking
 - Bot check / Cloudflare Turnstile (deferred by the builder); real profile photos (initials avatars); Supabase Pro; a calm colour variant
+- Voice: friendly supporter for sustainability managers and C-level. Warm, light, plain words, "we". Every chapter opens with a one-line short answer (yellow bar); "For you" lines, "Our tip" and "Good to know" tips as in the mockup; detail behind toggles; everything that appears on hover must also work on keyboard focus and tap; sources behind an i icon. Copy comes from the spec and the mockup; do not invent wording or legal references.
 ## Reference Docs
 Read before building the related part:
 - docs/product-spec.md — full screens, copy, logic, PDF design, GDPR text, acceptance criteria
 - docs/supabase-setup.md — schema source of truth (created in session 1)
 - docs/access-matrix.md — read before writing any RLS or touching a policy (short form: anon rules only)
 - docs/user-stories.md — read before changing a screen or a role; every acceptance line is a test
-- docs/reference/prototype-reference.html — all copy, data tables, layout
+- docs/reference/prototype-reference.html — the final mockup: all copy, data tables, layout, voice
 PROGRESS.md in the root is read at every session start per the Session Protocol.

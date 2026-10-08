@@ -1,7 +1,21 @@
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Revised ESRS Check</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500;7..72,700;7..72,800&family=Figtree:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap">
 <style>
+html,body{overflow-x:clip}
+@media (max-width:760px){
+ .btn,.unlock,.cases-tabs button,.seg button,.std,.casetab-lock{min-height:44px}
+ .chk,.estboxes label{min-height:44px;align-items:center}
+ .chk input,.estboxes input{width:20px;height:20px}
+ .op-form input[type=email],.gate-card input[type=email]{font-size:16px;min-height:48px}
+ .op-form .btn.pri,.gate-card .btn.pri{justify-self:stretch;width:100%}
+ .gate-card{max-height:92vh;overflow:auto}
+ .stds{grid-template-columns:repeat(2,1fr)}
+ .wrap{padding-inline:16px}
+ .std .tag::after,.legend span::after{max-width:200px}
+}
+
 /* Layout: a dark teal cover band, then one calm reading column with seven chapters and a sticky nav. Yellow highlight and coral are kept for deadlines, verdicts and the user's own numbers. */
 :root{
   --bg:#eef3f0; --surface:#ffffff; --sunk:#e3ebe7; --line:#d0dcd6;
@@ -61,12 +75,17 @@ section.ch{padding-block:56px 20px;display:grid;gap:22px;scroll-margin-top:60px}
 .chunks{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
 .chunk{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:grid;gap:8px;align-content:start;text-align:left;cursor:pointer}
 .chunk:hover{border-color:var(--sand)}
+.chunk{position:relative}
+.src{position:absolute;top:12px;right:12px;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--muted);color:var(--muted);font:italic 700 .75rem/17px var(--serif);text-align:center;cursor:help}
+.src:hover{border-color:var(--terra);color:var(--terra)}
+.srcl{margin:4px 0 0;font-size:.8rem;color:var(--muted)}.srcl b{display:inline-block;margin-right:6px;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--terra)}
 .chunk .k{font-family:var(--serif);font-size:1.9rem;color:var(--olive);line-height:1}
 .chunk .t{font-weight:700}
 .chunk .s{color:var(--muted);font-size:.92rem}
 .chunk .more{font-size:.84rem;color:var(--terra);font-weight:600}
 .chunk[aria-expanded="true"]{border-color:var(--olive)}
 .chunk .detail{font-size:.92rem;border-top:1px dashed var(--line);padding-top:10px;display:grid;gap:6px}
+.chunk .detail[hidden]{display:none}
 .chunk .detail li{margin-left:-6px}
 .chunk ul{margin:0;padding-left:18px;display:grid;gap:4px}
 
@@ -107,6 +126,14 @@ section.ch{padding-block:56px 20px;display:grid;gap:22px;scroll-margin-top:60px}
 .std .tag{font-size:.72rem;justify-self:start;padding:1px 8px;border-radius:999px;background:var(--olive-soft);color:var(--olive);font-weight:600}
 .std .tag.ph{background:var(--terra-soft);color:var(--terra)}
 .std[aria-pressed="true"]{border-color:var(--olive);box-shadow:inset 0 0 0 1px var(--olive)}
+.std{position:relative}
+.std .tag{position:relative;cursor:help}
+.std .tag::before{content:"?";display:inline-block;margin-right:4px;font-size:.62rem;width:12px;height:12px;line-height:12px;text-align:center;border-radius:50%;border:1px solid currentColor;vertical-align:1px}
+.std .tag::after{content:attr(data-tip);position:absolute;left:0;top:calc(100% + 6px);width:max-content;max-width:230px;white-space:normal;background:var(--fg);color:var(--bg);font-size:.78rem;font-weight:400;line-height:1.4;padding:8px 10px;border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.2);opacity:0;visibility:hidden;transition:opacity .12s;z-index:20;pointer-events:none;text-align:left}
+.std:nth-child(3n) .tag::after{left:auto;right:0}
+.std .tag:hover::after,.std:focus-visible .tag::after{opacity:1;visibility:visible}
+.tagnote{font-size:.85rem;color:var(--muted);margin:0}
+.taglegend{font-size:.85rem;margin-top:8px}.taglegend summary{cursor:pointer;color:var(--muted)}.taglegend dl{display:grid;gap:6px;margin:8px 0 0}.taglegend dt{font-weight:600}.taglegend dd{margin:0 0 4px;color:var(--muted)}
 .stdpanel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:grid;gap:16px}
 .stdpanel .rows{display:grid;gap:10px}
 .chg{display:grid;grid-template-columns:110px minmax(0,1fr);gap:12px;padding:10px 0;border-top:1px solid var(--line)}
@@ -125,6 +152,8 @@ section.ch{padding-block:56px 20px;display:grid;gap:22px;scroll-margin-top:60px}
 .estboxes label:has(input:checked){border-color:var(--olive);background:var(--olive-soft)}
 .estboxes input{accent-color:var(--olive)}
 .estout{display:grid;gap:14px;align-content:start}
+.numnote{margin-top:8px;font-size:.88rem}.numnote summary{cursor:pointer;font-weight:600;color:var(--olive,#17635c)}.numnote ul{margin:8px 0 0;padding-left:18px;display:grid;gap:6px}
+.est-add{margin:0;padding:10px 12px;border-left:4px solid #ffe066;background:var(--sunk,#e3ebe7);border-radius:8px;font-size:.88rem}
 .bars{display:grid;gap:10px}
 .bar{display:grid;grid-template-columns:96px minmax(0,1fr) 48px;gap:10px;align-items:center;font-size:.85rem}
 .bar .tr{height:16px;background:var(--sunk);border-radius:4px;overflow:hidden}
@@ -157,7 +186,7 @@ section.ch{padding-block:56px 20px;display:grid;gap:22px;scroll-margin-top:60px}
 .thrcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:grid;gap:12px;align-content:start}
 .gate{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
 .gate .g{border:1.5px solid var(--olive);border-radius:8px;padding:8px 12px;font-weight:700;font-size:.95rem;background:var(--olive-soft)}
-.gate .op{font-size:.78rem;font-weight:700;color:var(--terra);letter-spacing:.08em}
+.gate .andop{font-size:.78rem;font-weight:700;color:var(--terra);letter-spacing:.08em}
 .thrcard .was{font-size:.84rem;color:var(--muted)}
 .gantt{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
 .gantt table{border-collapse:collapse;width:100%;min-width:780px;font-size:.88rem}
@@ -166,6 +195,9 @@ section.ch{padding-block:56px 20px;display:grid;gap:22px;scroll-margin-top:60px}
 .gantt td.who{width:30%}
 .gantt td.who b{display:block}
 .gantt td.who span{color:var(--muted);font-size:.8rem}
+.c-new,.gkey i.c-new{background-image:repeating-linear-gradient(45deg,transparent 0 6px,rgba(255,255,255,.22) 6px 12px)!important}
+#ftip{position:fixed;display:none;z-index:50;max-width:240px;background:var(--fg);color:var(--bg);font-size:.8rem;line-height:1.4;padding:8px 10px;border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.2);pointer-events:none}
+.cell,.gkey span{cursor:help}.cell:focus-visible,.gkey span:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
 .cell{height:28px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700}
 .c-rep{background:var(--olive);color:var(--surface)}
 .c-new{background:var(--olive);color:var(--surface);background-image:repeating-linear-gradient(45deg,transparent 0 6px,rgba(255,255,255,.18) 6px 12px)}
@@ -185,6 +217,18 @@ section.ch{padding-block:56px 20px;display:grid;gap:22px;scroll-margin-top:60px}
 .qprog{height:4px;background:var(--line);border-radius:2px;overflow:hidden}
 .qprog i{display:block;height:100%;background:var(--terra);transition:width .3s}
 .qtext{font-family:var(--serif);font-size:1.3rem;line-height:1.3}
+.fast{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;margin:20px 0 8px;display:grid;gap:10px}
+.fast-h{font-size:.74rem;letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:var(--terra)}
+.fast-g{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.fast-g div{display:grid;gap:2px;padding:10px 12px;border-radius:10px;background:var(--olive-soft)}
+.fast-g b{font-family:var(--serif);font-size:1.5rem;line-height:1.1;color:var(--olive)}
+.fast-g .ico{display:flex;gap:6px;color:var(--terra)}
+.fast-g span{font-size:.84rem;color:var(--muted)}
+@media(max-width:640px){.fast-g{grid-template-columns:1fr}}
+.lede.short{color:var(--fg);font-weight:500;border-left:4px solid #ffe066;padding-left:12px}
+.eyebrow .ic{flex:none}.chead .eyebrow::before{display:none}
+.tip{font-size:.86rem;color:var(--muted);background:var(--sunk);border-radius:10px;padding:8px 12px;margin:8px 0 0}
+.tip b{display:inline-block;margin-right:6px;padding:1px 8px;border-radius:999px;background:#ffe066;color:#2a2400;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase}
 .qhelp{font-size:.88rem;color:var(--muted)}
 .opts{display:grid;gap:8px}
 .opt{border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:12px 14px;text-align:left;cursor:pointer;display:grid;gap:2px}
@@ -211,6 +255,11 @@ section.ch{padding-block:56px 20px;display:grid;gap:22px;scroll-margin-top:60px}
 .fstep:last-child{border-radius:0 var(--r) var(--r) 0}
 @media (max-width:760px){.fstep:first-child{border-radius:var(--r) var(--r) 0 0}.fstep:last-child{border-radius:0 0 var(--r) var(--r)}}
 .fstep .n{font-family:var(--serif);color:var(--terra);font-size:1.4rem}
+.mean{margin:0;padding:8px 12px;border-radius:10px;background:var(--olive-soft);font-size:.92rem;color:var(--fg)}
+.mean b,.advice b{display:inline-block;margin-right:8px;padding:1px 8px;border-radius:999px;background:#ffe066;color:#2a2400;font-size:.7rem;letter-spacing:.05em;text-transform:uppercase}
+.advice{margin:14px 0 0;padding:12px 16px;border-radius:var(--r);background:var(--surface);border:1px dashed var(--terra);font-size:.95rem}
+.fstep .ico{color:var(--terra);display:flex}
+.way .hov summary,.fstep .hov summary{font-size:.86rem;color:var(--olive)}
 .twoways{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
 .way{border-left:3px solid var(--info);background:var(--surface);border-radius:0 var(--r) var(--r) 0;padding:16px 18px;display:grid;gap:6px}
 .way.eu{border-left-color:var(--olive)}
@@ -244,6 +293,14 @@ section.ch{padding-block:56px 20px;display:grid;gap:22px;scroll-margin-top:60px}
 .o3 .L{font-family:var(--serif);font-size:2rem;line-height:1;color:var(--terra)}
 .o3 h3{font-size:1.1rem}
 .o3 p{font-size:.9rem;color:var(--muted)}
+.o3{position:relative}.o3 .src{top:14px;right:14px}
+.std2{color:var(--muted);font-size:.8rem;margin-top:-4px}
+.eff{display:flex;align-items:center;justify-content:space-between;font-size:.84rem;color:var(--muted)}
+.dots{display:flex;gap:5px}.dots i{width:14px;height:14px;border-radius:50%;background:var(--line)}.dots i.on{background:var(--terra)}
+.o3rows{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;margin:0;font-size:.86rem}.o3rows dt{color:var(--muted)}.o3rows dd{margin:0;font-weight:600}
+.o3more{font-size:.84rem}.o3more summary{cursor:pointer;color:var(--olive);font-weight:600}.o3more p{margin:6px 0 0}
+.o3 .fit{display:grid;gap:4px;margin-top:auto}.o3 .fit small{color:var(--muted);font-size:.76rem}
+.o3{align-content:stretch}
 .o3 .meter{height:6px;border-radius:3px;background:var(--line);overflow:hidden}
 .o3 .meter i{display:block;height:100%;background:var(--olive);transition:width .4s}
 .o3.best{border-color:var(--olive);box-shadow:inset 0 0 0 1px var(--olive)}
@@ -300,7 +357,7 @@ nav.chapters a.on{background:var(--olive);color:var(--bg)}
 .headline em{background:linear-gradient(transparent 58%,var(--mark) 58% 94%,transparent 94%);color:var(--fg);font-weight:800}
 .est{border-top:4px solid var(--olive)}
 .gate .g{border-radius:8px;background:var(--surface);border:1.5px solid var(--olive);font-family:var(--serif)}
-.gate .op{color:var(--terra)}
+.gate .andop{color:var(--terra)}
 .c-rep,.c-new{background:var(--olive);color:var(--bg)}
 .c-40a{background:var(--info);color:var(--bg)}
 .c-opt{background:var(--mark-solid);color:var(--on-mark);border:0}
@@ -340,6 +397,12 @@ nav.chapters a.on{background:var(--olive);color:var(--bg)}
 .pitch{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:28px;align-items:end}
 @media (max-width:820px){.pitch{grid-template-columns:1fr}}
 .pitch blockquote{margin:0;font-family:var(--serif);font-style:italic;font-size:1.25rem;line-height:1.4;color:var(--muted);border-left:3px solid var(--terra);padding-left:16px}
+.hov summary{cursor:pointer;list-style:none;font-weight:600}.hov summary::-webkit-details-marker{display:none}
+.hov summary::after{content:"+";float:right;color:var(--terra);font-weight:700;margin-left:8px}.hov[open] summary::after{content:"–"}
+.hov p{margin:6px 0 0;font-size:.9rem;color:var(--muted)}
+.person .hov summary{font-size:.86rem;color:var(--olive);font-weight:600;margin-top:8px}.person .hov summary::after{float:none}
+.diff li{padding:14px 18px}.diff li .hov summary{color:var(--fg);font-size:1rem}
+.chips2{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.chips2 span{font-size:.78rem;background:var(--olive-soft);color:var(--olive);border-radius:999px;padding:2px 10px;font-weight:600}
 .people{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
 .person{display:grid;grid-template-columns:64px minmax(0,1fr);gap:16px;align-items:start;border:1px solid var(--line);border-radius:var(--r);padding:20px;background:var(--bg)}
 .avatar{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font-family:var(--serif);font-weight:800;font-size:1.5rem;color:var(--bg);background:var(--olive)}
@@ -357,6 +420,10 @@ nav.chapters a.on{background:var(--olive);color:var(--bg)}
 .step .plain{font-size:.95rem;margin-top:4px}
 .step .lbl{font-size:.7rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:4px}
 .step ul{margin:0;padding-left:16px;display:grid;gap:3px;font-size:.9rem}
+.step:not(.zero){grid-template-columns:72px minmax(0,1fr)}
+.svc{display:inline-block;margin:6px 0 2px;padding:2px 10px;border-radius:999px;background:#ffe066;color:#2a2400;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.more{margin-top:8px}.more summary{cursor:pointer;font-weight:600;font-size:.88rem;color:var(--olive,#17635c)}
+.more .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;margin-top:10px}
 .step.zero{background:var(--olive-soft)}
 .ppp{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 @media (max-width:760px){.ppp{grid-template-columns:1fr}}
@@ -372,10 +439,15 @@ nav.chapters a.on{background:var(--olive);color:var(--bg)}
 .op{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--terra);border-radius:var(--r);padding:26px}
 @media (max-width:820px){.op{grid-template-columns:1fr}}
 .op-text{display:grid;gap:12px;align-content:start}
+.optiles{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:10px 0 4px;max-width:340px}
+.optiles div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;display:grid;gap:2px}
+.optiles b{font-family:var(--serif);font-size:1.3rem;color:var(--olive);line-height:1}
+.optiles span{font-size:.85rem;font-weight:600}
 .op-list{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:6px;font-size:.92rem}
 .op-list li{display:flex;gap:8px;align-items:baseline}
 .op-list li::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--sand);transform:translateY(-1px)}
 .op-list li.done::before{background:var(--olive)}
+#op-status li{display:block}#op-status li::before{display:inline-block;margin-right:8px}
 .op-list a{font-weight:600}
 .op-form{display:grid;gap:10px;align-content:start}
 .op-form label{font-size:.85rem;font-weight:600}
@@ -470,9 +542,16 @@ nav.chapters a.on{background:var(--olive);color:var(--bg)}
 
 .dotgrid{grid-template-columns:repeat(18,1fr)}
 .dotgrid i.gdr{background:var(--info)}
-.dotgrid i.vol{background:transparent;box-shadow:inset 0 0 0 1.5px var(--sand)}
+.dotgrid i{background:#8fa49b}
+.dotgrid i.vol{background:transparent;box-shadow:inset 0 0 0 2px #5f776d}
+.dotgrid.f i{opacity:.15}.dotgrid.f i.on{opacity:1}
+.legend span{position:relative;cursor:help;padding:2px 4px;border-radius:6px}
+.legend span:hover,.legend span:focus-visible{background:var(--sunk);outline:none}
+.legend span::after{content:attr(data-tip);position:absolute;left:0;top:calc(100% + 6px);width:max-content;max-width:240px;background:var(--fg);color:var(--bg);font-size:.78rem;line-height:1.4;padding:8px 10px;border-radius:6px;opacity:0;visibility:hidden;z-index:20;pointer-events:none}
+.legend span:hover::after,.legend span:focus-visible::after{opacity:1;visibility:visible}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .dotgrid i{background:#6f8f86}:root:not([data-theme="light"]) .dotgrid i.vol{background:transparent;box-shadow:inset 0 0 0 2px #9db3ae}}
 .legend span.g::before{background:var(--info)}
-.legend span.v::before{background:transparent;box-shadow:inset 0 0 0 1.5px var(--sand)}
+.legend span.v::before{background:transparent;box-shadow:inset 0 0 0 2px #5f776d}.legend span.r::before{background:#8fa49b}
 .buckets{display:grid;gap:14px;min-width:0}
 .buckets table{width:100%;border-collapse:collapse;font-size:.92rem}
 .buckets th{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;padding:6px 8px;border-bottom:1.5px solid var(--line)}
@@ -499,25 +578,43 @@ nav.chapters a.on{background:var(--olive);color:var(--bg)}
 .drrow .dt small{color:var(--muted);font-size:.76rem}
 .drrow .chips{grid-column:2/-1}
 @media (max-width:560px){.drrow{grid-template-columns:60px minmax(0,1fr)!important}.drrow .n{grid-column:2}}
+
+.op-form select,.gate-card select{width:100%;font:inherit;padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg)}
+.chk{display:flex;gap:8px;align-items:flex-start;font-weight:500!important;font-size:.88rem!important}
+.chk input{width:auto;flex:none;margin-top:3px;accent-color:var(--olive,#17635c)}
+.ints{border:0;padding:0;margin:0;display:grid;gap:6px}.ints legend{font-size:.85rem;font-weight:600;padding:0;margin-bottom:4px}.ints legend span{font-weight:400;color:var(--muted)}
+.consent{padding:2px 0}
+.ts{display:flex;justify-content:space-between;align-items:center;border:1.5px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--surface)}
+.ts small{color:var(--muted);font-size:.7rem}.ts.bad{border-color:#e2553f}
+.op-note a{color:inherit}
+#privacy-view{display:none}.pvon #privacy-view{display:block}
+.pvon .cover,.pvon nav.chapters,.pvon main,.pvon section.about{display:none}
+#privacy-view h2{margin:0 0 14px}#privacy-view p{max-width:70ch}
 </style>
 
 <div class="cover"><div class="planes" aria-hidden="true"><i class="p1"></i><i class="p4"></i><i class="p2"></i><i class="p3"></i></div><header class="wrap top">
-  <div class="brand">greenfriend. <span>Elena &amp; Anika</span></div>
+  <div class="brand">greenfriend.</div>
   <h1>The revised ESRS, in five minutes</h1>
-  <p class="lede">What changed, which datapoints fall away, who reports when, and which route to take for FY2026. Check your own company as you go.</p>
-  <div class="alert" role="note"><span>The revised ESRS apply from <b>10 Nov 2026</b>. Reporting on FY2026? Choose your route now.</span><a href="#fy2026">Choose your route</a></div>
+  <p class="lede">Here is what changed, who has to report and when, and which route to take for FY2026. Check your own company as we go.</p>
+  <div class="alert" role="note"><span>The revised ESRS apply from <b>10 Nov 2026</b>. Reporting on 2026? Choose your route now.</span><a href="#fy2026">Choose your route</a></div>
   <div class="stamp"><span>Omnibus I · Directive (EU) 2026/470</span><span>Revised ESRS · Reg. (EU) 2026/1563</span><span>Status 7 Oct 2026</span></div>
 </header></div>
 
 <nav class="chapters" aria-label="Sections"><div class="wrap">
-  <a href="#overview">What changed</a><a href="#datapoints">Datapoints</a><a href="#who">Who reports when</a><a href="#scope">Check your scope</a><a href="#noneu">Non-EU groups</a><a href="#cases">Example cases</a><a href="#fy2026">FY2026 options</a><a href="#onepager">Get the PDF</a><a href="#about">Who we are</a>
+  <a href="#overview">What changed</a><a href="#datapoints">Datapoints</a><a href="#who">Who reports when</a><a href="#scope">Check your scope</a><a href="#noneu">Non-EU groups</a><a href="#cases">Example cases</a><a href="#fy2026">Your 2026 route</a><a href="#onepager">Get the PDF</a><a href="#about">Who we are</a>
 </div></nav>
 
 <main class="wrap">
 
+<section class="fast" aria-label="The 30-second version"><div class="fast-h">The 30-second version</div><div class="fast-g">
+<div><span class="ico"><svg class="ic" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6" height="6"/><rect x="14" y="4" width="6" height="6"/><rect x="4" y="14" width="6" height="6"/><rect x="14" y="14" width="6" height="6"/></svg></span><b>Up to 323</b><span>datapoints if every topic is material. Yours will be fewer. It was 1,052.</span></div>
+<div><span class="ico"><svg class="ic" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.5 3-6 6-6s6 2.5 6 6M15 20c0-2.5 2-4.5 5-4.5"/></svg><svg class="ic" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5a4.5 4.5 0 100 7M7 11h6M7 14h6"/></svg></span><b>1,000 + €450M</b><span>employees and turnover. EU companies must exceed both.</span></div>
+<div><span class="ico"><svg class="ic" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></span><b>FY2027</b><span>first year the revised ESRS are mandatory for everyone in scope</span></div></div>
+</section>
+
 <!-- OVERVIEW -->
 <section class="ch" id="overview">
-  <div class="chead"><div class="eyebrow">What changed</div><h2>Six changes that matter</h2><p class="lede">Tap a card for the detail.</p></div>
+  <div class="chead"><div class="eyebrow"><svg class="ic" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg>What changed</div><h2>Six things changed, the short version</h2><p class="lede short">Smaller scope, far fewer datapoints, a lighter assessment. Tap a card to peek inside.</p></div>
   <div class="chunks" id="chunks"></div>
   <h3 style="margin-top:10px">Key dates</h3>
   <div class="dates"><div class="dates-in"><div class="dline"></div><div class="dpts" id="dates"></div></div></div>
@@ -525,12 +622,12 @@ nav.chapters a.on{background:var(--olive);color:var(--bg)}
 
 <!-- DATAPOINTS -->
 <section class="ch" id="datapoints">
-  <div class="chead"><div class="eyebrow">Datapoints</div><h2>From 1,052 datapoints to 323</h2><p class="lede">The 2023 ESRS had 783 mandatory and 269 voluntary datapoints. The revised ESRS keep 292 mandatory ones, delete every voluntary one, and add 31 general datapoints for policies, actions, targets and metrics. Everything that remains still passes through your materiality assessment.</p></div>
+  <div class="chead"><div class="eyebrow"><svg class="ic" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6" height="6"/><rect x="14" y="4" width="6" height="6"/><rect x="4" y="14" width="6" height="6"/><rect x="14" y="14" width="6" height="6"/></svg>Datapoints</div><h2>From 1,052 datapoints to 323</h2><p class="lede short">Short answer: a lot less to report. Try your own number below.</p></div>
   <div class="dp-hero">
     <div>
       <div class="dotgrid" id="dotgrid" aria-label="Each dot is about 10 datapoints"></div>
-      <div class="legend"><span class="k">Mandatory, kept</span><span class="g">New: policies, actions, targets, metrics</span><span>Mandatory, removed</span><span class="v">Voluntary, removed</span></div>
-      <p class="qhelp" style="margin-top:6px">Each dot is about 10 datapoints.</p>
+      <div class="legend" id="dglegend"><span class="k" tabindex="0" data-c="keep" data-tip="Mandatory ('shall') datapoints that stay in the revised ESRS.">Kept (292)</span><span class="g" tabindex="0" data-c="gdr" data-tip="New general datapoints, repeated for each policy, action, target or metric you report.">New (31)</span><span class="r" tabindex="0" data-c="rm" data-tip="Mandatory datapoints in the 2023 ESRS that are deleted.">Mandatory, removed (491)</span><span class="v" tabindex="0" data-c="vol" data-tip="Voluntary ('may') datapoints of 2023. All are deleted.">Voluntary, removed (269)</span></div>
+      <p class="qhelp" style="margin-top:6px">One dot ≈ 10 datapoints. Hover a label to highlight it.</p>
     </div>
     <div class="buckets">
       <table>
@@ -547,7 +644,14 @@ nav.chapters a.on{background:var(--olive);color:var(--bg)}
         <div><small>Mandatory</small><strong class="num" id="fig-pct">−63%</strong></div>
         <div><small>Mandatory + voluntary</small><strong class="num">−72%</strong></div>
       </div>
-      <p class="qhelp">* In 2023 the policy, action and target datapoints sat inside each topical standard and EFRAG counted them separately, so the 1,052 excludes them. Like for like, mandatory plus voluntary falls from 1,052 to 292. The Commission's own headline figures are about −60% mandatory and −70% in total.</p>
+      <p class="tip"><b>Good to know</b> * The 2023 count excludes the policy, action and target datapoints, which sat inside each topic.</p>
+      <details class="numnote"><summary>Why the numbers differ between sources</summary>
+        <ul>
+          <li><b>323 = 292 + 31.</b> All counts come from EFRAG's 2026 draft list and explanatory note. Other sources may use a different stage or basis.</li>
+          <li><b>More rows in EFRAG's sheet.</b> 30 heading rows (3 per topic) and 6 technical rows are not disclosures, so we skip them. E1: 87 rows, 84 datapoints.</li>
+          <li><b>Percentages.</b> 783 → 292 = −63%. 1,052 → 292 = −72%. 1,052 → 323 = −69%.</li>
+        </ul>
+      </details>
     </div>
   </div>
 
@@ -561,25 +665,27 @@ nav.chapters a.on{background:var(--olive);color:var(--bg)}
   </div>
 
   <h3>Standard by standard</h3>
-  <p class="qhelp">Pick a standard to see the count, what changed, and how many datapoints sit under each disclosure requirement. Requirement titles come from the revised ESRS (Delegated Regulation (EU) 2026/1563); the plain-language summaries are ours. Datapoint counts are derived from EFRAG's draft list (non-authoritative; final list expected end of 2026). For the full text, use EFRAG's ESRS Knowledge Hub.</p>
+  <p class="qhelp">Pick a standard for its count and changes. Counts come from EFRAG's draft list (non-authoritative; final list expected end of 2026). Summaries are ours.</p>
   <div class="stds" id="stds"></div>
   <div class="stdpanel" id="stdpanel"></div>
 </section>
 
 <!-- WHO -->
 <section class="ch" id="who">
-  <div class="chead"><div class="eyebrow">Who reports when</div><h2>Two tests decide almost everything</h2><p class="lede">Omnibus I replaced the old waves with one size test from FY2027. Both limbs must be exceeded.</p></div>
+  <div class="chead"><div class="eyebrow"><svg class="ic" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>Who reports when</div><h2>Do you have to report? Two quick tests</h2><p class="lede short">Short answer: EU companies report from FY2027 if they pass both tests. Non-EU groups follow from FY2028.</p></div>
   <div class="thr">
     <div class="thrcard">
       <div class="eyebrow" style="color:var(--olive)">EU companies, groups and EU-listed issuers</div>
-      <div class="gate"><span class="g">&gt; 1,000 employees</span><span class="op">AND</span><span class="g">&gt; €450M net turnover</span></div>
-      <p class="qhelp">Tested on the balance sheet date: net turnover above €450M and on average more than 1,000 employees during the financial year. A parent tests consolidated group figures. First report on FY2027, published in 2028.</p>
+      <div class="gate"><span class="g">&gt; 1,000 employees</span><span class="andop">AND</span><span class="g">&gt; €450M net turnover</span></div>
+      <p class="qhelp">Over €450M net turnover and over 1,000 employees on average. First report: FY2027, published 2028.</p>
+      <p class="mean"><b>For you</b> Over both lines? You report from FY2027. Parents: use group figures.</p>
       <p class="was">Before: 250 employees and €50M turnover (any two of three criteria).</p>
     </div>
     <div class="thrcard">
       <div class="eyebrow" style="color:var(--info)">Non-EU groups (Article 40a)</div>
-      <div class="gate"><span class="g">&gt; €450M EU turnover, 2 years</span><span class="op">AND</span><span class="g">EU subsidiary or branch &gt; €200M</span></div>
-      <p class="qhelp">No headcount test. First report on FY2028, published in 2029, through the EU subsidiary or branch.</p>
+      <div class="gate"><span class="g">&gt; €450M EU turnover, 2 years</span><span class="andop">AND</span><span class="g">EU subsidiary or branch &gt; €200M</span></div>
+      <p class="qhelp">No headcount test. First report on FY2028, published in 2029.</p>
+      <p class="mean"><b>For you</b> Over both lines? Your EU entity reports for the group from FY2028.</p>
       <p class="was">Before: €150M EU turnover and a €40M branch or large subsidiary.</p>
     </div>
   </div>
@@ -596,12 +702,12 @@ nav.chapters a.on{background:var(--olive);color:var(--bg)}
       <span><i class="c-out"></i>Out of mandatory scope</span>
     </div>
   </div>
-  <p class="qhelp">The year shown is the financial year covered. The report is published the following year. Member States must transpose Omnibus I by 19 March 2027, so check national law for the FY2025–2026 exemption.</p>
+  <p class="tip"><b>Good to know</b> Years shown are the financial year reported on. Check national law for the FY2025–2026 exemption (transposition by 19 March 2027).</p>
 </section>
 
 <!-- SCOPE QUIZ -->
 <section class="ch" id="scope">
-  <div class="chead"><div class="eyebrow">Check your scope</div><h2>Are you in, and from when?</h2><p class="lede">Six questions or fewer. Use group figures if you are the parent of a group.</p></div>
+  <div class="chead"><div class="eyebrow"><svg class="ic" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg>Check your scope</div><h2>Are you in? Let us check</h2><p class="lede short">Up to six questions. Parents: use group figures.</p></div>
   <div class="quiz">
     <div class="qbox" id="qbox" aria-live="polite"></div>
     <div class="rbox" id="rbox"></div>
@@ -610,28 +716,34 @@ nav.chapters a.on{background:var(--olive);color:var(--bg)}
 
 <!-- NON-EU -->
 <section class="ch" id="noneu">
-  <div class="chead"><div class="eyebrow">Non-EU groups</div><h2>International groups: two separate routes into scope</h2><p class="lede">A US, UK, Swiss or Asian group can be caught twice: once through a large EU subsidiary from FY2027, and once at group level under Article 40a from FY2028. These are separate tests.</p></div>
+  <div class="chead"><div class="eyebrow"><svg class="ic" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>Non-EU groups</div><h2>Outside the EU? Two ways in</h2><p class="lede short">A non-EU group can be caught twice: via a large EU subsidiary (FY2027) and at group level, Article 40a (FY2028).</p></div>
   <div class="twoways">
-    <div class="way eu"><div class="eyebrow" style="color:var(--olive)">Route 1 · from FY2027</div><h3>A large EU subsidiary</h3><p class="qhelp">Any EU subsidiary, or EU sub-group parent, that exceeds 1,000 employees and €450M turnover on its own (consolidated) figures reports like any EU company. It can be exempt if the non-EU parent voluntarily publishes a consolidated report under the full ESRS (or an equivalent standard) that covers it.</p></div>
-    <div class="way"><div class="eyebrow" style="color:var(--info)">Route 2 · from FY2028</div><h3>Article 40a group report</h3><p class="qhelp">The non-EU ultimate parent is caught when the group makes more than €450M in the EU in each of the last two years and has an EU subsidiary or branch above €200M. The EU subsidiary or branch publishes a report covering the whole group.</p></div>
+    <div class="way eu"><div class="eyebrow" style="color:var(--olive)"><svg class="ic" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V8l8-5 8 5v13M9 21v-6h6v6M9 11h.01M15 11h.01"/></svg>Route 1 · from FY2027</div><h3>A large EU subsidiary</h3>
+      <p class="mean"><b>For you</b> If your EU subsidiary has over 1,000 employees and over €450M turnover, it reports like any EU company.</p>
+      <details class="hov"><summary>The fine print</summary><p>This applies to any EU subsidiary, or EU sub-group parent, on its own (consolidated) figures. It can be exempt if the non-EU parent voluntarily publishes a consolidated report under the full ESRS (or an equivalent standard) that covers it.</p></details></div>
+    <div class="way"><div class="eyebrow" style="color:var(--info)"><svg class="ic" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 12h5M10 16h5"/></svg>Route 2 · from FY2028</div><h3>Article 40a group report</h3>
+      <p class="mean"><b>For you</b> If your group earns over €450M in the EU and you have an EU entity over €200M, that entity reports for the whole group.</p>
+      <details class="hov"><summary>The fine print</summary><p>The €450M must be exceeded in two consecutive years, and the entity is an EU subsidiary or branch. There is no headcount test.</p></details></div>
   </div>
   <div class="flow">
-    <div class="fstep"><span class="n">1</span><b>Add up EU turnover</b><p class="qhelp">Group net turnover generated in the EU, for each of the last two consecutive financial years. Above €450M both years?</p></div>
-    <div class="fstep"><span class="n">2</span><b>Find the anchor entity</b><p class="qhelp">An EU subsidiary or EU branch with more than €200M net turnover. If there is none, Article 40a does not apply.</p></div>
-    <div class="fstep"><span class="n">3</span><b>Plan the report</b><p class="qhelp">First report covers FY2028. Dedicated standards for non-EU groups are expected from October 2027 at the earliest. Financial holding undertakings can opt out.</p></div>
+    <div class="fstep"><span class="ico"><svg class="ic" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5a4.5 4.5 0 100 7M7 11h6M7 14h6"/></svg></span><b>1. Add up your EU turnover</b><p class="qhelp">Over €450M, two years in a row?</p></div>
+    <div class="fstep"><span class="ico"><svg class="ic" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2"/><path d="M12 7v14M5 13c0 4 3 8 7 8s7-4 7-8M8 11h8"/></svg></span><b>2. Find your anchor entity</b><p class="qhelp">An EU subsidiary or branch over €200M? If not, Article 40a does not apply.</p></div>
+    <div class="fstep"><span class="ico"><svg class="ic" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></span><b>3. Plan your first report</b><p class="qhelp">It covers FY2028.</p>
+      <details class="hov"><summary>Good to know</summary><p>Dedicated standards for non-EU groups are expected from October 2027 at the earliest. Financial holding undertakings can opt out.</p></details></div>
   </div>
+  <p class="advice"><b>Our tip</b> Start with your EU subsidiary. Its deadline comes first (FY2027). Not sure where you stand? Run the scope check above.</p>
   </section>
 
 <!-- CASES -->
 <section class="ch" id="cases">
-  <div class="chead"><div class="eyebrow">Example cases</div><h2>Parent, subsidiary, or neither?</h2><p class="lede">Seven fictional groups and how the rules land on each entity.</p></div>
+  <div class="chead"><div class="eyebrow"><svg class="ic" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="9" r="3"/><circle cx="17" cy="10" r="2.5"/><path d="M3 20c0-3.5 3-6 6-6s6 2.5 6 6M15 20c0-2.5 2-4.5 5-4.5"/></svg>Example cases</div><h2>Parent, subsidiary, or neither?</h2><p class="lede short">Seven made-up groups. Find the one that looks like yours.</p></div>
   <div class="cases-tabs" id="casetabs" role="group" aria-label="Example cases"></div>
   <div class="case" id="case"></div>
 </section>
 
 <!-- FY2026 -->
 <section class="ch" id="fy2026">
-  <div class="chead"><div class="eyebrow">FY2026 options</div><h2>Which route for your FY2026 report?</h2><p class="lede">For a financial year starting in 2026, companies in scope choose one of three routes (Article 2 of the delegated act of 3 July 2026). Whichever you pick, the report must state which version you applied.</p></div>
+  <div class="chead"><div class="eyebrow"><svg class="ic" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M12 6h7l-2 3 2 3h-7M12 12H5l2-3-2-3"/></svg>Your 2026 report</div><h2>Which route should you take for your 2026 report?</h2><p class="lede short">You pick one of three routes for your 2026 reporting year, and say in the report which one you used.</p></div>
   <div class="opts3" id="opts3"></div>
   <div class="pick" id="pick"></div>
   <div class="pickres" id="pickres"></div>
@@ -642,20 +754,21 @@ nav.chapters a.on{background:var(--olive);color:var(--bg)}
 <section class="ch" id="onepager">
   <div class="op">
     <div class="op-text">
-      <div class="eyebrow">Your action plan <span class="mock">Preview</span></div>
-      <h2>Unlock your full action plan</h2>
-      <p class="lede">See every detail of your result and get it as a one-page PDF for your CFO, auditor or board. One email unlocks everything.</p>
-      <ul class="op-list op-what"><li class="done">Your full scope result and next steps</li><li class="done">The reasons behind your FY2026 route</li><li class="done">Every disclosure requirement for your material topics, with datapoint counts and phase-ins</li><li class="done">All seven example group cases</li><li class="done">Your one-page PDF</li></ul>
+      <div class="eyebrow"><svg class="ic" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 12h5M10 16h5"/></svg>Your action plan</div>
+      <h2>Want it all on one page?</h2>
+      <p class="lede">Everything below, plus a one-page PDF for your CFO or board. Free, just your email.</p>
+      <div class="optiles"><div><b>1</b><span>Scope result</span></div><div><b>2</b><span>FY2026 route</span></div><div><b>3</b><span>All requirements</span></div><div><b>4</b><span>One-page PDF</span></div></div>
       <ul class="op-list" id="op-status"></ul>
     </div>
     <form class="op-form" id="op-form" novalidate>
       <label for="op-email">Work email</label>
       <input type="email" id="op-email" autocomplete="email" placeholder="name@company.com" required>
-      <label for="op-company">Company <span>(optional)</span></label>
-      <input type="text" id="op-company" autocomplete="organization">
-      <button type="submit" class="btn pri" id="op-submit">Unlock my action plan</button>
-      <p class="op-note">We send your one-pager and may follow up once about your results. No newsletter unless you ask.</p>
+      <label class="chk consent"><input type="checkbox" id="op-consent"> greenfriend may contact me about my results (optional)</label>
+      
+      <button type="submit" class="btn pri" id="op-submit">Get it free</button>
+      <p class="op-note">Free. We use your email only to send your results. We contact you only if you tick the box. <a href="#privacy">Privacy notice →</a></p>
       <p class="op-msg" id="op-msg" role="status"></p>
+      <button type="button" class="btn" id="op-again" hidden>Download again</button>
     </form>
   </div>
   <div class="pv" id="op-preview" hidden></div>
@@ -664,29 +777,29 @@ nav.chapters a.on{background:var(--olive);color:var(--bg)}
 
 <section class="about" id="about" style="scroll-margin-top:60px"><div class="wrap">
   <div class="pitch">
-    <div class="chead" style="display:grid;gap:10px"><div class="eyebrow">Who we are</div>
+    <div class="chead" style="display:grid;gap:10px"><div class="eyebrow"><svg class="ic" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.5-7-10a4 4 0 017-2.5A4 4 0 0119 10c0 5.5-7 10-7 10z"/></svg>Hi, we are Anika and Elena</div>
       <h2>We help companies report what they actually do</h2>
-      <p class="lede">We help you turn your double materiality assessment into a plan your company actually uses: clear owners, roadmaps for each team, and a report that shows real progress. Our own AI tools speed up the work along the way.</p></div>
+      <p class="lede">We turn your double materiality assessment into a plan your company uses: clear owners, team roadmaps, a report that shows progress.</p></div>
     <blockquote>Most consultancies hand over a 100-page manual that nobody uses. We build lean frameworks your teams can work with.</blockquote>
   </div>
 
   <div class="diff">
     <h3>How we work differently</h3>
     <ol>
-      <li><b>You work with us, not a junior team.</b> Elena and Anika do all the work themselves. The people you meet are the people who deliver.</li>
-      <li><b>Inside experience, consulting and tech in one team.</b> We have led sustainability inside large companies, advised many others, and build our own tools. So our solutions work in practice and save manual work.</li>
-      <li><b>Strategy first, box-ticking last.</b> We go beyond compliance and help you build a strategy that creates real value for your business and the people who depend on it.</li>
+      <li><details class="hov"><summary>You work with us, not a junior team</summary><p>We do all the work ourselves. The people you meet are the people who deliver.</p></details></li>
+      <li><details class="hov"><summary>Inside experience, consulting and tech</summary><p>We have led sustainability inside large companies, advised many others, and build our own tools. So our solutions work in practice and save manual work.</p></details></li>
+      <li><details class="hov"><summary>Strategy first, box-ticking last</summary><p>We go beyond compliance and help you build a strategy that creates real value for your business and the people who depend on it.</p></details></li>
     </ol>
   </div>
 
   <div class="people">
     <div class="person"><div class="avatar" aria-hidden="true">A</div><div>
       <h3>Anika Lerch, MSc</h3><div class="role">Founder, greenfriend · Strategy, governance and CSRD</div>
-      <ul><li>Built the global sustainability function at Just Eat Takeaway across 23 countries, including its first Responsible Business Strategy and governance set-up</li><li>Advises energy, automotive, FMCG and industrial companies from double materiality to implementation roadmap, with board-ready and audit-ready deliverables</li><li>Co-founded Caribou, a B2B CSRD software start-up</li><li>Builds custom AI tools that automate IRO scoring, data synthesis and audit trails</li></ul>
+      <div class="chips2"><span>Just Eat Takeaway · 23 countries</span><span>Co-founded Caribou</span><span>Custom AI tools</span></div><details class="hov"><summary>More about Anika</summary><ul><li>Built the global sustainability function at Just Eat Takeaway across 23 countries, including its first Responsible Business Strategy and governance set-up</li><li>Advises energy, automotive, FMCG and industrial companies from double materiality to implementation roadmap, with board-ready and audit-ready deliverables</li><li>Co-founded Caribou, a B2B CSRD software start-up</li><li>Builds custom AI tools that automate IRO scoring, data synthesis and audit trails</li></ul></details>
       <a href="https://www.linkedin.com/in/anikalerch/">LinkedIn profile</a></div></div>
     <div class="person"><div class="avatar" aria-hidden="true">E</div><div>
       <h3>Elena Zayakova, MSc</h3><div class="role">Founder, CoreWorks Consultancy · Strategy, reporting and governance</div>
-      <ul><li>Former Senior Director of Sustainability at Sage, a FTSE 100 tech company</li><li>Led award-winning ESG disclosures in Europe and the Middle East, building reporting teams and processes from scratch</li><li>Works with finance, legal, audit and risk teams across CSRD, ISSB, TCFD, CDP, GRI and the EU Taxonomy</li><li>Co-author of the first Climate Competitiveness Index (2010) with UNEP</li></ul>
+      <div class="chips2"><span>Ex-Sage · FTSE 100</span><span>Award-winning ESG disclosures</span><span>Climate Competitiveness Index</span></div><details class="hov"><summary>More about Elena</summary><ul><li>Former Senior Director of Sustainability at Sage, a FTSE 100 tech company</li><li>Led award-winning ESG disclosures in Europe and the Middle East, building reporting teams and processes from scratch</li><li>Works with finance, legal, audit and risk teams across CSRD, ISSB, TCFD, CDP, GRI and the EU Taxonomy</li><li>Co-author of the first Climate Competitiveness Index (2010) with UNEP</li></ul></details>
       <a href="https://www.linkedin.com/in/elenavlzayakova/">LinkedIn profile</a></div></div>
   </div>
 
@@ -696,18 +809,10 @@ nav.chapters a.on{background:var(--olive);color:var(--bg)}
     <div class="step zero"><span class="no">0</span><div><h3>Know where you stand</h3><p class="plain">Are you in scope, from when, and which route fits FY2026?</p></div>
       <div class="col"><div class="lbl">What we do</div><ul><li>Check your scope and timeline</li><li>Compare the three FY2026 routes</li></ul></div>
       <div class="col"><div class="lbl">You get</div><ul><li>This tool, for free</li><li>A 20-minute call if you want a second opinion</li></ul></div></div>
-    <div class="step"><span class="no">1</span><div><h3>Find what really matters</h3><p class="plain">We work out which sustainability topics matter for your business, quickly and in a way your auditor accepts.</p></div>
-      <div class="col"><div class="lbl">What we do</div><ul><li>Map your value chain from your own documents</li><li>Shortlist impacts, risks and opportunities</li><li>Score them with your experts</li><li>Keep your auditor involved along the way</li></ul></div>
-      <div class="col"><div class="lbl">You get</div><ul><li>A value chain map</li><li>A signed-off list of material topics</li><li>A live dashboard and an audit-ready method file</li></ul></div></div>
-    <div class="step"><span class="no">2</span><div><h3>Turn topics into goals</h3><p class="plain">Each material topic gets a clear objective, a starting point and a target your teams can work towards.</p></div>
-      <div class="col"><div class="lbl">What we do</div><ul><li>Run a strategy workshop with your experts</li><li>Check which projects you already have, and what is missing</li><li>Estimate budget for the gaps</li></ul></div>
-      <div class="col"><div class="lbl">You get</div><ul><li>A one-page strategy framework</li><li>Objectives, KPIs and targets per topic</li><li>Input for your yearly goals or OKRs</li></ul></div></div>
-    <div class="step"><span class="no">3</span><div><h3>Make clear who owns what</h3><p class="plain">We close the accountability gap. Every material topic gets an owner in the business, and your board gets the information it needs.</p></div>
-      <div class="col"><div class="lbl">What we do</div><ul><li>Agree with your teams who is responsible, accountable, consulted and informed for each topic and IRO</li><li>Run team workshops on dependencies and day-to-day ways of working</li><li>Help prepare quarterly board and committee updates, and review the papers</li><li>Compare your set-up with peers: committees, board oversight, and who owns disclosures (CFO, sustainability, legal or investor relations)</li><li>Train each team on what reporting means for them, for example ESRS for finance or greenwashing risks for marketing</li></ul></div>
-      <div class="col"><div class="lbl">You get</div><ul><li>A one-page map of who owns what</li><li>An ownership register for topics and IROs</li><li>A board sustainability information pack</li><li>A peer benchmark with the pros and cons of each ownership model</li><li>Training made for each team</li></ul></div></div>
-    <div class="step"><span class="no">4</span><div><h3>Report what you did</h3><p class="plain">Your report shows progress and evidence, not only plans and promises.</p></div>
-      <div class="col"><div class="lbl">What we do</div><ul><li>Check your reporting process and data</li><li>List the gaps per disclosure</li><li>Test key figures for assurance</li><li>Check your sustainability claims for greenwashing risk</li></ul></div>
-      <div class="col"><div class="lbl">You get</div><ul><li>A gap list with owners and priorities</li><li>A map of what goes in which report</li><li>An evidence file for your auditor</li></ul></div></div>
+    <div class="step"><span class="no">1</span><div><h3>Find what really matters</h3><span class="svc">Double materiality assessment</span><p class="plain">We work out which sustainability topics matter for your business, quickly and in a way your auditor accepts.</p><details class="more"><summary>What we do and what you get</summary><div class="cols"><div class="col"><div class="lbl">What we do</div><ul><li>Map your value chain from your own documents</li><li>Shortlist impacts, risks and opportunities</li><li>Score them with your experts</li><li>Keep your auditor involved along the way</li></ul></div><div class="col"><div class="lbl">You get</div><ul><li>A value chain map</li><li>A signed-off list of material topics</li><li>A live dashboard and an audit-ready method file</li></ul></div></div></details></div></div>
+    <div class="step"><span class="no">2</span><div><h3>Turn topics into goals</h3><span class="svc">Strategy</span><p class="plain">Each material topic gets a clear objective, a starting point and a target your teams can work towards.</p><details class="more"><summary>What we do and what you get</summary><div class="cols"><div class="col"><div class="lbl">What we do</div><ul><li>Run a strategy workshop with your experts</li><li>Check which projects you already have, and what is missing</li><li>Estimate budget for the gaps</li></ul></div><div class="col"><div class="lbl">You get</div><ul><li>A one-page strategy framework</li><li>Objectives, KPIs and targets per topic</li><li>Input for your yearly goals or OKRs</li></ul></div></div></details></div></div>
+    <div class="step"><span class="no">3</span><div><h3>Make clear who owns what</h3><span class="svc">Governance</span><p class="plain">We close the accountability gap. Every material topic gets an owner in the business, and your board gets the information it needs.</p><details class="more"><summary>What we do and what you get</summary><div class="cols"><div class="col"><div class="lbl">What we do</div><ul><li>Agree with your teams who is responsible, accountable, consulted and informed for each topic and IRO</li><li>Run team workshops on dependencies and day-to-day ways of working</li><li>Help prepare quarterly board and committee updates, and review the papers</li><li>Compare your set-up with peers: committees, board oversight, and who owns disclosures (CFO, sustainability, legal or investor relations)</li><li>Train each team on what reporting means for them, for example ESRS for finance or greenwashing risks for marketing</li></ul></div><div class="col"><div class="lbl">You get</div><ul><li>A one-page map of who owns what</li><li>An ownership register for topics and IROs</li><li>A board sustainability information pack</li><li>A peer benchmark with the pros and cons of each ownership model</li><li>Training made for each team</li></ul></div></div></details></div></div>
+    <div class="step"><span class="no">4</span><div><h3>Report what you did</h3><span class="svc">Reporting</span><p class="plain">Your report shows progress and evidence, not only plans and promises.</p><details class="more"><summary>What we do and what you get</summary><div class="cols"><div class="col"><div class="lbl">What we do</div><ul><li>Check your reporting process and data</li><li>List the gaps per disclosure</li><li>Test key figures for assurance</li><li>Check your sustainability claims for greenwashing risk</li></ul></div><div class="col"><div class="lbl">You get</div><ul><li>A gap list with owners and priorities</li><li>A map of what goes in which report</li><li>An evidence file for your auditor</li></ul></div></div></details></div></div>
   </div>
 
 </div></section>
@@ -715,19 +820,30 @@ nav.chapters a.on{background:var(--olive);color:var(--bg)}
 <div class="gate-modal" id="gate" hidden role="dialog" aria-modal="true" aria-labelledby="gate-h">
   <form class="gate-card" id="gate-form" novalidate>
     <button type="button" class="gate-x" id="gate-x" aria-label="Close">×</button>
-    <div class="eyebrow">Your action plan <span class="mock">Preview</span></div>
+    <div class="eyebrow">Your action plan</div>
     <h3 id="gate-h">Unlock your full action plan</h3>
-    <p class="qhelp">Your full result, the reasons behind your route, every disclosure requirement for your topics, all example cases and a one-page PDF. One email unlocks everything.</p>
-    <label for="gate-email">Work email</label>
-    <input type="email" id="gate-email" autocomplete="email" placeholder="name@company.com" required>
-    <label for="gate-company">Company <span>(optional)</span></label>
-    <input type="text" id="gate-company" autocomplete="organization">
-    <button type="submit" class="btn pri">Unlock</button>
+    <p class="qhelp">Your full result, every disclosure requirement for your topics and a one-page PDF. Free, just your email.</p>
+      <label for="gate-email">Work email</label>
+      <input type="email" id="gate-email" autocomplete="email" placeholder="name@company.com" required>
+      <label class="chk consent"><input type="checkbox" id="gate-consent"> greenfriend may contact me about my results (optional)</label>
+      
+    <button type="submit" class="btn pri">Get it free</button>
     <p class="op-msg" id="gate-msg" role="status"></p>
-    <p class="op-note">We send your one-pager and may follow up once about your results.</p>
+    <p class="op-note">Free. We use your email only to send your results. We contact you only if you tick the box. <a href="#privacy">Privacy notice →</a></p>
   </form>
 </div>
 
+<section class="wrap" id="privacy-view" style="padding-block:40px">
+  <p><a href="#top">← Back to the check</a></p>
+  <h2>Privacy notice</h2>
+  <p><b>Who is responsible.</b> greenfriend, Amsterdam, the Netherlands (KVK 91346169). Contact for all privacy questions: anikalerch@greenfriend.org.</p>
+  <p><b>What we collect.</b> Your work email, your answers in this tool and the results calculated from them, and where your visit came from (a campaign tag in the link, if any).</p>
+  <p><b>Why and on what basis.</b> To give you your results and record your request (legitimate interest); to contact you about your results, only if you ticked the box (consent).</p>
+  <p><b>How long.</b> If you did not consent to contact, your email is deleted after 30 days and only anonymous results stay. All data is deleted after 24 months.</p>
+  <p><b>Who else processes it.</b> Supabase (database, EU region Frankfurt), Netlify (hosting). Fonts are served from this site, and no analytics or tracking cookies are used. Your unlock is remembered in your own browser only.</p>
+  <p><b>Your rights.</b> Access, correction, deletion, objection, restriction, data portability and withdrawing consent at any time, by emailing anikalerch@greenfriend.org. You can complain to the Dutch Data Protection Authority (Autoriteit Persoonsgegevens).</p>
+  <p style="color:var(--muted);font-size:.85rem">Notice version: 2026-10-07.</p>
+</section>
 <footer class="wrap">
   <div class="cta"><div class="planes" aria-hidden="true"><i class="p1"></i><i class="p4"></i><i class="p2"></i><i class="p3"></i></div>
     <h2>Report what you do.</h2>
@@ -735,7 +851,8 @@ nav.chapters a.on{background:var(--olive);color:var(--bg)}
     <div class="addr">greenfriend.org</div>
   </div>
   <div class="fine">
-    <p class="mockctl">Mockup controls: <button type="button" class="btn" id="relock">Lock again</button></p>
+    <p><a href="#privacy">Privacy notice</a></p>
+    <p class="mockctl">Mockup only, not in the live build: <button type="button" class="btn" id="relock">Lock again</button></p>
     <p>This tool gives an indicative reading of Directive (EU) 2026/470 (Omnibus I) and the revised ESRS (Delegated Regulation (EU) 2026/1563). It is not legal advice. National transposition is due by 19 March 2027 and may differ by Member State, especially for the FY2025–2026 exemption. Confirm your position with your auditor or legal adviser.</p>
     <p>Data: EFRAG Secretariat, 2026 Draft List of ESRS Datapoints (28 Aug 2026), non-authoritative supporting material; final version expected end of 2026.</p><p>Sources: <a href="https://finance.ec.europa.eu/news/commission-adopts-revised-sustainability-reporting-standards-reduce-administrative-burdens-eu-2026-07-03_en">European Commission, 3 July 2026</a> · <a href="https://eur-lex.europa.eu/eli/dir/2026/470/oj">Directive (EU) 2026/470</a> · <a href="https://www.efrag.org/en/news-and-calendar/news/efrag-secretariat-releases-2026-draft-list-of-datapoints-for-revised-esrs">EFRAG 2026 Draft List of Datapoints</a> · <a href="https://sustainablefutures.linklaters.com/post/102o1ou/eu-csrd-revised-esrs-and-voluntary-reporting-standard-are-published-in-the-offic">Linklaters, 21 Sept 2026</a></p>
   </div>
@@ -753,12 +870,19 @@ const CHUNKS=[
  {k:"323",t:"Datapoints in total",s:"Down from 1,052: 292 mandatory, 0 voluntary, 31 new general ones.",d:["All voluntary datapoints are deleted.","Counted by EFRAG: 783 \u201cshall\u201d datapoints in 2023, 292 in the revised ESRS.","More numbers, less narrative: quantitative datapoints are preferred.","Sector-specific ESRS are replaced by guidance."]},
  {k:"Top-down",t:"A lighter materiality assessment",s:"Conclude at topic level instead of testing every IRO.",d:["ESRS 1 explicitly allows a top-down approach, alone or mixed with bottom-up.","Information that is not material shall not be reported, with narrow exceptions.","Fair presentation applies to the statement as a whole, not datapoint by datapoint.","More discretion on geographic disaggregation."]},
  {k:"VSME cap",t:"Protection for smaller suppliers",s:"Value chain requests are capped from FY2027.",d:["A new voluntary standard, based on VSME, entered into force on 24 Sept 2026.","Value chain partners with on average up to 1,000 employees in the previous year can refuse requests that go beyond that standard.","Missing value chain data: explain efforts and plans during the first three years."]},
- {k:"3 routes",t:"A choice for FY2026",s:"Old ESRS, old ESRS plus reliefs, or revised ESRS in full.",d:["Eight reliefs (Article 2 of the delegated act): top-down materiality, undue cost and value chain limits in the assessment, acquisitions and disposals, non-significant activities, partial value chain scope, joint operations, Taxonomy in a separate appendix, and an executive summary.","The report must state which version was applied.","From FY2027 the revised ESRS are mandatory for everyone in scope."]},
+ {k:"3 routes",t:"A choice for FY2026",s:"Old ESRS, old ESRS plus reliefs, or revised ESRS in full.",d:["Eight reliefs (Article 2(1)(b)): top-down materiality (ESRS 1 para 27), undue cost and value chain limits in the assessment (paras 32-33), acquisitions and disposals (74-75), non-significant activities (90), partial value chain scope (91), joint operations (92), Taxonomy in a separate appendix (106), executive summary (110).","The report must state which version was applied.","From FY2027 the revised ESRS are mandatory for everyone in scope."]},
  {k:"Limited",t:"Assurance stays limited",s:"The planned move to reasonable assurance is dropped.",d:["The Commission must adopt a limited assurance standard by 1 July 2027.","GHG boundary: financial control or operational control.","Anticipated financial effects can be updated later without counting as an error."]}
 ];
+const REFS=[
+ "Directive (EU) 2026/470 (Omnibus I), which amends the Accounting Directive (2013/34/EU), Articles 19a, 29a and 40a.",
+ "EFRAG draft list of datapoints and explanatory note (2026), for Delegated Regulation (EU) 2026/1563.",
+ "Revised ESRS 1, paragraphs 24 and 27 (Delegated Regulation (EU) 2026/1563, Annex I).",
+ "Revised ESRS 1, paragraph 66; Accounting Directive, Articles 19a(3) and 29a(3); Delegated Regulation (EU) 2026/1560, Annex II.",
+ "Delegated Regulation (EU) 2026/1563, Article 2 (the routes and the statement of which version you used) and Article 3 (applies from financial years starting 1 January 2027).",
+ "Directive (EU) 2026/470 (Omnibus I); GHG boundary: ESRS E1, AR 19 for paragraph 30."];
 $("#chunks").innerHTML=CHUNKS.map((c,i)=>`<button class="chunk" aria-expanded="false" data-i="${i}">
- <span class="k num">${c.k}</span><span class="t">${c.t}</span><span class="s">${c.s}</span>
- <span class="more">Show detail</span><div class="detail" hidden><ul>${c.d.map(x=>`<li>${x}</li>`).join("")}</ul></div></button>`).join("");
+ <span class="src" data-ftip="Source: ${REFS[i]}" aria-hidden="true">i</span><span class="k num">${c.k}</span><span class="t">${c.t}</span><span class="s">${c.s}</span>
+ <span class="more">Show detail</span><div class="detail" hidden><ul>${c.d.map(x=>`<li>${x}</li>`).join("")}</ul><p class="srcl"><b>Source</b> ${REFS[i]}</p></div></button>`).join("");
 document.querySelectorAll(".chunk").forEach(b=>b.addEventListener("click",()=>{
  const open=b.getAttribute("aria-expanded")!=="true";b.setAttribute("aria-expanded",open);
  b.querySelector(".detail").hidden=!open;b.querySelector(".more").textContent=open?"Hide detail":"Show detail";}));
@@ -825,10 +949,17 @@ const STDS=[
   ["cut","Datapoints","Cut from 39 to 20, a smaller cut than most standards."],
   ["new","CSDDD coherence","Due diligence provisions across the ESRS are aligned with the CSDDD."]]}
 ];
+const TAGS={
+ "Always applies":"ESRS 2 general disclosures apply to every reporting company, whichever topics turn out to be material.",
+ "Per policy / action":"The 31 general datapoints are reported again for each policy, action, target or metric you report on a material topic.",
+ "Changed":"More than fewer datapoints: the content or the rules of this standard changed. See the changes listed below.",
+ "Trimmed":"Datapoints were cut and the content is otherwise much the same. All voluntary datapoints are removed.",
+ "Phase-in":"A relief lets you leave out part or all of this standard in the first years: wave 1 companies until FY2027, new reporters for their first two years."};
 const PL={cut:["p-cut","Removed"],new:["p-new","Changed"],relief:["p-relief","Relief"],same:["p-same","Unchanged"]};
 const statOf=s=>STAT[s.c];
 $("#stds").innerHTML=STDS.map((s,i)=>{const st=statOf(s);
- return`<button class="std" data-i="${i}" aria-pressed="${i===2}"><span class="code">${s.c}</span><span class="nm">${s.n}</span><span class="num" style="font-size:.85rem">${st?`<span style="color:var(--muted);text-decoration:line-through">${st[0]}</span> → <b>${st[1]}</b>`:"31 per item"}</span><span class="tag ${s.tag==="Phase-in"?"ph":""}">${s.tag}</span></button>`;}).join("");
+ return`<button class="std" data-i="${i}" aria-pressed="${i===2}"><span class="code">${s.c}</span><span class="nm">${s.n}</span><span class="num" style="font-size:.85rem">${st?`<span style="color:var(--muted);text-decoration:line-through">${st[0]}</span> → <b>${st[1]}</b>`:"31 per item"}</span><span class="tag ${s.tag==="Phase-in"?"ph":""}" data-tip="${TAGS[s.tag]}" aria-hidden="true">${s.tag}</span><span class="sr" style="position:absolute;left:-9999px">${TAGS[s.tag]}</span></button>`;}).join("");
+$("#stds").insertAdjacentHTML("afterend",`<details class="taglegend"><summary>What do the labels mean?</summary><dl>${Object.keys(TAGS).map(k=>`<dt>${k}</dt><dd>${TAGS[k]}</dd>`).join("")}</dl></details>`);
 
 let PH=1; // 1 wave1 above, 2 wave1 below, 3 other
 let fCond=false,fq="";
@@ -846,7 +977,7 @@ function showStd(i){
    <div class="bar"><span>Revised</span><span class="tr"><i style="width:${st[1]/max*100}%;background:var(--olive)"></i></span><b class="num">${st[1]}</b></div>
    <div class="bar"><span>Unconditional</span><span class="tr"><i style="width:${st[2]/max*100}%;background:var(--terra)"></i></span><b class="num">${st[2]}</b></div></div>
    <p class="qhelp">${Math.round((1-st[1]/st[0])*100)}% fewer "shall" datapoints than in 2023.</p>`:"";
- $("#stdpanel").innerHTML=`<div style="display:grid;gap:4px"><div class="eyebrow">${s.c}</div><h3>${s.n}</h3></div>${cmp}
+ $("#stdpanel").innerHTML=`<div style="display:grid;gap:4px"><div class="eyebrow">${s.c}</div><h3>${s.n}</h3><p class="tagnote"><b>${s.tag}.</b> ${TAGS[s.tag]}</p></div>${cmp}
  <div class="rows">${s.rows.map(r=>`<div class="chg"><span class="pill ${PL[r[0]][0]}">${PL[r[0]][1]}</span><div><b>${r[1]}</b><p class="qhelp" style="color:var(--fg)">${r[2]}</p></div></div>`).join("")}</div>
  <div style="display:grid;gap:10px"><h3 style="font-size:1.05rem">Disclosure requirements in ${s.c}</h3>
  <div class="dpctl"><label for="phsel">Phase-ins for</label><select id="phsel">${[1,2,3].map(v=>`<option value="${v}" ${v===PH?"selected":""}>${PHNAME[v]}</option>`).join("")}</select>
@@ -863,12 +994,17 @@ function renderDRs(s,rows,openAll){
  const groups=all.map(g=>({dr:g[0],n:fCond?g[1]-g[2]:g[1],c:fCond?0:g[2],ph:g[3][PH-1],gdr:g[4],tech:g[5]})).filter(g=>g.n>0||g.gdr>0);
  const hub='<a class="hub" href="https://knowledgehub.efrag.org" target="_blank" rel="noopener">Read the full text in EFRAG’s ESRS Knowledge Hub ↗</a>';
  if(!groups.length){$("#drs").innerHTML='<p class="qhelp">No disclosure requirements match.</p>';return;}
- const row=g=>{const t=DRT[g.dr]||["",""];return`<div class="drrow"><span class="c">${g.dr}</span><span class="dt"><b>${t[1]}</b><small>${t[0]}</small></span><span class="n num">${g.n} datapoint${g.n===1?"":"s"}</span><span class="chips">${g.c?`<span class="chip cond">${g.c} conditional</span>`:""}${g.gdr?'<span class="chip tech">+ general policy/action/target datapoints</span>':""}${g.tech?'<span class="chip tech">technical</span>':""}${g.ph.map(p=>`<span class="chip ph">Phase-in: ${p}</span>`).join("")}</span></div>`;};
+ const row=g=>{const t=DRT[g.dr]||["",""];return`<div class="drrow"><span class="c">${g.dr}</span><span class="dt"><b>${t[1]}</b><small>${t[0]}</small></span><span class="n num">${g.n} datapoint${g.n===1?"":"s"}</span><span class="chips">${g.c?`<span class="chip cond">${g.c} conditional</span>`:""}${g.gdr?'<span class="chip tech">also refers to the general policy/action/target datapoints (not counted twice)</span>':""}${g.tech?'<span class="chip tech">technical</span>':""}${g.ph.map(p=>`<span class="chip ph">Phase-in: ${p}</span>`).join("")}</span></div>`;};
  if(!UNLOCKED){const total=groups.reduce((a,g)=>a+g.n,0);
   $("#drs").innerHTML=groups.slice(0,3).map(row).join("")+`<div class="dplock"><span>See all <b class="num">${groups.length}</b> disclosure requirements and <b class="num">${total}</b> datapoints for ${s.c}, with phase-ins and conditions</span><button type="button" class="unlock">Unlock your action plan</button></div>`+hub;return;}
  $("#drs").innerHTML=groups.map(row).join("")+hub;}
 document.querySelectorAll(".std").forEach(b=>b.onclick=()=>showStd(+b.dataset.i));showStd(2);
 
+(function(){const g=document.getElementById("dotgrid"),L=document.querySelectorAll("#dglegend span");
+ const cls=c=>c==="rm"?"i:not(.keep):not(.gdr):not(.vol)":"i."+c;
+ const on=s=>{g.classList.add("f");g.querySelectorAll(".on").forEach(e=>e.classList.remove("on"));g.querySelectorAll(cls(s.dataset.c)).forEach(e=>e.classList.add("on"));},
+ off=()=>{g.classList.remove("f");g.querySelectorAll(".on").forEach(e=>e.classList.remove("on"));};
+ L.forEach(s=>{["mouseenter","focus"].forEach(ev=>s.addEventListener(ev,()=>on(s)));["mouseleave","blur"].forEach(ev=>s.addEventListener(ev,off));});})();
 /* estimator */
 const TOPICS=[["E1","Climate change",1],["E2","Pollution",0],["E3","Water",0],["E4","Biodiversity",0],["E5","Resource use",1],["S1","Own workforce",1],["S2","Value chain workers",1],["S3","Communities",0],["S4","Consumers",0],["G1","Business conduct",1]];
 $("#estboxes").innerHTML=TOPICS.map(t=>`<label><input type="checkbox" id="m-${t[0]}" ${t[2]?"checked":""}> <span><b>${t[0]}</b> ${t[1]}</span></label>`).join("");
@@ -876,22 +1012,39 @@ function est(){
  const sel=TOPICS.filter(t=>$("#m-"+t[0]).checked).map(t=>t[0]);
  const sum=i=>STAT["ESRS 2"][i]+sel.reduce((a,c)=>a+STAT[c][i],0);
  const o=sum(0),n=sum(1),u=sum(2),pct=Math.round((1-n/o)*100);
- $("#estout").innerHTML=`<p class="headline">You go from <span class="num">${o}</span> to <em class="num">${n}</em> datapoints. That is <em class="num">${pct}%</em> fewer.</p>
+ $("#estout").innerHTML=`<p class="headline">You go from <span class="num">${o}</span> to <em class="num">${n}</em> mandatory datapoints. That is <em class="num">${pct}%</em> fewer. Nice.</p>
  <div class="bars"><div class="bar"><span>2023</span><span class="tr"><i style="width:100%;background:var(--sand)"></i></span><b class="num">${o}</b></div>
  <div class="bar"><span>Revised</span><span class="tr"><i style="width:${n/o*100}%;background:var(--olive)"></i></span><b class="num">${n}</b></div>
  <div class="bar"><span>Unconditional</span><span class="tr"><i style="width:${u/o*100}%;background:var(--terra)"></i></span><b class="num">${u}</b></div></div>
- <p class="qhelp">ESRS 2 plus ${sel.length} material topic${sel.length===1?"":"s"}${sel.length?" ("+sel.join(", ")+")":""}. Counts from EFRAG's 2026 Draft List, excluding the general datapoints you repeat per policy, action, target and metric. Your real number also depends on which conditions apply to you.</p>`;}
+ <p class="qhelp">ESRS 2 plus ${sel.length} material topic${sel.length===1?"":"s"}${sel.length?" ("+sel.join(", ")+")":""}. Counts from EFRAG's 2026 Draft List. Your real number also depends on which conditions apply to you.</p>
+ <p class="est-add"><b>Plus 31 general datapoints</b> on policies, actions, targets and metrics. They apply whatever topics you tick, so your total is <b class="num">${n+31}</b> (${n} + 31). With all ten topics ticked that is 323, the headline figure above.</p>`;}
 document.querySelectorAll("#estboxes input").forEach(i=>i.onchange=est);est();
 
 /* ---------- GANTT ---------- */
 const G=[
- ["Wave 1, still above both thresholds","Reported since FY2024",["rep","rep","rep","new","new"],["","","Choose route","Revised",""]],
- ["Wave 1, now below a threshold","e.g. 600 employees",["rep","opt","opt","out","out"],["","MS option","MS option","Out",""]],
- ["Large EU company, not wave 1","&gt;1,000 employees &amp; &gt;€450M",["out","out","out","new","new"],["","","","First year",""]],
- ["Large company below new thresholds","Old wave 2, e.g. 400 employees",["out","out","out","out","out"],["","","","Voluntary standard",""]],
- ["Listed SME","Old wave 3",["out","out","out","out","out"],["","","","Out",""]],
- ["Non-EU group (Art. 40a)","&gt;€450M EU turnover + €200M EU entity",["out","out","out","out","40a"],["","","","","First year"]]];
-$("#gantt").innerHTML=G.map(r=>`<tr><td class="who"><b>${r[0]}</b><span>${r[1]}</span></td>${r[2].map((c,j)=>`<td><div class="cell c-${c}">${r[3][j]||""}</div></td>`).join("")}</tr>`).join("");
+ ["Wave 1, still above both thresholds","Reported since FY2024",["rep","rep","rep","new","new"],["","","Choose route","Revised",""],
+  ["Reports under the existing (2023) ESRS.","Reports under the existing (2023) ESRS.","You choose one of three FY2026 routes. See FY2026 options below.","First year under the revised ESRS, mandatory from FY2027.","Reports under the revised ESRS."]],
+ ["Wave 1, now below a threshold","e.g. 600 employees",["rep","opt","opt","out","out"],["","MS option","MS option","Out",""],
+  ["Reported under the existing (2023) ESRS.","Member States may exempt these companies for FY2025 and FY2026. Check national law.","Member States may exempt these companies for FY2025 and FY2026. Check national law.","Below the new size test (over 1,000 employees and over €450M): no mandatory reporting.","Below the new size test: no mandatory reporting."]],
+ ["Large EU company, not wave 1","&gt;1,000 employees &amp; &gt;€450M",["out","out","out","new","new"],["","","","First year",""],
+  ["Not required to report yet.","Not required to report yet.","Not required to report yet.","First report under the revised ESRS, on FY2027 (published 2028).","Reports under the revised ESRS."]],
+ ["Large company below new thresholds","Old wave 2, e.g. 400 employees",["out","out","out","out","out"],["","","","Voluntary standard",""],
+  ["Not required to report.","Not required to report.","Not required to report.","No mandatory reporting. The voluntary standard is available.","No mandatory reporting."]],
+ ["Listed SME","Old wave 3",["out","out","out","out","out"],["","","","Out",""],
+  ["Not required to report.","Not required to report.","Not required to report.","Out of mandatory scope.","Out of mandatory scope."]],
+ ["Non-EU group (Art. 40a)","&gt;€450M EU turnover + €200M EU entity",["out","out","out","out","40a"],["","","","","First year"],
+  ["Not required to report.","Not required to report.","Not required to report.","Not required to report yet. The EU subsidiary may be caught earlier.","First group-level report under Article 40a, on FY2028."]]];
+$("#gantt").innerHTML=G.map(r=>`<tr><td class="who"><b>${r[0]}</b><span>${r[1]}</span></td>${r[2].map((c,j)=>`<td><div class="cell c-${c}" tabindex="0" data-ftip="${r[0].replace(/&gt;/g,'>').replace(/&amp;/g,'&')}, ${["FY2024","FY2025","FY2026","FY2027","FY2028"][j]}: ${r[4][j]}">${r[3][j]||""}</div></td>`).join("")}</tr>`).join("");
+document.querySelectorAll(".gkey span").forEach((s,i)=>{s.tabIndex=0;s.dataset.ftip=["Reports under the existing (2023) ESRS or one of the FY2026 options.","Reports under the revised ESRS (mandatory from FY2027).","Member States may exempt these companies for FY2025 and FY2026.","Group-level report by a non-EU parent under Article 40a.","Not subject to mandatory reporting in that year."][i];});
+/* floating tooltip (works inside scroll areas, on hover, focus and tap) */
+(function(){const t=document.createElement("div");t.id="ftip";t.setAttribute("role","tooltip");document.body.appendChild(t);let cur=null;
+ function show(el){cur=el;t.textContent=el.dataset.ftip;t.style.display="block";const r=el.getBoundingClientRect(),w=t.offsetWidth;let x=Math.min(Math.max(8,r.left+r.width/2-w/2),innerWidth-w-8);let y=r.top-t.offsetHeight-8;if(y<8)y=r.bottom+8;t.style.left=x+"px";t.style.top=y+"px";}
+ function hide(){cur=null;t.style.display="none";}
+ document.addEventListener("mouseover",e=>{const el=e.target.closest("[data-ftip]");if(el)show(el);else if(cur)hide();});
+ document.addEventListener("focusin",e=>{const el=e.target.closest("[data-ftip]");if(el)show(el);});
+ document.addEventListener("focusout",hide);
+ document.addEventListener("click",e=>{const el=e.target.closest("[data-ftip]");if(el&&cur!==el)show(el);else hide();});
+ addEventListener("scroll",hide,{passive:true});})();
 
 /* ---------- SCOPE QUIZ ---------- */
 const Q={
@@ -994,17 +1147,17 @@ document.querySelectorAll("#casetabs button").forEach(b=>b.onclick=()=>showCase(
 
 /* ---------- FY2026 PICKER ---------- */
 const OPT=[
- {L:"A",t:"Existing ESRS",d:"Report FY2026 exactly as in FY2025. Best for consistency and teams with processes and auditor alignment already in place."},
- {L:"B",t:"Existing ESRS plus reliefs",d:"Keep the 2023 standards and add up to eight reliefs from the revised ESRS 1: top-down materiality, undue cost and value chain limits in the assessment, acquisitions and disposals, non-significant activities, partial value chain scope, joint operations, Taxonomy appendix, executive summary."},
- {L:"C",t:"Revised ESRS in full",d:"Switch a year early. Fewest datapoints and a head start on FY2027, but a bigger change to processes and controls now."}];
+ {L:"A",t:"Keep it as it is",std:"Existing ESRS",src:"Article 2(1)(a), first option",d:"Report your 2026 year exactly like 2025.",eff:1,bi:"Your process works and you want to compare with last year."},
+ {L:"B",t:"Keep it, with shortcuts",std:"Existing ESRS plus reliefs",src:"Article 2(1)(b)",d:"Same standards as 2025, but you may use up to eight shortcuts from the new rules.",eff:2,bi:"Your assessment is heavy, your value chain data has gaps, or you have deals in 2026.",more:"The eight shortcuts, with their ESRS 1 paragraph: top-down materiality (27), undue cost and value chain limits in the assessment (32-33), acquisitions and disposals (74-75), non-significant activities (90), partial value chain scope (91), joint operations (92), Taxonomy appendix (106), executive summary (110)."},
+ {L:"C",t:"Switch early",std:"Revised ESRS in full",src:"Article 2(1)(a), second option",d:"Use the new, slimmer rules one year early. You get the fewest datapoints.",eff:3,bi:"Your systems and auditor are ready for the new structure."}];
 const PQ=[
- {id:"proc",q:"How settled are your FY2025 reporting process and controls?",o:[["solid","Running smoothly",[3,1,0]],["ok","Works, with pain points",[1,2,1]],["weak","Fragile or manual",[0,2,2]]]},
- {id:"effort",q:"How much do you want to cut effort for FY2026?",o:[["low","Little, stability first",[3,1,0]],["mid","Some quick wins",[0,3,1]],["high","As much as possible",[0,1,3]]]},
+ {id:"proc",q:"How settled are your 2025 reporting process and controls?",o:[["solid","Running smoothly",[3,1,0]],["ok","Works, with pain points",[1,2,1]],["weak","Fragile or manual",[0,2,2]]]},
+ {id:"effort",q:"How much do you want to cut effort for 2026?",o:[["low","Little, stability first",[3,1,0]],["mid","Some quick wins",[0,3,1]],["high","As much as possible",[0,1,3]]]},
  {id:"dma",q:"Your current double materiality assessment is…",o:[["fine","Proportionate, works well",[2,1,1]],["heavy","Bottom-up and heavy",[0,3,2]],["redo","Due for a redo anyway",[0,1,3]]]},
- {id:"vc",q:"Value chain data for FY2026?",o:[["good","Mostly available",[2,1,1]],["gaps","Significant gaps",[0,3,2]]]},
+ {id:"vc",q:"Value chain data for 2026?",o:[["good","Mostly available",[2,1,1]],["gaps","Significant gaps",[0,3,2]]]},
  {id:"ma",q:"Acquisitions, disposals or joint operations in 2026?",o:[["no","No",[1,1,1]],["yes","Yes",[0,3,2]]]},
  {id:"ready",q:"Systems and auditor ready for the revised structure now?",o:[["no","Not yet",[2,2,0]],["part","Partly",[1,2,1]],["yes","Yes",[0,1,3]]]},
- {id:"comp",q:"How important is comparability with your FY2025 report?",o:[["high","Very important",[3,2,0]],["low","Less important",[0,1,2]]]}];
+ {id:"comp",q:"How important is comparability with your 2025 report?",o:[["high","Very important",[3,2,0]],["low","Less important",[0,1,2]]]}];
 let P={proc:"ok",effort:"mid",dma:"heavy",vc:"gaps",ma:"no",ready:"part",comp:"high"};
 $("#pick").innerHTML=`<div class="eyebrow">Seven quick questions · example answers pre-filled</div>`+PQ.map(q=>`<div class="pq"><span class="q">${q.q}</span><div class="seg" data-q="${q.id}">${q.o.map(o=>`<button data-v="${o[0]}" aria-pressed="${P[q.id]===o[0]}">${o[1]}</button>`).join("")}</div></div>`).join("");
 document.querySelectorAll(".seg").forEach(s=>s.querySelectorAll("button").forEach(b=>b.onclick=()=>{P[s.dataset.q]=b.dataset.v;s.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));scorePick();}));
@@ -1019,7 +1172,8 @@ const REASON={
 function scorePick(){
  const s=[0,0,0];PQ.forEach(q=>{const o=q.o.find(o=>o[0]===P[q.id]);o[2].forEach((v,i)=>s[i]+=v);});
  const max=Math.max(...s),best=s.indexOf(max);
- $("#opts3").innerHTML=OPT.map((o,i)=>`<div class="o3 ${i===best?"best":""}">${i===best?'<span class="bestlbl">Best fit</span>':""}<span class="L">${o.L}</span><h3>${o.t}</h3><p>${o.d}</p><div class="meter" aria-label="Fit score ${s[i]}"><i style="width:${s[i]/max*100}%"></i></div></div>`).join("");
+ const tot=PQ.reduce((a,q)=>a+Math.max(...q.o.map(o=>Math.max(...o[2]))),0);
+ $("#opts3").innerHTML=OPT.map((o,i)=>`<div class="o3 ${i===best?"best":""}">${i===best?'<span class="bestlbl">Looks best for you</span>':""}<span class="src" data-ftip="Source: Delegated Regulation (EU) 2026/1563, ${o.src}" aria-hidden="true">i</span><span class="L">${o.L}</span><h3>${o.t}</h3><small class="std2">${o.std}</small><p>${o.d}</p><div class="eff"><small>Effort now</small><span class="dots" role="img" aria-label="${["","low","medium","high"][o.eff]}">${[1,2,3].map(n=>`<i class="${n<=o.eff?"on":""}"></i>`).join("")}</span></div><p class="mean"><b>Best if</b> ${o.bi}</p>${o.more?`<details class="o3more"><summary>The eight shortcuts</summary><p>${o.more.replace(/^The eight shortcuts, with their ESRS 1 paragraph: /,"")}</p></details>`:""}<div class="fit"><small>Matches your answers</small><div class="meter" role="img" aria-label="Fit ${s[i]} of ${tot}"><i style="width:${s[i]/tot*100}%"></i></div></div></div>`).join("");
  const rs=PQ.map(q=>REASON[q.id][P[q.id]]).filter(Boolean);
  $("#pickres").innerHTML=`<div class="planes" aria-hidden="true"><i class="p1"></i><i class="p2"></i><i class="p3"></i></div><div class="eyebrow" style="color:var(--olive)">Recommendation</div><h3>Route ${OPT[best].L}: ${OPT[best].t}</h3>${gateWrap(`<ul>${rs.map(r=>`<li>${r}</li>`).join("")}</ul>`,"The reasons behind your route")}<p class="qhelp">This recommendation is our reading of your answers, not a legal requirement. Whichever route you choose, state clearly in the report which version you applied, and agree it with your auditor early.</p>`;}
 scorePick();
@@ -1058,7 +1212,7 @@ function buildPdf(meta){
  const ink=[23,48,46],teal=[23,99,92],coral=[226,85,63],muted=[86,107,103],soft=[214,235,229],yellow=[255,224,102];
  d.setFillColor(...ink);d.rect(0,0,W,34,"F");
  d.setFillColor(...yellow);d.circle(M+1.5,11,1.5,"F");
- d.setTextColor(238,243,240);d.setFont("helvetica","bold");d.setFontSize(9);d.text("GREENFRIEND  ·  ELENA & ANIKA",M+5,12);
+ d.setTextColor(238,243,240);d.setFont("helvetica","bold");d.setFontSize(9);d.text("GREENFRIEND",M+5,12);
  d.setFontSize(17);d.text("Your revised ESRS one-pager",M,23);
  d.setFont("helvetica","normal");d.setFontSize(8.5);
  const who=[meta.name,meta.company].filter(Boolean).join(", ");
@@ -1096,7 +1250,7 @@ function buildPdf(meta){
  const fy=297-30;d.setFillColor(...ink);d.rect(0,fy,W,30,"F");
  d.setTextColor(238,243,240);d.setFont("helvetica","bold");d.setFontSize(11);d.text("Report what you do.",M,fy+9);
  d.setFont("helvetica","normal");d.setFontSize(8.5);
- d.text(pdfText("Want a second opinion? Book a free 20-minute call with Elena Zayakova and Anika Lerch at greenfriend.org"),M,fy+15);
+ d.text(pdfText("Want a second opinion? Book a free 20-minute call at greenfriend.org"),M,fy+15);
  d.setFontSize(6.5);d.setTextColor(180,200,195);
  d.text(d.splitTextToSize("Indicative reading of Directive (EU) 2026/470 and the revised ESRS (Delegated Regulation (EU) 2026/1563). Not legal advice. Confirm your position with your auditor or legal adviser.",CW),M,fy+21);
  return d.output("blob");}
@@ -1105,23 +1259,34 @@ function buildPdf(meta){
 function previewHTML(meta){
  const s=scopeSnap(),pk=pickSnap(),e=estSnap(),who=[meta.name,meta.company].filter(Boolean).join(", ");
  const li=a=>a.map(x=>`<li>${x}</li>`).join("");
- return`<div class="pv-head"><span class="pv-brand">greenfriend · Elena &amp; Anika</span><b>Your revised ESRS one-pager</b><span>${who?who+" · ":""}Prepared ${new Date().toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"})}</span></div>
+ return`<div class="pv-head"><span class="pv-brand">greenfriend</span><b>Your revised ESRS one-pager</b><span>${who?who+" · ":""}Prepared ${new Date().toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"})}</span></div>
  <div class="pv-body">
   <div class="pv-sec"><span class="pv-k">1 Are you in scope?</span>${s?`<div class="pv-box"><small>${s.badge}</small><b>${s.head}</b></div><ul>${li(s.list)}</ul>`:'<p class="pv-muted">Scope check not completed.</p>'}</div>
   <div class="pv-sec"><span class="pv-k">2 Your FY2026 route</span><b>${pk.route}</b><ul>${li(pk.reasons)}</ul></div>
   <div class="pv-sec"><span class="pv-k">3 Your datapoints</span><p class="pv-num"><b>${e.old}</b> → <b class="t">${e.now}</b> <span>−${Math.round((1-e.now/e.old)*100)}%</span></p><p class="pv-muted">ESRS 2 plus ${e.topics.join(", ")||"no topical standards"}.</p></div>
   <div class="pv-sec"><span class="pv-k">4 Dates to plan around</span><ul><li>10 Nov 2026: revised ESRS in force</li><li>19 Mar 2027: transposition deadline</li><li>FY2027: revised ESRS mandatory</li></ul></div>
  </div>
- <div class="pv-foot"><b>Report what you do.</b> Book a free 20-minute call with Elena and Anika at greenfriend.org</div>`;}
-$("#op-form").addEventListener("submit",e=>{
+ <div class="pv-foot"><b>Report what you do.</b> Want a second opinion? Book a free 20-minute call at greenfriend.org</div>`;}
+
+function wire(p){
+ const ints=[...document.querySelectorAll("."+p+"-int")],cons=$("#"+p+"-consent");
+ ints.forEach(i=>i.addEventListener("change",()=>{if(ints.some(x=>x.checked))cons.checked=true;}));
+}
+wire("op");wire("gate");
+function submitForm(p,e){
  e.preventDefault();
- const msg=$("#op-msg"),email=$("#op-email").value.trim();
- msg.className="op-msg";
- if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){msg.className="op-msg err";msg.textContent="Enter a valid email address, for example name@company.com.";$("#op-email").focus();return;}
- const meta={email,name:"",company:$("#op-company").value.trim()};
- const pv=$("#op-preview");pv.innerHTML=previewHTML(meta);pv.hidden=false;
- unlock();msg.className="op-msg ok";msg.textContent="Unlocked. Your one-pager preview is below; in the live version the PDF arrives at "+email+".";
- pv.scrollIntoView({behavior:"smooth",block:"nearest"});});
+ const msg=$("#"+p+"-msg"),email=$("#"+p+"-email").value.trim();msg.className="op-msg";
+ 
+ if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)||email.length>254){msg.className="op-msg err";msg.textContent="Enter a valid email address, for example name@company.com.";$("#"+p+"-email").focus();return;}
+ const company="";
+ $("#op-email").value=email;
+ const pv=$("#op-preview");pv.innerHTML=previewHTML({email,name:"",company});pv.hidden=false;
+ unlock();if(p==="gate")closeGate();
+ const m=$("#op-msg");m.className="op-msg ok";m.textContent="Unlocked. Your one-pager is downloading. (Mockup: shown below instead of a file.)";
+ $("#op-again").hidden=false;
+ pv.scrollIntoView({behavior:"smooth",block:"nearest"});}
+$("#op-form").addEventListener("submit",e=>submitForm("op",e));
+$("#op-again").onclick=()=>{$("#op-preview").scrollIntoView({behavior:"smooth",block:"nearest"});};
 
 /* ---------- UNLOCK (mockup) ---------- */
 function rerenderGated(){renderR();scorePick();showStd(curStd);showCase(curCase);opStatus();}
@@ -1133,15 +1298,23 @@ document.addEventListener("click",e=>{if(e.target.closest(".unlock")){e.preventD
 $("#gate-x").onclick=closeGate;
 gate.addEventListener("click",e=>{if(e.target===gate)closeGate();});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!gate.hidden)closeGate();});
-$("#gate-form").addEventListener("submit",e=>{e.preventDefault();const em=$("#gate-email").value.trim(),m=$("#gate-msg");
- if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em)){m.className="op-msg err";m.textContent="Enter a valid email address, for example name@company.com.";return;}
- $("#op-email").value=em;$("#op-company").value=$("#gate-company").value;unlock();closeGate();
- $("#op-preview").innerHTML=previewHTML({email:em,name:"",company:$("#gate-company").value.trim()});$("#op-preview").hidden=false;
- $("#op-msg").className="op-msg ok";$("#op-msg").textContent="Unlocked. In the live version your PDF arrives at "+em+".";});
-$("#relock").onclick=()=>{UNLOCKED=false;try{localStorage.removeItem("esrs-unlocked");}catch(e){}$("#op-preview").hidden=true;$("#op-msg").textContent="";rerenderGated();};
+$("#gate-form").addEventListener("submit",e=>submitForm("gate",e));
+$("#relock").onclick=()=>{UNLOCKED=false;try{localStorage.removeItem("esrs-unlocked");}catch(e){}$("#op-preview").hidden=true;$("#op-msg").textContent="";$("#op-again").hidden=true;rerenderGated();};
 
+function route(){document.body.classList.toggle("pvon",location.hash==="#privacy");if(location.hash==="#privacy")scrollTo(0,0);}
+addEventListener("hashchange",route);route();
+/* hover opens, click toggles (about section) */
+if(matchMedia("(hover:hover)").matches)document.querySelectorAll(".about .hov").forEach(d=>{d.addEventListener("mouseenter",()=>d.open=true);d.addEventListener("mouseleave",()=>d.open=false);});
 /* nav highlight */
 const links=[...document.querySelectorAll("nav.chapters a")];
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle("on",a.getAttribute("href")==="#"+e.target.id));}),{rootMargin:"-40% 0px -55% 0px"});
-document.querySelectorAll("section.ch").forEach(s=>io.observe(s));
+const secs=links.map(a=>document.querySelector(a.getAttribute("href"))).filter(Boolean);
+const navEl=document.querySelector("nav.chapters");let lastOn=null,tick=false;
+function spy(){tick=false;
+ const y=innerHeight*0.3;let cur=null;
+ secs.forEach(s=>{if(s.getBoundingClientRect().top<=y)cur=s;});
+ if(innerHeight+scrollY>=document.documentElement.scrollHeight-4)cur=secs[secs.length-1];
+ const id=cur?"#"+cur.id:null;if(id===lastOn)return;lastOn=id;
+ links.forEach(a=>{const on=a.getAttribute("href")===id;a.classList.toggle("on",on);if(on)a.setAttribute("aria-current","true");else a.removeAttribute("aria-current");
+  if(on){const w=a.parentElement;w.scrollTo({left:a.offsetLeft-w.offsetLeft-24,behavior:"smooth"});}});}
+addEventListener("scroll",()=>{if(!tick){tick=true;requestAnimationFrame(spy);}},{passive:true});addEventListener("resize",spy);addEventListener("hashchange",()=>setTimeout(spy,50));spy();
 </script>

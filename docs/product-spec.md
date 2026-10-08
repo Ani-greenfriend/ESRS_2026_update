@@ -1,6 +1,6 @@
 # Product Spec — ESRS 2026 Update Check
 
-**Version:** 1.1
+**Version:** 1.9
 **Date:** 7 October 2026
 **Author:** Anika Lerch (greenfriend)
 **Status:** Confirmed
@@ -149,9 +149,9 @@
 | created_at | Date and time of unlock | Timestamp (UTC) | Automatic | Yes |
 | email | Work email | Text, lower-cased, max 254 characters | Visitor | Yes (until anonymised) |
 | company | Company name | Text, max 120 characters | Visitor | No |
-| industry | Industry | Text, one of the fixed list in Section 8 | Visitor | No |
+| industry | Industry | Text. Not collected in v1; stays empty | Visitor | No |
 | consent_contact | "I'd like greenfriend to contact me about my results" | Boolean, default false | Visitor | Yes |
-| interests | Services of interest | Text array, values from the fixed list in Section 8 | Visitor | No |
+| interests | Services of interest | Text array. Not collected in v1 (form removed in v1.7); stays empty | Visitor | No |
 | consent_at | When contact consent was given | Timestamp, null if no consent | Automatic | If consent |
 | notice_version | Version of the privacy notice shown | Text, e.g. "2026-10-07" | Automatic | Yes |
 | scope_badge | Scope verdict label | Text, e.g. "In scope from FY2027" | Calculated | No (null if not completed) |
@@ -201,23 +201,23 @@ Not applicable in this build (A1, no login).
 
 **GDPR outcome:** Applies. Personal data is collected through the unlock form.
 
-**Personal data collected:** work email address; company name (optional). Industry, answers and results are not personal data on their own but are linked to the email until anonymisation.
+**Personal data collected:** work email address; no company name or industry in v1. Answers and results are not personal data on their own but are linked to the email until anonymisation.
 
 **Lawful basis (two purposes):**
 1. **Delivering the requested results and recording the request.** Basis: legitimate interest (the visitor asks for their results; greenfriend records the request and understands demand). Email required.
-2. **Contacting the person about their results and the services they ticked.** Basis: consent, through an unticked checkbox. Ticking any service of interest also ticks the consent box. Consent is **never** a condition for getting the PDF.
+2. **Contacting the person about their results.** Basis: consent, through an unticked checkbox. No newsletter is sent. Consent is **never** a condition for getting the PDF.
 
 The basis was derived during the architect interview as a starting point; it is to be signed off by greenfriend's privacy contact (anikalerch@greenfriend.org).
 
 **Notice on the form:** Yes, always (short version under the form, with a link to the full notice view). **Consent checkbox:** yes, for purpose 2 only; not pre-ticked; the tick is recorded with `consent_at` and `notice_version`.
 
 **Short notice shown under the unlock form:**
-> We use your email to send you your results and to record your request (legitimate interest). We only contact you if you tick the box above (consent, which you can withdraw at any time). Without consent, your email and company are deleted after 30 days; all data is deleted after 24 months. Full privacy notice →
+> We use your email to send you your results and to record your request (legitimate interest). We only contact you if you tick the box above (consent, which you can withdraw at any time). Without consent, your email is deleted after 30 days; all data is deleted after 24 months. Full privacy notice →
 
 **Full privacy notice (own view, see Section 8), covering the six required points without personal names:**
 > **Who is responsible:** greenfriend, Amsterdam, the Netherlands (KVK 91346169). Contact for all privacy questions: anikalerch@greenfriend.org.
-> **What we collect:** your work email, and optionally your company name and industry, your answers in this tool and the results calculated from them, the services you ticked, and where your visit came from (a campaign tag in the link, if any).
-> **Why and on what basis:** to give you your results and record your request (legitimate interest); to contact you about your results and the services you ticked, only if you ticked the box (consent).
+> **What we collect:** your work email, and your answers in this tool and the results calculated from them, and where your visit came from (a campaign tag in the link, if any).
+> **Why and on what basis:** to give you your results and record your request (legitimate interest); to contact you about your results, only if you ticked the box (consent).
 > **How long:** if you did not consent to contact, your email and company name are deleted after 30 days and only anonymous results stay. All data is deleted after 24 months.
 > **Who else processes it:** Supabase (database, EU region Frankfurt), Netlify (hosting). Fonts are served from this site, and no analytics or tracking cookies are used. Your unlock is remembered in your own browser only.
 > **Your rights:** access, correction, deletion, objection, restriction, data portability and withdrawing consent at any time, by emailing anikalerch@greenfriend.org. You can complain to the Dutch Data Protection Authority (Autoriteit Persoonsgegevens).
@@ -235,50 +235,55 @@ The basis was derived during the architect interview as a starting point; it is 
 
 ## Section 8 — Screen and UI Structure
 
-One long single page with a sticky chapter menu, plus a separate privacy notice view and an unlock dialog. **The prototype file is the reference for all copy, data tables and layout.** Remove its "Preview" badges and the "Mockup controls / Lock again" footer button. Change the brand line to read "greenfriend." with no personal names on the cover.
+One long single page with a sticky chapter menu, plus a separate privacy notice view and an unlock dialog. **The reference mockup (docs/reference/prototype-reference.html, the final mockup of spec v1.9) is the reference for all copy, data tables, layout and voice.** In the build, remove its "Mockup only / Lock again" footer button and the on-page PDF preview (the real PDF downloads instead), and load fonts from the repo, not from Google. The brand line reads "greenfriend." with no personal names on the cover.
+
+**Voice and layout rules (v1.9).** Friendly supporter for sustainability managers and C-level: warm, light, plain words, "we", no jokes. Every chapter opens with a one-line **short answer** marked with a yellow bar. A small line icon sits in each chapter eyebrow. Where it helps the reader, a yellow **For you** line says what it means for them, and an **Our tip** line closes a section. Disclaimers appear as **Good to know** tips. Detail and fine print sit behind toggles or hover (hover, keyboard focus and tap all work, since phones have no hover). Sources sit behind a small *i* icon. Tooltips that must not be clipped by a scrolling area use one floating tooltip element.
 
 Below, **[locked]** marks content that is blurred with an "Unlock your action plan" bar until the visitor unlocks.
 
 ### Cover
 - **Purpose:** Hook and urgency.
-- **What is visible:** Dark ink band (#17302e) with overlapping translucent colour planes on the right (teal, coral, yellow, lilac; diagonal, blending; slow drift, disabled under reduced motion; faded on phones); brand line "greenfriend."; H1 "The revised ESRS, in five minutes"; lede; alert strip with yellow left border: "The revised ESRS apply from **10 Nov 2026**. Reporting on FY2026? Choose your route now." with a link to the FY2026 section; three mono "stamp" pills (Omnibus I · Directive (EU) 2026/470; Revised ESRS · Reg. (EU) 2026/1563; Status [rules date]); one line "Independent tool by greenfriend. Not affiliated with EFRAG or the European Commission."
+- **What is visible:** Dark ink band (#17302e) with overlapping translucent colour planes on the right (teal, coral, yellow, lilac; diagonal, blending; slow drift, disabled under reduced motion; faded on phones); brand line "greenfriend."; H1 "The revised ESRS, in five minutes"; lede; alert strip with yellow left border: "The revised ESRS apply from **10 Nov 2026**. Reporting on 2026? Choose your route now." with a link to the FY2026 section; three mono "stamp" pills (Omnibus I · Directive (EU) 2026/470; Revised ESRS · Reg. (EU) 2026/1563; Status [rules date]); one line "Independent tool by greenfriend. Not affiliated with EFRAG or the European Commission."
 - **User actions:** jump to FY2026.
 
+### The 30-second version (strip under the menu)
+- Three tiles with an icon each: **Up to 323** datapoints if every topic is material (yours will be fewer; it was 1,052) · **1,000 + €450M** employees and turnover, EU companies must exceed both · **FY2027** first year the revised ESRS are mandatory for everyone in scope.
+
 ### Sticky chapter menu
-- What changed · Datapoints · Who reports when · Check your scope · Non-EU groups · Example cases · FY2026 options · Get the PDF · Who we are. The active chapter is highlighted while scrolling. Scrolls sideways on phones.
+- What changed · Datapoints · Who reports when · Check your scope · Non-EU groups · Example cases · Your 2026 route · Get the PDF · Who we are. The active chapter follows the scroll position (scroll listener; "Who we are" is active at the bottom of the page; none on the cover) and the active link stays in view on phones.
 
 ### What changed
-- Six expandable cards (number, title, one line; detail list on click): Fewer companies in scope (~80%) · 323 datapoints in total · Top-down materiality · VSME value chain cap · 3 FY2026 routes · Assurance stays limited. Below them, a horizontal key-dates timeline: 26 Feb 2026, 18 Mar 2026, 3 Jul 2026, 21 Sep 2026, 10 Nov 2026 (highlighted "now"), 19 Mar 2027 (coral), FY2027.
+- Heading "Six things changed, the short version". Six expandable cards (number, title, one line; detail list on click, closed by default; an *i* icon with the source on hover and a "Source" line inside): Fewer companies in scope (~80%) · 323 datapoints in total · Top-down materiality · VSME value chain cap · 3 FY2026 routes · Assurance stays limited. Below them, a horizontal key-dates timeline: 26 Feb 2026, 18 Mar 2026, 3 Jul 2026, 21 Sep 2026, 10 Nov 2026 (highlighted "now"), 19 Mar 2027 (coral), FY2027.
 
 ### Datapoints
-- **Fact sheet:** dot chart (108 dots ≈ 10 datapoints each: 29 kept mandatory, 3 new general, 49 removed mandatory, 27 removed voluntary) with legend, and a bucket table: Mandatory "shall" 783 → 292 (of which 195 apply whenever the topic is material); Voluntary "may" 269 → 0; Policies, actions, targets, metrics "separate*" → 31; Total 1,052* → 323. Headline figures −63% mandatory and −72% mandatory plus voluntary, with the footnote about 2023 MDR counting.
-- **Your own number (estimator):** ten topic checkboxes (E1 Climate change, E2 Pollution, E3 Water, E4 Biodiversity, E5 Resource use, S1 Own workforce, S2 Value chain workers, S3 Communities, S4 Consumers, G1 Business conduct; default ticked: E1, E5, S1, S2, G1). Output: "You go from X to Y datapoints. That is Z% fewer." plus three bars (2023, revised, unconditional).
-- **Standard by standard:** 12 cards (ESRS 2, GDR, E1–E5, S1–S4, G1) showing "2023 → revised" counts and a tag. The selected standard's panel shows count bars, key changes (pill "Removed / Changed / Relief / Unchanged" + text), and **Disclosure requirements**: one row per requirement with the code, a plain-language summary (ours), the official title from the regulation (small), the datapoint count, the conditional count and phase-in chips for the chosen company type (selector: Wave 1 above thresholds / Wave 1 below / First report FY2027 or later), a "Hide conditional" toggle and a search box (searches codes, titles and summaries). **[locked]** after the first 3 requirements, with "See all N disclosure requirements and M datapoints for [standard]". Link below: "Read the full text in EFRAG's ESRS Knowledge Hub" (https://knowledgehub.efrag.org, new tab). **No EFRAG datapoint names or IDs anywhere**, including the page source.
+- **Fact sheet:** dot chart (108 dots ≈ 10 datapoints each: 29 kept mandatory, 3 new general, 49 removed mandatory, 27 removed voluntary; the legend shows the exact counts 292 / 31 / 491 / 269, and a caption explains that the dots show the 1,052 old datapoints plus the 31 new ones, 1,083 in all, so 1,052 − 491 − 269 = 292, plus 31 = 323) with legend, and a bucket table: Mandatory "shall" 783 → 292 (of which 195 apply whenever the topic is material); Voluntary "may" 269 → 0; Policies, actions, targets, metrics "separate*" → 31; Total 1,052* → 323. Under the bucket table a closed toggle "Why the numbers differ between sources" explains: 323 = 292 + 31, all counts from EFRAG's 2026 draft list and explanatory note only (no figures from other sources); EFRAG's spreadsheet has 30 heading rows (3 per topic standard) pointing to the general datapoints and 6 technical ESRS 2 BP-1 rows that are not counted (E1: 87 rows, 84 datapoints); percentages: −63% mandatory (783 to 292), −72% mandatory plus voluntary (1,052 to 292), −69% with the 31 (1,052 to 323). In the drill-down the three requirements that apply GDR-P, GDR-A and GDR-T (for example E1-4, E1-5, E1-6) carry the chip "also refers to the general policy/action/target datapoints (not counted twice)". Headline figures −63% mandatory and −72% mandatory plus voluntary, with the footnote about 2023 MDR counting.
+- **Your own number (estimator):** ten topic checkboxes (E1 Climate change, E2 Pollution, E3 Water, E4 Biodiversity, E5 Resource use, S1 Own workforce, S2 Value chain workers, S3 Communities, S4 Consumers, G1 Business conduct; default ticked: E1, E5, S1, S2, G1). Output: "You go from X to Y mandatory datapoints. That is Z% fewer." plus three bars (2023, revised, unconditional), then a highlighted line: "Plus 31 general datapoints on policies, actions, targets and metrics. They apply whatever topics you tick, so your total is Y+31 (Y + 31). With all ten topics ticked that is 323." The 31 are never part of the topic counts or the percentage (like-for-like: mandatory 783 vs 292).
+- **Standard by standard:** 12 cards (ESRS 2, GDR, E1–E5, S1–S4, G1) showing "2023 → revised" counts and a tag. Each tag is explained: tooltip on hover and on keyboard focus of the card, the meaning as a line at the top of the selected standard's panel, and a "What do the labels mean?" list under the cards for touch. Meanings: Always applies = ESRS 2 general disclosures apply whichever topics are material; Per policy / action = the 31 general datapoints repeat for each policy, action, target or metric; Changed = content or rules changed, not only fewer datapoints; Trimmed = datapoints cut, voluntary removed, otherwise similar; Phase-in = relief to leave out part or all of the standard in the first years (wave 1 until FY2027, new reporters first two years). The selected standard's panel shows count bars, key changes (pill "Removed / Changed / Relief / Unchanged" + text), and **Disclosure requirements**: one row per requirement with the code, a plain-language summary (ours), the official title from the regulation (small), the datapoint count, the conditional count and phase-in chips for the chosen company type (selector: Wave 1 above thresholds / Wave 1 below / First report FY2027 or later), a "Hide conditional" toggle and a search box (searches codes, titles and summaries). **[locked]** after the first 3 requirements, with "See all N disclosure requirements and M datapoints for [standard]". Link below: "Read the full text in EFRAG's ESRS Knowledge Hub" (https://knowledgehub.efrag.org, new tab). **No EFRAG datapoint names or IDs anywhere**, including the page source.
 
 ### Who reports when
-- Two threshold cards (EU: >1,000 employees AND >€450M net turnover on the balance sheet date; non-EU Article 40a: >€450M EU turnover in each of the last two years AND an EU subsidiary or branch >€200M), each with the old thresholds. A timeline table (FY2024–FY2028) for six cohorts, with colour-coded cells and a key.
+- Heading "Do you have to report? Two quick tests", short answer "EU companies report from FY2027 if they pass both tests. Non-EU groups follow from FY2028." Two threshold cards (EU: >1,000 employees AND >€450M net turnover on the balance sheet date; non-EU Article 40a: >€450M EU turnover in each of the last two years AND an EU subsidiary or branch >€200M), each with a "For you" line and the old thresholds. A timeline table (FY2024–FY2028) for six cohorts, with colour-coded cells (revised-ESRS cells striped) and a key. Every cell and key item explains itself on hover, focus and tap (group, year, meaning).
 
 ### Check your scope
 - Left: one question at a time with progress bar, Back and Start again. Right: "Your reading", showing answers so far, then the verdict: badge + headline (free) and reasons and next steps **[locked]**, with buttons "Pick your FY2026 route" (when relevant) and "Get this as a PDF".
 
 ### Non-EU groups
-- Two route cards (EU subsidiary from FY2027; Article 40a from FY2028) and a three-step flow.
+- Heading "Outside the EU? Two ways in". Two route cards (EU subsidiary from FY2027; Article 40a from FY2028), each with an icon, a "For you" line and "The fine print" toggle; a three-step flow with icons and one-liners (add up EU turnover, find the anchor entity, plan the first report; "Good to know" toggle); an "Our tip" line.
 
 ### Example cases
 - Seven tabs (Dutch group, Large daughter, Wave 1 now too small, US group mid-size EU, US group big EU daughter, Swiss group below EU line, Branch only), each with an org chart (parent → subsidiaries, status chip per entity, dashed border for non-EU) and a "Why" list. Cases 1–2 are free; tabs 3–7 show a lock icon, and their "Why" is **[locked]**.
 
-### FY2026 options
-- Three route cards (A, B, C) with fit meters; "Best fit" label on the winner. Seven questions as segmented buttons, pre-filled with example answers. Recommendation panel (dark, with colour planes): route name (free), reasons **[locked]**, and the "our reading, not a legal requirement" note.
+### Your 2026 route (chapter id fy2026)
+- Heading "Which route should you take for your 2026 report?". Three route cards: A "Keep it as it is" (Existing ESRS), B "Keep it, with shortcuts" (Existing ESRS plus reliefs; "The eight shortcuts" toggle with their ESRS 1 paragraphs), C "Switch early" (Revised ESRS in full). Each card: plain name, official name small, one line, three effort dots, a "Best if" line, an *i* icon with the source (Delegated Regulation (EU) 2026/1563, Article 2(1)(a) or (b)), bar "Matches your answers"; label "Looks best for you" on the winner. Seven questions as segmented buttons, pre-filled with example answers. Recommendation panel (dark, with colour planes): route name (free), reasons **[locked]**, and the "our reading, not a legal requirement" note.
 
 ### Unlock your action plan (section) and Unlock dialog
 - **Purpose:** collect the lead and deliver the PDF.
-- **What is visible (section):** "Unlock your full action plan", a list of what unlocks, a status list (scope done? route from example answers? datapoints), and the form. **Dialog:** opens from every "Unlock your action plan" button, with the same form. Closes on ×, Escape or backdrop click.
-- **Form fields:** Work email (required; format check on the page and in the function); Company (optional); Industry (optional dropdown: Energy and utilities, Automotive, FMCG and food, Industrial and manufacturing, Chemicals, Financial services, Retail, Tech, Other); checkbox "I'd like greenfriend to contact me about my results" (unticked); "Interested in (optional)" checkboxes: DMA and strategy development · Governance · Reporting and assurance · Custom tool and dashboard builds · FY2026 (ticking any of them ticks the contact box); button "Unlock my action plan"; the short privacy notice (Section 7) with a link to the full notice view.
+- **What is visible (section):** "Want it all on one page?" (dialog: "Unlock your full action plan"), four numbered squares (Scope result, FY2026 route, All requirements, One-page PDF), a status list (scope done? route from example answers? datapoints), and the form. **Dialog:** opens from every "Unlock your action plan" button, with the same form. Closes on ×, Escape or backdrop click.
+- **Form fields:** Work email (required; format check on the page and in the function); nothing else. **Email only, to keep the commitment feeling small (v1.7).** Company, industry and interests are not asked in v1 (their columns stay in the table, empty, for later); checkbox "greenfriend may contact me about my results (optional)" (unticked; no newsletter, no updates list); button "Get it free"; one-line notice "Free. We use your email only to send your results. We contact you only if you tick the box." with a link to the full notice view (Section 7 has the full text).
 - **User actions:** submit.
 - **What happens next:** the submit function validates and stores. On success, everything unlocks (flag kept in browser storage), the PDF downloads automatically, and a confirmation reads "Unlocked. Your one-pager is downloading." with a "Download again" button. On error: a plain message saying what went wrong (invalid email format, server unavailable); nothing unlocks; the visitor can retry.
 
 ### Who we are and how we help
-- Pitch (H2 "We help companies report what they actually do" + lede + pull quote); **How we work differently**: three numbered cards (You work with us, not a junior team · Inside experience, consulting and tech in one team · Strategy first, box-ticking last); two profile cards: **Anika Lerch, MSc** (Founder, greenfriend · Strategy, governance and CSRD; four bullets as in the prototype; LinkedIn link) and **Elena Zayakova, MSc** (Founder, CoreWorks Consultancy · Strategy, reporting and governance; four bullets; LinkedIn link), using initials avatars until photos are supplied; **How we help, step by step**: steps 0–4 (Know where you stand · Find what really matters · Turn topics into goals · Make clear who owns what · Report what you did), each with "What we do" and "You get".
+- Eyebrow "Hi, we are Anika and Elena". Pitch (H2 "We help companies report what they actually do" + lede + pull quote); **How we work differently**: three numbered cards showing only a title, the sentence opens on hover or tap (You work with us, not a junior team · Inside experience, consulting and tech · Strategy first, box-ticking last); two profile cards, each with three short chips and a "More about" toggle holding the bullets: **Anika Lerch, MSc** (Founder, greenfriend · Strategy, governance and CSRD; four bullets as in the prototype; LinkedIn link) and **Elena Zayakova, MSc** (Founder, CoreWorks Consultancy · Strategy, reporting and governance; four bullets; LinkedIn link), using initials avatars until photos are supplied; **How we help, step by step**: steps 0–4 (Know where you stand · Find what really matters · Turn topics into goals · Make clear who owns what · Report what you did). Steps 1–4 show a yellow service label under the title (1 Double materiality assessment · 2 Strategy · 3 Governance · 4 Reporting) and one plain sentence; "What we do" and "You get" sit behind a "What we do and what you get" toggle, closed by default, to keep the section short.
 
 ### Footer
 - CTA box (teal, with colour planes): "Report what you do." + text + "greenfriend.org" in a yellow tag; disclaimer; data source line (EFRAG draft list, non-authoritative); sources links; link to the privacy notice.
@@ -359,7 +364,7 @@ All logic below is implemented in the browser as pure functions with unit tests.
 
 ## Section 10 — Brand and Visual Direction
 
-**Brand reference:** No brand skill file. Version "A" of the prototype defines the look.
+**Brand reference:** No brand skill file. The final mockup (docs/reference/prototype-reference.html) defines the look, copy and voice.
 
 - **Colour tokens (light):**
   - bg #eef3f0, surface #ffffff, sunk #e3ebe7, line #d0dcd6
@@ -373,7 +378,7 @@ All logic below is implemented in the browser as pure functions with unit tests.
 - **Fonts:** Literata (headings, 500/700/800), Figtree (body, 400–700), DM Mono (stamps, IDs, small labels). **All self-hosted** (WOFF2 in the repo), never from Google Fonts.
 - **Logo:** none. Text brand "greenfriend." with a yellow dot.
 
-**Visual feel:** calm, factual and friendly, with attention only where action is needed.
+**Visual feel:** calm, factual and friendly, light and easy to read, with attention only where action is needed. Icons are simple 2 px line icons in the chapter eyebrows, tiles and steps; yellow marks short answers, "For you" and tips.
 - Yellow highlighter strokes behind key numbers.
 - Coral for deadlines and the unlock buttons.
 - Thick ink top border on the scope box, estimator and unlock box.
@@ -382,7 +387,7 @@ All logic below is implemented in the browser as pure functions with unit tests.
 - Phone-ready at 375 px with no sideways page scroll.
 - Reduced-motion respected.
 
-**Reference:** `docs/reference/prototype-reference.html` (version A). The calm variant is **not** used.
+**Reference:** `docs/reference/prototype-reference.html` (the final mockup). There is no second variant.
 
 ---
 
@@ -441,15 +446,15 @@ All logic below is implemented in the browser as pure functions with unit tests.
 | 3 | Fonts self-hosted, no third-party requests | Network tab shows no requests to Google or any host except the site itself | [ ] |
 | 4 | Scope check, EU and non-EU paths | Each prototype verdict reproduces for its answer path (unit tests cover every path) | [ ] |
 | 5 | FY2026 route | Example answers give Route B; a tie gives the earlier route; reasons match the table | [ ] |
-| 6 | Estimator | Default ticks give 569 → 237 (−58%), 163 unconditional; all ticked gives 783 → 292 (195 unconditional) | [ ] |
+| 6 | Estimator | Default ticks give 569 → 237 (−58%), 163 unconditional; all ticked gives 783 → 292 (195 unconditional); a line below shows the total with the 31 general datapoints (defaults 237 + 31 = 268; all ticked 292 + 31 = 323) | [ ] |
 | 7 | Drill-down | E1 shows 11 requirements, 84 datapoints; the page source contains no "ESRS26_" IDs or EFRAG datapoint names | [ ] |
 | 8 | Gating before unlock | Scope reasons, route reasons, cases 3–7 and requirements beyond 3 are blurred with unlock bars | [ ] |
 | 9 | Unlock with a valid email | One row in `unlocks` with correct fields; everything unlocks; the PDF downloads automatically; reload keeps it unlocked | [ ] |
 | 10 | Invalid email / body over 16 KB | The function refuses; a clear error shows; nothing unlocks; no row | [ ] |
-| 11 | Consent logic | Unticked by default; ticking an interest ticks consent; PDF works without consent; `consent_at` set only with consent | [ ] |
+| 11 | Consent logic | Unticked by default; PDF works without consent; `consent_at` set only with consent | [ ] |
 | 12 | Supersede | A second unlock with the same email (different case) creates a new row and sets `superseded_by` on the old one | [ ] |
 | 13 | No browser access to the database | A direct call with the publishable key to read or insert `unlocks` is refused | [ ] |
-| 14 | PDF | One A4 page matching the design intent; company in header if given; "not completed" text if the scope check was skipped; no broken characters | [ ] |
+| 14 | PDF | One A4 page matching the design intent; no company line in v1 (header names greenfriend only); "not completed" text if the scope check was skipped; no broken characters | [ ] |
 | 15 | Clean-up job | Test rows older than 30 days without consent are anonymised; rows older than 24 months are deleted; the job appears in pg_cron | [ ] |
 | 16 | Privacy notice | `/privacy` shows the full notice; linked from the form and the footer; the short notice sits under the form | [ ] |
 | 17 | No secrets in the bundle | The built JS contains no Supabase key | [ ] |
@@ -510,6 +515,14 @@ All logic below is implemented in the browser as pure functions with unit tests.
 |---------|------|--------------------------|
 | v1.0 | 7 October 2026 | Initial build from prototype version A (Supabase project corrected to the existing empty project jfalwveuccerzeffxftx before build) |
 | v1.1 | 7 October 2026 | Cloudflare Turnstile removed from the first version (builder's decision); the submit function keeps the 16 KB limit and field validation; Turnstile moved to Section 12 |
+| v1.2 | 8 October 2026 | Estimator now explains the 31 general datapoints: a line under the result shows the total (topic datapoints + 31) and that all ten topics give 323 |
+| v1.3 | 8 October 2026 | Services section shortened: steps 1–4 carry a service label and one sentence, details behind a toggle |
+| v1.4 | 8 October 2026 | Datapoint numbers made consistent: a "Why the numbers differ between sources" note under the fact sheet; requirements that apply the GDR content carry a "not counted twice" chip |
+| v1.5 | 8 October 2026 | Number sources: only EFRAG's 2026 draft list and explanatory note (no outside figures); dot-grid legend shows exact counts and the caption reconciles 1,052, 1,083 and 323 |
+| v1.6 | 8 October 2026 | Standard-by-standard labels (Always applies, Per policy / action, Changed, Trimmed, Phase-in) explained: tooltip on hover and keyboard focus, one-line meaning in the standard panel, and a "What do the labels mean?" list for touch. Wording from the datapoint list and change notes only. Dot-grid legend: darker dot colours, hover/focus explanation per legend item that also highlights those dots; short caption. Copy shortened across the page (keep sentences short, detail in disclaimers) |
+| v1.7 | 8 October 2026 | Simpler unlock: email only plus an optional unticked box "greenfriend may contact me about my results" (no newsletter); company, industry and interests removed from the form and the notice; one-line notice; button "Get it free". Table columns unchanged (unused in v1) |
+| v1.8 | 8 October 2026 | Phone-first: viewport meta, no sideways scroll at 375 px, tap targets at least 44 px, 16 px email field (no iOS zoom), full-width button, two-column standard cards on phones. Top nav highlight follows the scroll position, includes "Who we are", and keeps the active link in view on phones. Who-reports-when grid: every square and legend item explains itself on hover, focus and tap; "revised ESRS" squares are striped so they differ from "existing ESRS". FY2026 route cards: one line each plus Standard / Change for you / Best if rows, the eight reliefs in a toggle, bar labelled "Fit with your answers", badge "Best fit for your answers". "Who we are": the three "How we work differently" points show only a title and open on hover or tap; each person shows three short chips and a "More about" toggle (the full bullets); LinkedIn link stays |
+| v1.9 | 8 October 2026 | Lighter, friendlier voice ("friendly supporter", for sustainability managers and C-level): "30-second version" strip with three facts above the first section; friendlier headlines (e.g. "Do you have to report? Two quick tests", "Want it all on one page?", "Hi, we are Anika and Elena"); every section opens with a one-line "short answer" marked with a yellow bar instead of a long intro; a small line icon per section; disclaimers shown as "Good to know" tips; "we" used throughout; fix: the AND connector in the two tests no longer clashes with the unlock card style. 30-second strip: first tile reads "Up to 323 datapoints if every topic is material. Yours will be fewer. It was 1,052."; each tile has an icon (grid, people + euro, calendar). Sources: each "what changed" card has an i icon (hover) and a "Source" line in its detail, and each FY2026 route card names its article. Verified against the provided documents: routes = Delegated Regulation (EU) 2026/1563 Art. 2(1)(a) (existing ESRS or revised ESRS), Art. 2(1)(b) (existing ESRS plus the eight reliefs: ESRS 1 paras 27, 32-33, 74-75, 90, 91, 92, 106, 110), Art. 2(2) (state which version), Art. 3 (in force 10 Nov 2026, applies from FY starting 1 Jan 2027); value chain cap = ESRS 1 para 66 and Delegated Regulation (EU) 2026/1560 Annex II. Scope and assurance cite Directive (EU) 2026/470 without article numbers (not verified). Fix: the "what changed" card details now stay closed until tapped. Advisor voice: a yellow "For you" line (what it means for the reader) on the two threshold cards and the two non-EU route cards, an "Our tip" line, icons on the three steps, fine print behind a "The fine print" toggle. Route cards (2026 report): plain names (A "Keep it as it is", B "Keep it, with shortcuts", C "Switch early") with the official name small under them, three effort dots, a "Best if" line, the source in an i icon, bar "Matches your answers", badge "Looks best for you"; "reporting year 2026" wording in headings and questions; nav label "Your 2026 route". Section 8 rewritten to match the final mockup |
 
 ---
 
