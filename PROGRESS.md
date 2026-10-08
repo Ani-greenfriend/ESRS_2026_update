@@ -27,8 +27,7 @@ Session 2: merged main (spec v1.9, final mockup, updated docs; first-prompt.md m
 [Rule: 3–5 lines maximum. Replace each session — what was built, changed, or fixed.]
 
 ## Remaining work
-- [ ] Apply the clean-up job: supabase/pending/create_cleanup_job.sql via apply_migration (name create_cleanup_job); the builder approves the Supabase confirmation for its DELETE; then move the file into supabase/migrations/ with the recorded version, test with aged test rows, update docs/supabase-setup.md
-- [ ] Merge branch claude/determined-hawking-moo4nu into main (Netlify deploys from main)
+- [ ] Builder: merge PR #1 (branch claude/determined-hawking-moo4nu) into main when the version is ready (Netlify deploys from main)
 - [ ] Builder: confirm the Netlify site is connected to the repo and the Supabase variables exist with the exact names in docs/supabase-setup.md §8, values starting with `sb_`; redeploy
 - [ ] HTTP refusal test as a logged-out visitor with the publishable key (REST read/insert/update/delete on unlocks and profiles, RPC, GraphQL); paste the result into "Refusal test record" in docs/supabase-setup.md §3
 - [ ] Live test of submit-unlock on the deployed site: one row with correct fields; a second unlock with the same email in different case supersedes the first
@@ -63,7 +62,7 @@ Session 2: merged main (spec v1.9, final mockup, updated docs; first-prompt.md m
 
 ## Known issues
 Before going public (builder): send EFRAG (digital-reporting@efrag.org) the courtesy note on using datapoint counts with attribution; have an auditor or partner read the scope logic; privacy contact signs off the notice.
-Clean-up job not applied: until it is, no anonymisation after 30 days or deletion after 24 months happens.
+Clean-up job deferred (see Backlog): until it runs, nothing is anonymised after 30 days or deleted after 24 months automatically, although the privacy notice promises both.
 The project still has an enabled legacy anon JWT key (eyJ…). It reaches nothing (no grants), but Netlify must hold the `sb_` keys.
 Anonymisation counts 30 days from created_at; a manual consent withdrawal on an older row is anonymised at the next run.
 Gated content is blurred in the page, not withheld from it (as in the prototype); a technical visitor can read it in the page source.
@@ -73,6 +72,7 @@ Open: headshots for the profile cards; who updates the "rules status" date on co
 [Rule: bugs, edge cases, and deferred fixes. One line each. Remove when resolved.]
 
 ## Backlog
+- Clean-up job (pg_cron, daily 03:00 Amsterdam: anonymise no-consent rows after 30 days, delete rows after 24 months) — deferred by the builder on 8 Oct 2026, to be resolved later. Ready to apply: supabase/pending/create_cleanup_job.sql (pg_cron is already enabled); applying it needs the builder to approve Supabase's confirmation for its DELETE within 60 seconds.
 - Contacts dashboard with login (Tool B on this database; first reader Anika Lerch) — its own full Access Architect run first
 - Confirmation email / double opt-in (Resend, greenfriend.org verified) — builder chose format check only
 - Mailbox or domain verification of emails; emailing the PDF — format check and a browser download are enough

@@ -118,7 +118,7 @@ The builder entered these by hand in Netlify (not through the extension). To ver
 
 ## 9. Notes and flags
 
-- **Clean-up job not applied.** `supabase/pending/create_cleanup_job.sql` (schema `private`, `private.cleanup_unlocks()`, pg_cron job `cleanup-unlocks-daily` at `0 1,2 * * *` UTC, which runs only in the hour that is 03:00 Europe/Amsterdam). The Supabase tool asks the builder to confirm migrations that contain a DELETE; the builder chose to skip it in session 1. pg_cron itself is enabled. Until it is applied, no anonymisation or 24-month deletion happens.
+- **Clean-up job deferred by the builder (8 Oct 2026), to be resolved later (PROGRESS.md Backlog).** `supabase/pending/create_cleanup_job.sql` (schema `private`, `private.cleanup_unlocks()`, pg_cron job `cleanup-unlocks-daily` at `0 1,2 * * *` UTC, which runs only in the hour that is 03:00 Europe/Amsterdam). The Supabase tool asks the builder to confirm migrations that contain a DELETE; the builder chose to skip it in session 1. pg_cron itself is enabled. Until it is applied, no anonymisation or 24-month deletion happens.
 - Anonymisation counts 30 days from `created_at`. A consent withdrawal (consent_contact set to false by hand) on a row older than 30 days is anonymised at the next run.
 - Supabase's advisor reports "RLS enabled, no policy" (INFO) on both tables. That is intended: default deny.
 - New tables get default grants to anon and authenticated from Supabase; every future migration must `revoke all … from anon, authenticated` right after `create table`.
