@@ -1,6 +1,6 @@
 # User Stories — ESRS 2026 Update Check
 
-**Written against:** product-spec.md v1.1 · supabase-setup.md as of not yet created — short run
+**Written against:** product-spec.md v1.9 · supabase-setup.md as of not yet created — short run
 **Date:** 7 October 2026
 **Author:** Anika Lerch (greenfriend)
 **Status:** Confirmed

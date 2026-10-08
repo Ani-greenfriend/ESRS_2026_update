@@ -5,7 +5,7 @@
 > History lives in git.
 
 **Session:** 0 — build not started
-**Last updated:** 7 October 2026 — by Project Governor, pre-build
+**Last updated:** 8 October 2026 — by Project Governor, pre-build
 **Live URL:** none yet [Rule: fill in after the first successful deploy]
 **Stage:** business logic and database [Rule: one of — business logic and database / second screen and access design / login and access rules together / deploy and maintain. Advance it when that stage's items are absorbed into Current state. The stage is decided by what exists, never by a week or a version number.]
 **Supabase project:** exists and empty — "ESRS 2026 update tool", ref jfalwveuccerzeffxftx, URL https://jfalwveuccerzeffxftx.supabase.co (confirm the ref with the builder in session 1; never create a second project) [Rule: the only place project existence is recorded; CLAUDE.md never carries it]
@@ -19,23 +19,23 @@ None — the first build session has not happened yet.
 [Rule: 3–5 lines maximum. Replace each session — what was built, changed, or fixed.]
 
 ## Remaining work
-- [ ] First Session Setup: create docs/ and docs/reference/, move the spec, the two access files and the prototype into them and check each is there, commit (see CLAUDE.md Session Protocol)
+- [ ] First Session Setup: create docs/ and docs/reference/, move the spec, the two access files and prototype-reference.html (the final mockup) into docs/reference/ and the rest into docs/ and check each is there, commit (see CLAUDE.md Session Protocol)
 - [ ] Builder: create the GitHub repo, connect it to a Netlify site (one-time), connect Supabase to the site with the Supabase extension (the project already exists; this can happen before session 1)
 - [ ] Connect to Supabase project jfalwveuccerzeffxftx via MCP: confirm the ref with the builder, check the project is still empty, never create a new one
 - [ ] Build tables `unlocks` and `profiles` (named migrations saved in supabase/migrations/) with RLS on from creation, login-ready columns, anon grants revoked and the short-form rules from docs/access-matrix.md; no Auth, no screen reads a table; then write docs/supabase-setup.md following the structure in CLAUDE.md
 - [ ] Build the pg_cron clean-up job (named migration): daily 03:00 Europe/Amsterdam; anonymise no-consent rows after 30 days, delete rows after 24 months; execute revoked from everyone but the job
-- [ ] Set up the React + Vite + Tailwind project: self-hosted fonts (WOFF2), colour tokens and dark mode from CLAUDE.md Brand, pure logic functions for scope, route and estimator, data tables from the prototype
-- [ ] Build Cover — hook and urgency, "greenfriend." brand line, colour planes, alert strip
-- [ ] Build Sticky chapter menu — jump links, active chapter highlighted, scrolls sideways on phones
-- [ ] Build What changed — six expandable cards and the key-dates timeline
-- [ ] Build Datapoints — fact sheet and buckets, own-number estimator, standard-by-standard drill-down (requirements beyond 3 locked)
-- [ ] Build Who reports when — threshold cards and the cohort timeline table
+- [ ] Set up the React + Vite + Tailwind project: self-hosted fonts (WOFF2), colour tokens and dark mode from CLAUDE.md Brand, pure logic functions for scope, route and estimator, data tables from the mockup
+- [ ] Build Cover — hook and urgency, "greenfriend." brand line, colour planes, alert strip, then the "30-second version" strip (three tiles with icons)
+- [ ] Build Sticky chapter menu — jump links, active chapter follows the scroll position (including "Who we are"), scrolls sideways on phones and keeps the active link in view
+- [ ] Build What changed — six expandable cards (closed by default, i icon with source, "Source" line inside) and the key-dates timeline
+- [ ] Build Datapoints — fact sheet and buckets, own-number estimator (with the "plus 31 general datapoints" total line), standard-by-standard drill-down (requirements beyond 3 locked)
+- [ ] Build Who reports when — threshold cards with "For you" lines and the cohort timeline table; every cell and key item explains itself on hover, focus and tap (one floating tooltip)
 - [ ] Build Check your scope — questionnaire, "Your reading" panel, verdict (reasons locked)
-- [ ] Build Non-EU groups — two route cards and the three-step flow
+- [ ] Build Non-EU groups — two route cards ("For you", fine-print toggle), the three-step flow with icons, the "Our tip" line
 - [ ] Build Example cases — seven tabs with org charts (tabs 3–7 and their "Why" locked)
-- [ ] Build FY2026 options — three route cards, seven questions, recommendation panel (reasons locked)
-- [ ] Build Unlock section and Unlock dialog — form, consent logic, short notice, "Download again"
-- [ ] Build Who we are and how we help — pitch, three cards, two profile cards with initials avatars
+- [ ] Build Your 2026 route (id fy2026) — three route cards (plain names, effort dots, "Best if", source icon, "Matches your answers"), seven questions, recommendation panel (reasons locked)
+- [ ] Build Unlock section and Unlock dialog — email-only form, one optional consent box, one-line notice, button "Get it free", four numbered squares, "Download again"
+- [ ] Build Who we are and how we help — pitch, three cards, two profile cards with initials avatars, steps 0–4 with service labels on 1–4 and the details behind a toggle
 - [ ] Build Footer — CTA box, disclaimer, data source line, sources, link to /privacy
 - [ ] Build Privacy notice view at /privacy — full notice, version 2026-10-07
 - [ ] Wire Export: browser-generated one-page A4 PDF (bundled jsPDF), downloads right after a successful unlock, per spec Section 3
@@ -72,5 +72,5 @@ Open: headshots for the profile cards; who updates the "rules status" date on co
 [Rule: deferred and approved items live here, nowhere else. When a new stage starts or the spec is revised, review this list: an item now in scope is promoted into Remaining work and removed from here, with a Build decisions line saying so. Nothing here is built without being promoted.]
 
 ## Notes for next session
-Netlify variables were entered by hand, not by the extension. Verify the names and that the values start with sb_ on the first live build.
+None.
 [Rule: the builder writes here between sessions. Claude Code reads these aloud at session start, acts on them, then clears this section.]
