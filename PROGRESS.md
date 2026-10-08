@@ -51,6 +51,7 @@ Session 1: First Session Setup (docs moved), then the whole frontend, the PDF, t
 - Applied migration files are named after the versions Supabase recorded; an unapplied migration waits in supabase/pending/.
 - Work is pushed to branch claude/determined-hawking-moo4nu (the session's assigned branch) instead of directly to main; main receives it by merge.
 - Netlify headers: a Content-Security-Policy that allows only same-site scripts, fonts and connections.
+- Builder request (8 Oct 2026): "How we help" steps 1–4 carry a service tag (Double materiality assessment, Strategy, Governance, Reporting) as a pill label, not a circle (brand rule).
 [Rule: one line per decision made during the build that is not in the spec — prompt structures, field formats, naming choices, library picks. Future sessions depend on these to stay consistent.]
 
 ## Known issues
