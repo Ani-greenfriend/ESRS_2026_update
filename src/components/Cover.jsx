@@ -8,9 +8,9 @@ export default function Cover() {
       <header className="wrap top">
         <div className="brand">greenfriend.</div>
         <h1>The revised ESRS, in five minutes</h1>
-        <p className="lede">What changed, which datapoints fall away, who reports when, and which route to take for FY2026. Check your own company as you go.</p>
+        <p className="lede">Here is what changed, who has to report and when, and which route to take for FY2026. Check your own company as we go.</p>
         <div className="alert" role="note">
-          <span>The revised ESRS apply from <b>10 Nov 2026</b>. Reporting on FY2026? Choose your route now.</span>
+          <span>The revised ESRS apply from <b>10 Nov 2026</b>. Reporting on 2026? Choose your route now.</span>
           <a href="#fy2026">Choose your route</a>
         </div>
         <div className="stamp">

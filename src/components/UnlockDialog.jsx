@@ -39,8 +39,8 @@ export default function UnlockDialog({ open, onClose, formProps, done }) {
           <UnlockDone {...done} />
         ) : (
           <>
-            <p className="qhelp">Your full result, the reasons behind your route, every disclosure requirement for your topics, all example cases and a one-page PDF. One email unlocks everything.</p>
-            <UnlockForm id="gate" className="op-form" emailRef={emailRef} {...formProps} />
+            <p className="qhelp">Your full result, every disclosure requirement for your topics and a one-page PDF. Free, just your email.</p>
+            <UnlockForm id="gate" className="op-form" emailRef={emailRef} noteFirst {...formProps} />
           </>
         )}
       </div>

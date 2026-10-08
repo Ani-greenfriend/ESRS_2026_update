@@ -1,6 +1,7 @@
 import { Q } from "../lib/data.js";
 import { answerLines, nextQuestion, totalSteps, verdict } from "../lib/scope.js";
 import { Gated } from "./unlock.jsx";
+import { ChapterHead } from "./Icons.jsx";
 
 function Answers({ hist, A }) {
   return (
@@ -68,11 +69,7 @@ export default function ScopeCheck({ scope, setScope }) {
   const v = verdict(A);
   return (
     <section className="ch" id="scope">
-      <div className="chead">
-        <div className="eyebrow">Check your scope</div>
-        <h2>Are you in, and from when?</h2>
-        <p className="lede">Six questions or fewer. Use group figures if you are the parent of a group.</p>
-      </div>
+      <ChapterHead icon="target" eyebrow="Check your scope" title="Are you in? Let us check" short="Up to six questions. Parents: use group figures." />
       <div className="quiz">
         <div className="qbox" aria-live="polite">{qbox}</div>
         <div className="rbox">

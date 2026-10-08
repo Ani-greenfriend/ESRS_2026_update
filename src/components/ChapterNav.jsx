@@ -7,33 +7,40 @@ export const CHAPTERS = [
   ["scope", "Check your scope"],
   ["noneu", "Non-EU groups"],
   ["cases", "Example cases"],
-  ["fy2026", "FY2026 options"],
+  ["fy2026", "Your 2026 route"],
   ["onepager", "Get the PDF"],
   ["about", "Who we are"],
 ];
 
+// The active chapter follows the scroll position; "Who we are" is active at the bottom; none on the cover.
 export default function ChapterNav() {
   const [active, setActive] = useState(null);
   const bar = useRef(null);
 
   useEffect(() => {
-    const io = new IntersectionObserver(
-      (es) => es.forEach((e) => e.isIntersecting && setActive(e.target.id)),
-      { rootMargin: "-40% 0px -55% 0px" }
-    );
-    CHAPTERS.forEach(([id]) => {
-      const el = document.getElementById(id);
-      if (el) io.observe(el);
-    });
-    return () => io.disconnect();
+    let tick = false;
+    const spy = () => {
+      tick = false;
+      const y = innerHeight * 0.3;
+      let cur = null;
+      CHAPTERS.forEach(([id]) => {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= y) cur = id;
+      });
+      if (innerHeight + scrollY >= document.documentElement.scrollHeight - 4) cur = CHAPTERS[CHAPTERS.length - 1][0];
+      setActive(cur);
+    };
+    const onScroll = () => { if (!tick) { tick = true; requestAnimationFrame(spy); } };
+    addEventListener("scroll", onScroll, { passive: true });
+    addEventListener("resize", spy);
+    spy();
+    return () => { removeEventListener("scroll", onScroll); removeEventListener("resize", spy); };
   }, []);
 
-  // Keep the active chapter visible in the sideways-scrolling menu on phones.
+  // Keep the active link in view on phones.
   useEffect(() => {
-    const a = bar.current?.querySelector("a.on");
-    if (a && bar.current.scrollWidth > bar.current.clientWidth) {
-      bar.current.scrollTo({ left: a.offsetLeft - 20, behavior: "auto" });
-    }
+    const w = bar.current, a = w?.querySelector("a.on");
+    if (a) w.scrollTo({ left: a.offsetLeft - w.offsetLeft - 24, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
   }, [active]);
 
   return (

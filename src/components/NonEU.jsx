@@ -1,28 +1,32 @@
+import Icon, { ChapterHead } from "./Icons.jsx";
+
 export default function NonEU() {
   return (
     <section className="ch" id="noneu">
-      <div className="chead">
-        <div className="eyebrow">Non-EU groups</div>
-        <h2>International groups: two separate routes into scope</h2>
-        <p className="lede">A US, UK, Swiss or Asian group can be caught twice: once through a large EU subsidiary from FY2027, and once at group level under Article 40a from FY2028. These are separate tests.</p>
-      </div>
+      <ChapterHead icon="globe" eyebrow="Non-EU groups" title="Outside the EU? Two ways in" short="A non-EU group can be caught twice: via a large EU subsidiary (FY2027) and at group level, Article 40a (FY2028)." />
       <div className="twoways">
         <div className="way eu">
-          <div className="eyebrow" style={{ color: "var(--olive)" }}>Route 1 · from FY2027</div>
+          <div className="eyebrow" style={{ color: "var(--olive)" }}><Icon name="building" size={22} />Route 1 · from FY2027</div>
           <h3>A large EU subsidiary</h3>
-          <p className="qhelp">Any EU subsidiary, or EU sub-group parent, that exceeds 1,000 employees and €450M turnover on its own (consolidated) figures reports like any EU company. It can be exempt if the non-EU parent voluntarily publishes a consolidated report under the full ESRS (or an equivalent standard) that covers it.</p>
+          <p className="mean"><b>For you</b> If your EU subsidiary has over 1,000 employees and over €450M turnover, it reports like any EU company.</p>
+          <details className="hov"><summary>The fine print</summary><p>This applies to any EU subsidiary, or EU sub-group parent, on its own (consolidated) figures. It can be exempt if the non-EU parent voluntarily publishes a consolidated report under the full ESRS (or an equivalent standard) that covers it.</p></details>
         </div>
         <div className="way">
-          <div className="eyebrow" style={{ color: "var(--info)" }}>Route 2 · from FY2028</div>
+          <div className="eyebrow" style={{ color: "var(--info)" }}><Icon name="doc" size={22} />Route 2 · from FY2028</div>
           <h3>Article 40a group report</h3>
-          <p className="qhelp">The non-EU ultimate parent is caught when the group makes more than €450M in the EU in each of the last two years and has an EU subsidiary or branch above €200M. The EU subsidiary or branch publishes a report covering the whole group.</p>
+          <p className="mean"><b>For you</b> If your group earns over €450M in the EU and you have an EU entity over €200M, that entity reports for the whole group.</p>
+          <details className="hov"><summary>The fine print</summary><p>The €450M must be exceeded in two consecutive years, and the entity is an EU subsidiary or branch. There is no headcount test.</p></details>
         </div>
       </div>
       <div className="flow">
-        <div className="fstep"><span className="n">1</span><b>Add up EU turnover</b><p className="qhelp">Group net turnover generated in the EU, for each of the last two consecutive financial years. Above €450M both years?</p></div>
-        <div className="fstep"><span className="n">2</span><b>Find the anchor entity</b><p className="qhelp">An EU subsidiary or EU branch with more than €200M net turnover. If there is none, Article 40a does not apply.</p></div>
-        <div className="fstep"><span className="n">3</span><b>Plan the report</b><p className="qhelp">First report covers FY2028. Dedicated standards for non-EU groups are expected from October 2027 at the earliest. Financial holding undertakings can opt out.</p></div>
+        <div className="fstep"><span className="ico"><Icon name="euro" size={22} /></span><b>1. Add up your EU turnover</b><p className="qhelp">Over €450M, two years in a row?</p></div>
+        <div className="fstep"><span className="ico"><Icon name="anchor" size={22} /></span><b>2. Find your anchor entity</b><p className="qhelp">An EU subsidiary or branch over €200M? If not, Article 40a does not apply.</p></div>
+        <div className="fstep">
+          <span className="ico"><Icon name="calendar" size={22} /></span><b>3. Plan your first report</b><p className="qhelp">It covers FY2028.</p>
+          <details className="hov"><summary>Good to know</summary><p>Dedicated standards for non-EU groups are expected from October 2027 at the earliest. Financial holding undertakings can opt out.</p></details>
+        </div>
       </div>
+      <p className="advice"><b>Our tip</b> Start with your EU subsidiary. Its deadline comes first (FY2027). Not sure where you stand? Run the scope check above.</p>
     </section>
   );
 }

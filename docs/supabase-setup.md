@@ -11,7 +11,7 @@
 | Plan | Free (no backups, pauses after ~1 week idle; monthly CSV export of `unlocks` is the backup) |
 | Postgres | 17 |
 | Written against | docs/product-spec.md v1.1 · docs/access-matrix.md (short form, P1 public stays anonymous) |
-| Last updated | 7 October 2026, session 1 |
+| Last updated | 8 October 2026, session 2 (no database change; note on v1.7 form added in §9) |
 
 This file is the schema source of truth. It is updated at every save point that touches the database.
 
@@ -122,6 +122,7 @@ The builder entered these by hand in Netlify (not through the extension). To ver
 - Anonymisation counts 30 days from `created_at`. A consent withdrawal (consent_contact set to false by hand) on a row older than 30 days is anonymised at the next run.
 - Supabase's advisor reports "RLS enabled, no policy" (INFO) on both tables. That is intended: default deny.
 - New tables get default grants to anon and authenticated from Supabase; every future migration must `revoke all … from anon, authenticated` right after `create table`.
+- Spec v1.7+: the form sends only email, consent and results. `company`, `industry` and `interests` stay in the table, empty (company and industry null, interests `{}`), for a later version.
 - Free plan: no backups. Monthly CSV export of `unlocks` by the builder; restore a paused project in the dashboard.
 
 ## 10. Change log

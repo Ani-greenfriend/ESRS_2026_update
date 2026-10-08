@@ -12,6 +12,8 @@ import UnlockSection from "./components/UnlockSection.jsx";
 import UnlockDialog from "./components/UnlockDialog.jsx";
 import About from "./components/About.jsx";
 import Footer from "./components/Footer.jsx";
+import FastStrip from "./components/FastStrip.jsx";
+import FloatingTip from "./components/FloatingTip.jsx";
 import { EMPTY_FORM } from "./components/UnlockForm.jsx";
 import { UnlockContext } from "./components/unlock.jsx";
 import { TOPICS } from "./lib/data.js";
@@ -36,7 +38,6 @@ export default function App() {
   const [msg, setMsg] = useState(null);
   const [fresh, setFresh] = useState(false);
   const [pdfError, setPdfError] = useState(false);
-  const [company, setCompany] = useState("");
   const [gateOpen, setGateOpen] = useState(false);
   const opener = useRef(null);
   const utm = useMemo(readUtm, []);
@@ -47,12 +48,11 @@ export default function App() {
     const r = routeResult(route.P);
     const e = estimate(topics);
     return {
-      company,
       scope: v ? { badge: v.b, head: v.h, list: v.l, answers: answerLines(scope.hist, scope.A) } : null,
       route: { ...r, fromExample: !route.touched },
       est: { ...e, codes: e.topics, topics: e.topics.map((c) => `${c} ${TOPIC_NAME[c]}`) },
     };
-  }, [scope, route, topics, company]);
+  }, [scope, route, topics]);
 
   const openGate = useCallback((el) => {
     opener.current = el || document.activeElement;
@@ -83,10 +83,8 @@ export default function App() {
     setMsg(null);
     const payload = {
       email,
-      company: form.company.trim() || null,
-      industry: form.industry || null,
+      // v1 asks for email and consent only; company, industry and interests stay empty.
       consent_contact: form.consent,
-      interests: form.interests,
       notice_version: NOTICE_VERSION,
       scope_badge: snap.scope?.badge ?? null,
       scope_headline: snap.scope?.head ?? null,
@@ -107,12 +105,10 @@ export default function App() {
       setMsg({ type: "err", text: res.message });
       return;
     }
-    const c = form.company.trim();
-    setCompany(c);
     writeUnlocked();
     setUnlocked(true);
     setFresh(true);
-    await download({ ...snap, company: c });
+    await download(snap);
   };
 
   const formProps = { form, setForm, onSubmit, busy, msg };
@@ -123,6 +119,7 @@ export default function App() {
       <Cover />
       <ChapterNav />
       <main className="wrap">
+        <FastStrip />
         <WhatChanged />
         <Datapoints topics={topics} setTopics={setTopics} />
         <WhoReports />
@@ -134,6 +131,7 @@ export default function App() {
       </main>
       <About />
       <Footer />
+      <FloatingTip />
       <UnlockDialog open={gateOpen} onClose={closeGate} formProps={formProps} done={done} />
     </UnlockContext.Provider>
   );

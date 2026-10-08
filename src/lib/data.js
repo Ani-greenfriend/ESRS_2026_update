@@ -1,4 +1,4 @@
-// Content and data tables ported verbatim from docs/reference/prototype-reference.html (version A).
+// Content and data tables ported verbatim from docs/reference/prototype-reference.html (final mockup, spec v1.9).
 // Datapoint counts per disclosure requirement are derived from EFRAG's 2026 Draft List of ESRS Datapoints;
 // no EFRAG datapoint names or IDs are included (reuse rights).
 
@@ -7,9 +7,16 @@ export const CHUNKS=[
  {k:"323",t:"Datapoints in total",s:"Down from 1,052: 292 mandatory, 0 voluntary, 31 new general ones.",d:["All voluntary datapoints are deleted.","Counted by EFRAG: 783 \u201cshall\u201d datapoints in 2023, 292 in the revised ESRS.","More numbers, less narrative: quantitative datapoints are preferred.","Sector-specific ESRS are replaced by guidance."]},
  {k:"Top-down",t:"A lighter materiality assessment",s:"Conclude at topic level instead of testing every IRO.",d:["ESRS 1 explicitly allows a top-down approach, alone or mixed with bottom-up.","Information that is not material shall not be reported, with narrow exceptions.","Fair presentation applies to the statement as a whole, not datapoint by datapoint.","More discretion on geographic disaggregation."]},
  {k:"VSME cap",t:"Protection for smaller suppliers",s:"Value chain requests are capped from FY2027.",d:["A new voluntary standard, based on VSME, entered into force on 24 Sept 2026.","Value chain partners with on average up to 1,000 employees in the previous year can refuse requests that go beyond that standard.","Missing value chain data: explain efforts and plans during the first three years."]},
- {k:"3 routes",t:"A choice for FY2026",s:"Old ESRS, old ESRS plus reliefs, or revised ESRS in full.",d:["Eight reliefs (Article 2 of the delegated act): top-down materiality, undue cost and value chain limits in the assessment, acquisitions and disposals, non-significant activities, partial value chain scope, joint operations, Taxonomy in a separate appendix, and an executive summary.","The report must state which version was applied.","From FY2027 the revised ESRS are mandatory for everyone in scope."]},
+ {k:"3 routes",t:"A choice for FY2026",s:"Old ESRS, old ESRS plus reliefs, or revised ESRS in full.",d:["Eight reliefs (Article 2(1)(b)): top-down materiality (ESRS 1 para 27), undue cost and value chain limits in the assessment (paras 32-33), acquisitions and disposals (74-75), non-significant activities (90), partial value chain scope (91), joint operations (92), Taxonomy in a separate appendix (106), executive summary (110).","The report must state which version was applied.","From FY2027 the revised ESRS are mandatory for everyone in scope."]},
  {k:"Limited",t:"Assurance stays limited",s:"The planned move to reasonable assurance is dropped.",d:["The Commission must adopt a limited assurance standard by 1 July 2027.","GHG boundary: financial control or operational control.","Anticipated financial effects can be updated later without counting as an error."]}
 ];
+export const REFS=[
+ "Directive (EU) 2026/470 (Omnibus I), which amends the Accounting Directive (2013/34/EU), Articles 19a, 29a and 40a.",
+ "EFRAG draft list of datapoints and explanatory note (2026), for Delegated Regulation (EU) 2026/1563.",
+ "Revised ESRS 1, paragraphs 24 and 27 (Delegated Regulation (EU) 2026/1563, Annex I).",
+ "Revised ESRS 1, paragraph 66; Accounting Directive, Articles 19a(3) and 29a(3); Delegated Regulation (EU) 2026/1560, Annex II.",
+ "Delegated Regulation (EU) 2026/1563, Article 2 (the routes and the statement of which version you used) and Article 3 (applies from financial years starting 1 January 2027).",
+ "Directive (EU) 2026/470 (Omnibus I); GHG boundary: ESRS E1, AR 19 for paragraph 30."];
 
 export const DATES=[
  {d:"26 Feb 2026",t:"Omnibus I published",c:""},
@@ -64,18 +71,30 @@ export const STDS=[
   ["cut","Datapoints","Cut from 39 to 20, a smaller cut than most standards."],
   ["new","CSDDD coherence","Due diligence provisions across the ESRS are aligned with the CSDDD."]]}
 ];
+export const TAGS={
+ "Always applies":"ESRS 2 general disclosures apply to every reporting company, whichever topics turn out to be material.",
+ "Per policy / action":"The 31 general datapoints are reported again for each policy, action, target or metric you report on a material topic.",
+ "Changed":"More than fewer datapoints: the content or the rules of this standard changed. See the changes listed below.",
+ "Trimmed":"Datapoints were cut and the content is otherwise much the same. All voluntary datapoints are removed.",
+ "Phase-in":"A relief lets you leave out part or all of this standard in the first years: wave 1 companies until FY2027, new reporters for their first two years."};
 export const PL={cut:["p-cut","Removed"],new:["p-new","Changed"],relief:["p-relief","Relief"],same:["p-same","Unchanged"]};
 export const PHNAME={1:"Wave 1, above thresholds",2:"Wave 1, below thresholds",3:"First report FY2027 or later"};
 
 export const TOPICS=[["E1","Climate change",1],["E2","Pollution",0],["E3","Water",0],["E4","Biodiversity",0],["E5","Resource use",1],["S1","Own workforce",1],["S2","Value chain workers",1],["S3","Communities",0],["S4","Consumers",0],["G1","Business conduct",1]];
 
 export const G=[
- ["Wave 1, still above both thresholds","Reported since FY2024",["rep","rep","rep","new","new"],["","","Choose route","Revised",""]],
- ["Wave 1, now below a threshold","e.g. 600 employees",["rep","opt","opt","out","out"],["","MS option","MS option","Out",""]],
- ["Large EU company, not wave 1",">1,000 employees & >€450M",["out","out","out","new","new"],["","","","First year",""]],
- ["Large company below new thresholds","Old wave 2, e.g. 400 employees",["out","out","out","out","out"],["","","","Voluntary standard",""]],
- ["Listed SME","Old wave 3",["out","out","out","out","out"],["","","","Out",""]],
- ["Non-EU group (Art. 40a)",">€450M EU turnover + €200M EU entity",["out","out","out","out","40a"],["","","","","First year"]]];
+ ["Wave 1, still above both thresholds","Reported since FY2024",["rep","rep","rep","new","new"],["","","Choose route","Revised",""],
+  ["Reports under the existing (2023) ESRS.","Reports under the existing (2023) ESRS.","You choose one of three FY2026 routes. See FY2026 options below.","First year under the revised ESRS, mandatory from FY2027.","Reports under the revised ESRS."]],
+ ["Wave 1, now below a threshold","e.g. 600 employees",["rep","opt","opt","out","out"],["","MS option","MS option","Out",""],
+  ["Reported under the existing (2023) ESRS.","Member States may exempt these companies for FY2025 and FY2026. Check national law.","Member States may exempt these companies for FY2025 and FY2026. Check national law.","Below the new size test (over 1,000 employees and over €450M): no mandatory reporting.","Below the new size test: no mandatory reporting."]],
+ ["Large EU company, not wave 1",">1,000 employees & >€450M",["out","out","out","new","new"],["","","","First year",""],
+  ["Not required to report yet.","Not required to report yet.","Not required to report yet.","First report under the revised ESRS, on FY2027 (published 2028).","Reports under the revised ESRS."]],
+ ["Large company below new thresholds","Old wave 2, e.g. 400 employees",["out","out","out","out","out"],["","","","Voluntary standard",""],
+  ["Not required to report.","Not required to report.","Not required to report.","No mandatory reporting. The voluntary standard is available.","No mandatory reporting."]],
+ ["Listed SME","Old wave 3",["out","out","out","out","out"],["","","","Out",""],
+  ["Not required to report.","Not required to report.","Not required to report.","Out of mandatory scope.","Out of mandatory scope."]],
+ ["Non-EU group (Art. 40a)",">€450M EU turnover + €200M EU entity",["out","out","out","out","40a"],["","","","","First year"],
+  ["Not required to report.","Not required to report.","Not required to report.","Not required to report yet. The EU subsidiary may be caught earlier.","First group-level report under Article 40a, on FY2028."]]];
 
 export const Q={
  hq:{q:"Where is the ultimate parent of your group based?",o:[["eu","In the EU","Or you are a standalone EU company"],["non","Outside the EU","US, UK, Switzerland, Asia and so on"]]},
@@ -110,17 +129,17 @@ export const CASES=[
 ];
 
 export const OPT=[
- {L:"A",t:"Existing ESRS",d:"Report FY2026 exactly as in FY2025. Best for consistency and teams with processes and auditor alignment already in place."},
- {L:"B",t:"Existing ESRS plus reliefs",d:"Keep the 2023 standards and add up to eight reliefs from the revised ESRS 1: top-down materiality, undue cost and value chain limits in the assessment, acquisitions and disposals, non-significant activities, partial value chain scope, joint operations, Taxonomy appendix, executive summary."},
- {L:"C",t:"Revised ESRS in full",d:"Switch a year early. Fewest datapoints and a head start on FY2027, but a bigger change to processes and controls now."}];
+ {L:"A",t:"Keep it as it is",std:"Existing ESRS",src:"Article 2(1)(a), first option",d:"Report your 2026 year exactly like 2025.",eff:1,bi:"Your process works and you want to compare with last year."},
+ {L:"B",t:"Keep it, with shortcuts",std:"Existing ESRS plus reliefs",src:"Article 2(1)(b)",d:"Same standards as 2025, but you may use up to eight shortcuts from the new rules.",eff:2,bi:"Your assessment is heavy, your value chain data has gaps, or you have deals in 2026.",more:"The eight shortcuts, with their ESRS 1 paragraph: top-down materiality (27), undue cost and value chain limits in the assessment (32-33), acquisitions and disposals (74-75), non-significant activities (90), partial value chain scope (91), joint operations (92), Taxonomy appendix (106), executive summary (110)."},
+ {L:"C",t:"Switch early",std:"Revised ESRS in full",src:"Article 2(1)(a), second option",d:"Use the new, slimmer rules one year early. You get the fewest datapoints.",eff:3,bi:"Your systems and auditor are ready for the new structure."}];
 export const PQ=[
- {id:"proc",q:"How settled are your FY2025 reporting process and controls?",o:[["solid","Running smoothly",[3,1,0]],["ok","Works, with pain points",[1,2,1]],["weak","Fragile or manual",[0,2,2]]]},
- {id:"effort",q:"How much do you want to cut effort for FY2026?",o:[["low","Little, stability first",[3,1,0]],["mid","Some quick wins",[0,3,1]],["high","As much as possible",[0,1,3]]]},
+ {id:"proc",q:"How settled are your 2025 reporting process and controls?",o:[["solid","Running smoothly",[3,1,0]],["ok","Works, with pain points",[1,2,1]],["weak","Fragile or manual",[0,2,2]]]},
+ {id:"effort",q:"How much do you want to cut effort for 2026?",o:[["low","Little, stability first",[3,1,0]],["mid","Some quick wins",[0,3,1]],["high","As much as possible",[0,1,3]]]},
  {id:"dma",q:"Your current double materiality assessment is…",o:[["fine","Proportionate, works well",[2,1,1]],["heavy","Bottom-up and heavy",[0,3,2]],["redo","Due for a redo anyway",[0,1,3]]]},
- {id:"vc",q:"Value chain data for FY2026?",o:[["good","Mostly available",[2,1,1]],["gaps","Significant gaps",[0,3,2]]]},
+ {id:"vc",q:"Value chain data for 2026?",o:[["good","Mostly available",[2,1,1]],["gaps","Significant gaps",[0,3,2]]]},
  {id:"ma",q:"Acquisitions, disposals or joint operations in 2026?",o:[["no","No",[1,1,1]],["yes","Yes",[0,3,2]]]},
  {id:"ready",q:"Systems and auditor ready for the revised structure now?",o:[["no","Not yet",[2,2,0]],["part","Partly",[1,2,1]],["yes","Yes",[0,1,3]]]},
- {id:"comp",q:"How important is comparability with your FY2025 report?",o:[["high","Very important",[3,2,0]],["low","Less important",[0,1,2]]]}];
+ {id:"comp",q:"How important is comparability with your 2025 report?",o:[["high","Very important",[3,2,0]],["low","Less important",[0,1,2]]]}];
 
 export const REASON={
  proc:{solid:"Your process runs smoothly, which favours keeping the existing ESRS.",weak:"A fragile process gains from fewer datapoints and the reliefs.",ok:""},

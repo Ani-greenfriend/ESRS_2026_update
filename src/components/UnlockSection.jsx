@@ -1,6 +1,7 @@
 import { useUnlock } from "./unlock.jsx";
 import UnlockForm from "./UnlockForm.jsx";
 import UnlockDone from "./UnlockDone.jsx";
+import Icon from "./Icons.jsx";
 
 export default function UnlockSection({ snap, formProps, done }) {
   const { unlocked } = useUnlock();
@@ -8,17 +9,16 @@ export default function UnlockSection({ snap, formProps, done }) {
     <section className="ch" id="onepager">
       <div className="op">
         <div className="op-text">
-          <div className="eyebrow">Your action plan</div>
-          <h2>Unlock your full action plan</h2>
-          <p className="lede">See every detail of your result and get it as a one-page PDF for your CFO, auditor or board. One email unlocks everything.</p>
-          <ul className="op-list op-what">
-            <li className="done">Your full scope result and next steps</li>
-            <li className="done">The reasons behind your FY2026 route</li>
-            <li className="done">Every disclosure requirement for your material topics, with datapoint counts and phase-ins</li>
-            <li className="done">All seven example group cases</li>
-            <li className="done">Your one-page PDF</li>
-          </ul>
-          <ul className="op-list">
+          <div className="eyebrow"><Icon name="doc" />Your action plan</div>
+          <h2>Want it all on one page?</h2>
+          <p className="lede">Everything below, plus a one-page PDF for your CFO or board. Free, just your email.</p>
+          <div className="optiles">
+            <div><b>1</b><span>Scope result</span></div>
+            <div><b>2</b><span>FY2026 route</span></div>
+            <div><b>3</b><span>All requirements</span></div>
+            <div><b>4</b><span>One-page PDF</span></div>
+          </div>
+          <ul className="op-list" id="op-status">
             <li className={snap.scope ? "done" : undefined}>
               {snap.scope ? (<>Scope: <b>{snap.scope.badge}</b></>) : (<>Scope check not finished yet. <a href="#scope">Finish it</a></>)}
             </li>

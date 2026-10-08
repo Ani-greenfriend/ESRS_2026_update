@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { CASES } from "../lib/data.js";
 import { Gated, LockIcon, useUnlock } from "./unlock.jsx";
+import { ChapterHead } from "./Icons.jsx";
 
 function Node({ n }) {
   return (
@@ -25,11 +26,7 @@ export default function Cases() {
   );
   return (
     <section className="ch" id="cases">
-      <div className="chead">
-        <div className="eyebrow">Example cases</div>
-        <h2>Parent, subsidiary, or neither?</h2>
-        <p className="lede">Seven fictional groups and how the rules land on each entity.</p>
-      </div>
+      <ChapterHead icon="people" eyebrow="Example cases" title="Parent, subsidiary, or neither?" short="Seven made-up groups. Find the one that looks like yours." />
       <div className="cases-tabs" role="group" aria-label="Example cases">
         {CASES.map((x, i) => (
           <button type="button" key={x.t} aria-pressed={i === cur} onClick={() => setCur(i)}>
