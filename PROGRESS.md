@@ -27,7 +27,7 @@ Session 2: merged main (spec v1.9, final mockup, updated docs; first-prompt.md m
 [Rule: 3–5 lines maximum. Replace each session — what was built, changed, or fixed.]
 
 ## Remaining work
-- [ ] Builder: merge PR #1 (branch claude/determined-hawking-moo4nu) into main when the version is ready (Netlify deploys from main)
+- [ ] Builder: merge PR #1 (branch claude/determined-hawking-moo4nu) into main when the version is ready (Netlify deploys from main); Claude Code then tags the merge commit on main as v1.0
 - [ ] Builder: confirm the Netlify site is connected to the repo and the Supabase variables exist with the exact names in docs/supabase-setup.md §8, values starting with `sb_`; redeploy
 - [ ] HTTP refusal test as a logged-out visitor with the publishable key (REST read/insert/update/delete on unlocks and profiles, RPC, GraphQL); paste the result into "Refusal test record" in docs/supabase-setup.md §3
 - [ ] Live test of submit-unlock on the deployed site: one row with correct fields; a second unlock with the same email in different case supersedes the first
