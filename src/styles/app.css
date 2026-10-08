@@ -600,3 +600,14 @@ body{overflow-x:hidden}
 .back{font-weight:700;color:var(--on-band);text-underline-offset:3px}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .lockico{width:.85em;height:.85em;margin-left:5px;vertical-align:-1px}
+/* builder request (8 Oct 2026): round service icons left of steps 1-4, and the "Want our help?" box */
+.step-body{display:flex;gap:16px;align-items:flex-start;min-width:0}
+.step-body>div{min-width:0}
+.svc-ico{flex:none;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:var(--olive-soft);color:var(--olive);border:2px solid var(--olive)}
+@media (max-width:560px){.step-body{flex-direction:column;gap:10px}.svc-ico{width:44px;height:44px}.svc-ico svg{width:22px;height:22px}.svc{border-radius:8px}}
+.helpcta{display:flex;flex-wrap:wrap;gap:14px 24px;align-items:center;justify-content:space-between;padding:20px 22px;border-radius:var(--r);background:var(--bg);border:1px solid var(--line);border-left:4px solid var(--terra)}
+.helpcta h3{font-size:1.3rem}
+.helpbtns{display:flex;flex-wrap:wrap;gap:10px}
+.helpbtns .btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center;padding:10px 20px;color:var(--fg)}
+.helpbtns .btn.pri{color:#fff}
+@media (max-width:560px){.helpbtns,.helpbtns .btn{width:100%}}

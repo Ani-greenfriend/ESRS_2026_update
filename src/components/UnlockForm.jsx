@@ -10,7 +10,7 @@ export function ShortNotice() {
 }
 
 // Email only plus one optional, unticked consent box (spec v1.7). Shared by the section and the dialog.
-export default function UnlockForm({ id, form, setForm, onSubmit, busy, msg, className, emailRef, noteFirst }) {
+export default function UnlockForm({ id, form, setForm, onSubmit, busy, msg, className, emailRef, noteFirst, submitLabel = "Get it free" }) {
   const message = <p className={`op-msg ${msg?.type || ""}`} id={`${id}-msg`} role="status">{msg?.text || ""}</p>;
   return (
     <form className={className} noValidate onSubmit={(e) => { e.preventDefault(); onSubmit(); }}>
@@ -22,7 +22,7 @@ export default function UnlockForm({ id, form, setForm, onSubmit, busy, msg, cla
         <input type="checkbox" checked={form.consent} onChange={(e) => setForm({ ...form, consent: e.target.checked })} />{" "}
         greenfriend may contact me about my results (optional)
       </label>
-      <button type="submit" className="btn pri" disabled={busy}>{busy ? "One moment…" : "Get it free"}</button>
+      <button type="submit" className="btn pri" disabled={busy}>{busy ? "One moment…" : submitLabel}</button>
       {noteFirst ? (<>{message}<ShortNotice /></>) : (<><ShortNotice />{message}</>)}
     </form>
   );

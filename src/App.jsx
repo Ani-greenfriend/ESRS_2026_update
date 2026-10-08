@@ -39,6 +39,8 @@ export default function App() {
   const [fresh, setFresh] = useState(false);
   const [pdfError, setPdfError] = useState(false);
   const [gateOpen, setGateOpen] = useState(false);
+  const [gateMode, setGateMode] = useState("unlock");
+  const [contactSent, setContactSent] = useState(false);
   const opener = useRef(null);
   const utm = useMemo(readUtm, []);
 
@@ -54,11 +56,13 @@ export default function App() {
     };
   }, [scope, route, topics]);
 
-  const openGate = useCallback((el) => {
+  const openGate = useCallback((el, mode = "unlock") => {
     opener.current = el || document.activeElement;
     setMsg(null);
+    setGateMode(mode);
     setGateOpen(true);
   }, []);
+  const openContact = useCallback((el) => openGate(el, "contact"), [openGate]);
   const closeGate = useCallback(() => {
     setGateOpen(false);
     setTimeout(() => opener.current?.focus?.(), 0);
@@ -73,10 +77,15 @@ export default function App() {
     }
   };
 
-  const onSubmit = async () => {
+  // mode "contact": the "Want our help?" box. The same unlock row is stored; contact needs the consent box.
+  const onSubmit = async (mode = "unlock") => {
     const email = form.email.trim();
     if (!isValidEmail(email)) {
       setMsg({ type: "err", field: "email", text: "Enter a valid email address, for example name@company.com." });
+      return;
+    }
+    if (mode === "contact" && !form.consent) {
+      setMsg({ type: "err", text: "Tick the box so we may contact you." });
       return;
     }
     setBusy(true);
@@ -107,6 +116,10 @@ export default function App() {
     }
     writeUnlocked();
     setUnlocked(true);
+    if (mode === "contact") {
+      setContactSent(true);
+      return;
+    }
     setFresh(true);
     await download(snap);
   };
@@ -115,7 +128,7 @@ export default function App() {
   const done = { fresh, pdfError, onDownload: () => download() };
 
   return (
-    <UnlockContext.Provider value={{ unlocked, openGate }}>
+    <UnlockContext.Provider value={{ unlocked, openGate, openContact }}>
       <Cover />
       <ChapterNav />
       <main className="wrap">
@@ -132,7 +145,7 @@ export default function App() {
       <About />
       <Footer />
       <FloatingTip />
-      <UnlockDialog open={gateOpen} onClose={closeGate} formProps={formProps} done={done} />
+      <UnlockDialog open={gateOpen} mode={gateMode} onClose={closeGate} formProps={formProps} done={done} contactSent={contactSent} />
     </UnlockContext.Provider>
   );
 }

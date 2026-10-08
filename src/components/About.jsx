@@ -1,11 +1,14 @@
 import { useEffect, useRef } from "react";
 import Icon from "./Icons.jsx";
+import { useUnlock } from "./unlock.jsx";
+
+export const CONTACT_EMAIL = "anikalerch@greenfriend.org";
 const STEPS = [
   { no: 0, zero: true, h: "Know where you stand", p: "Are you in scope, from when, and which route fits FY2026?", d: ["Check your scope and timeline", "Compare the three FY2026 routes"], g: ["This tool, for free", "A 20-minute call if you want a second opinion"] },
-  { no: 1, svc: "Double materiality assessment", h: "Find what really matters", p: "We work out which sustainability topics matter for your business, quickly and in a way your auditor accepts.", d: ["Map your value chain from your own documents", "Shortlist impacts, risks and opportunities", "Score them with your experts", "Keep your auditor involved along the way"], g: ["A value chain map", "A signed-off list of material topics", "A live dashboard and an audit-ready method file"] },
-  { no: 2, svc: "Strategy", h: "Turn topics into goals", p: "Each material topic gets a clear objective, a starting point and a target your teams can work towards.", d: ["Run a strategy workshop with your experts", "Check which projects you already have, and what is missing", "Estimate budget for the gaps"], g: ["A one-page strategy framework", "Objectives, KPIs and targets per topic", "Input for your yearly goals or OKRs"] },
-  { no: 3, svc: "Governance", h: "Make clear who owns what", p: "We close the accountability gap. Every material topic gets an owner in the business, and your board gets the information it needs.", d: ["Agree with your teams who is responsible, accountable, consulted and informed for each topic and IRO", "Run team workshops on dependencies and day-to-day ways of working", "Help prepare quarterly board and committee updates, and review the papers", "Compare your set-up with peers: committees, board oversight, and who owns disclosures (CFO, sustainability, legal or investor relations)", "Train each team on what reporting means for them, for example ESRS for finance or greenwashing risks for marketing"], g: ["A one-page map of who owns what", "An ownership register for topics and IROs", "A board sustainability information pack", "A peer benchmark with the pros and cons of each ownership model", "Training made for each team"] },
-  { no: 4, svc: "Reporting", h: "Report what you did", p: "Your report shows progress and evidence, not only plans and promises.", d: ["Check your reporting process and data", "List the gaps per disclosure", "Test key figures for assurance", "Check your sustainability claims for greenwashing risk"], g: ["A gap list with owners and priorities", "A map of what goes in which report", "An evidence file for your auditor"] },
+  { no: 1, icon: "target", svc: "Double materiality assessment (DMA) optimization", h: "Find what really matters", p: "We work out which sustainability topics matter for your business, quickly and in a way your auditor accepts.", d: ["Map your value chain from your own documents", "Shortlist impacts, risks and opportunities", "Score them with your experts", "Keep your auditor involved along the way"], g: ["A value chain map", "A signed-off list of material topics", "A live dashboard and an audit-ready method file"] },
+  { no: 2, icon: "signpost", svc: "Strategy", h: "Turn topics into goals", p: "Each material topic gets a clear objective, a starting point and a target your teams can work towards.", d: ["Run a strategy workshop with your experts", "Check which projects you already have, and what is missing", "Estimate budget for the gaps"], g: ["A one-page strategy framework", "Objectives, KPIs and targets per topic", "Input for your yearly goals or OKRs"] },
+  { no: 3, icon: "people", svc: "Governance", h: "Make clear who owns what", p: "We close the accountability gap. Every material topic gets an owner in the business, and your board gets the information it needs.", d: ["Agree with your teams who is responsible, accountable, consulted and informed for each topic and IRO", "Run team workshops on dependencies and day-to-day ways of working", "Help prepare quarterly board and committee updates, and review the papers", "Compare your set-up with peers: committees, board oversight, and who owns disclosures (CFO, sustainability, legal or investor relations)", "Train each team on what reporting means for them, for example ESRS for finance or greenwashing risks for marketing"], g: ["A one-page map of who owns what", "An ownership register for topics and IROs", "A board sustainability information pack", "A peer benchmark with the pros and cons of each ownership model", "Training made for each team"] },
+  { no: 4, icon: "doc", svc: "Reporting", h: "Report what you did", p: "Your report shows progress and evidence, not only plans and promises.", d: ["Check your reporting process and data", "List the gaps per disclosure", "Test key figures for assurance", "Check your sustainability claims for greenwashing risk"], g: ["A gap list with owners and priorities", "A map of what goes in which report", "An evidence file for your auditor"] },
 ];
 
 const PEOPLE = [
@@ -36,6 +39,7 @@ const Cols = ({ s }) => (
 
 export default function About() {
   const root = useRef(null);
+  const { openContact } = useUnlock();
   // Hover opens, click toggles (on devices that can hover).
   useEffect(() => {
     if (!matchMedia("(hover: hover)").matches) return;
@@ -96,7 +100,9 @@ export default function About() {
             ) : (
               <div className="step" key={s.no}>
                 <span className="no">{s.no}</span>
-                <div>
+                <div className="step-body">
+                  <span className="svc-ico" aria-hidden="true"><Icon name={s.icon} size={26} /></span>
+                  <div>
                   <h3>{s.h}</h3>
                   <span className="svc">{s.svc}</span>
                   <p className="plain">{s.p}</p>
@@ -104,10 +110,22 @@ export default function About() {
                     <summary>What we do and what you get</summary>
                     <div className="cols"><Cols s={s} /></div>
                   </details>
+                  </div>
                 </div>
               </div>
             )
           )}
+        </div>
+
+        <div className="helpcta">
+          <div>
+            <h3>Want our help?</h3>
+            <p className="qhelp">Leave your email or contact us.</p>
+          </div>
+          <div className="helpbtns">
+            <button type="button" className="btn pri" onClick={(e) => openContact(e.currentTarget)}>Leave your email</button>
+            <a className="btn" href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("ESRS 2026 check: we would like your help")}`}>Contact us</a>
+          </div>
         </div>
       </div>
     </section>

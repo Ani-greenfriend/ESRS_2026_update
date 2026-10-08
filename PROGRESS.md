@@ -54,6 +54,9 @@ Session 2: merged main (spec v1.9, final mockup, updated docs; first-prompt.md m
 - Work is pushed to branch claude/determined-hawking-moo4nu (the session's assigned branch) instead of directly to main; main receives it by merge.
 - Netlify headers: a Content-Security-Policy that allows only same-site scripts, fonts and connections.
 - Service labels on "How we help" steps 1–4 use the mockup's yellow `.svc` pill (replaces the session-1 teal tag).
+- Builder request (8 Oct 2026): steps 1–4 show a round line icon on the left (DMA target, Strategy signpost, Governance people, Reporting document). This knowingly bends the "no circles" brand rule at the builder's request; on phones the circle sits above the text.
+- Builder request (8 Oct 2026): step 1's label reads "Double materiality assessment (DMA) optimization".
+- Builder request (8 Oct 2026): a "Want our help?" box under the steps with "Leave your email" (opens the email dialog in contact mode: button "Send", the consent box must be ticked, no PDF download; stored as a normal unlock row with consent_contact true, so the supersede rule applies) and "Contact us" (mailto anikalerch@greenfriend.org).
 - The privacy notice stays a separate view at /privacy (spec), not the mockup's #privacy hash view; form links open it in a new tab.
 - After an unlock from the dialog, the dialog stays open and shows the confirmation and "Download again" (the mockup closes it; spec Section 8 asks for the confirmation).
 - The cover keeps the line "Independent tool by greenfriend. Not affiliated with EFRAG or the European Commission." (spec Section 8), although the final mockup leaves it out.
