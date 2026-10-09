@@ -145,13 +145,14 @@ export default function App() {
       <ChapterNav />
       <main className="wrap">
         <FastStrip />
+        {/* Large to small: what changed → do I need to report → how do I report 2026 → what do I report */}
         <WhatChanged />
-        <Datapoints topics={topics} setTopics={setTopics} />
         <WhoReports />
         <ScopeCheck scope={scope} setScope={setScope} />
         <NonEU />
         <Cases />
         <Fy2026 route={route} setRoute={setRoute} />
+        <Datapoints topics={topics} setTopics={setTopics} />
         <UnlockSection snap={snap} formProps={formProps} done={done} />
       </main>
       <About />
