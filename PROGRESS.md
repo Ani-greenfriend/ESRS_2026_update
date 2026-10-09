@@ -38,7 +38,7 @@ Session 3: PR #1 merged by the builder and released as v1.0 (tag created by the 
 [Rule: completed items leave this list and are absorbed into Current state. This list only shrinks.]
 
 ## Build decisions
-- Builder request (9 Oct 2026): the "Fewer companies in scope" card in What changed shows ~90% instead of the mockup's ~80% (spec Section 8 still says ~80%; align it at the next spec revision).
+- Builder request (9 Oct 2026): the "Fewer companies in scope" card stays at ~80% (the final law, Directive (EU) 2026/470: 1,000 employees and €450M) and its detail explains that the 90% figure was the European Parliament's negotiating proposal (1,750 employees), not the law. Wording and figures (about 50,000 to 10,000) from the builder; not checked against a primary source in this environment.
 - Builder request (9 Oct 2026): `unlocks.request_type` ('download' | 'contact', default 'download') separates PDF unlocks from "Want our help?" contact requests; the function requires consent for 'contact'; a database check enforces the same.
 - Builder feedback (9 Oct 2026, "no downloadable page displayed"): the unlock confirmation offers "Open your one-pager (PDF)" in a new tab and "Download again" as plain links to a prebuilt blob URL; CSP object-src changed from 'none' to 'self' blob: so the browser's PDF viewer can show it.
 - Release tags are created by the builder on GitHub (Releases → new release): this environment can push only to its working branch.
