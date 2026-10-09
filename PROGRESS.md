@@ -6,7 +6,7 @@
 
 **Session:** 3
 **Last updated:** 9 October 2026
-**Live URL:** https://superlative-truffle-c4753f.netlify.app (Netlify default address until check.greenfriend.org is connected); release v1.0 = merge commit 1f047f6 on main [Rule: fill in after the first successful deploy]
+**Live URL:** https://esrs2026update.netlify.app (Netlify default address until check.greenfriend.org is connected); release v1.0 = merge commit 1f047f6 on main [Rule: fill in after the first successful deploy]
 **Stage:** business logic and database [Rule: one of — business logic and database / second screen and access design / login and access rules together / deploy and maintain. Advance it when that stage's items are absorbed into Current state. The stage is decided by what exists, never by a week or a version number.]
 **Supabase project:** exists and built — "ESRS 2026 update tool", ref jfalwveuccerzeffxftx, URL https://jfalwveuccerzeffxftx.supabase.co, confirmed with the builder in session 1 [Rule: the only place project existence is recorded; CLAUDE.md never carries it]
 
@@ -38,6 +38,7 @@ Session 3: PR #1 merged by the builder and released as v1.0 (tag created by the 
 [Rule: completed items leave this list and are absorbed into Current state. This list only shrinks.]
 
 ## Build decisions
+- Builder correction (9 Oct 2026): Elena's profile no longer calls Sage a FTSE 100 company (bullet "Former Senior Director of Sustainability at Sage", chip "Ex-Sage · Senior Director").
 - Builder request (9 Oct 2026): the "Fewer companies in scope" card stays at ~80% (the final law, Directive (EU) 2026/470: 1,000 employees and €450M) and its detail explains that the 90% figure was the European Parliament's negotiating proposal (1,750 employees), not the law. Wording and figures (about 50,000 to 10,000) from the builder; not checked against a primary source in this environment.
 - Builder request (9 Oct 2026): `unlocks.request_type` ('download' | 'contact', default 'download') separates PDF unlocks from "Want our help?" contact requests; the function requires consent for 'contact'; a database check enforces the same.
 - Builder feedback (9 Oct 2026, "no downloadable page displayed"): the unlock confirmation offers "Open your one-pager (PDF)" in a new tab and "Download again" as plain links to a prebuilt blob URL; CSP object-src changed from 'none' to 'self' blob: so the browser's PDF viewer can show it.
