@@ -9,8 +9,8 @@ export default function Footer({ cta = true }) {
       {cta && (
         <div className="cta">
           <Planes />
-          <h2>Want our help?</h2>
-          <p>Not sure about your FY2026 route, or how to slim down your double materiality assessment under the revised ESRS? Book a free 20-minute call with Elena and Anika. Leave your email or contact us.</p>
+          <h2>Need our help?</h2>
+          <p>Need to report? Need more information? We will reach out to you.</p>
           <div className="helpbtns">
             <button type="button" className="btn pri" onClick={(e) => openContact(e.currentTarget)}>Leave your email</button>
             <a className="btn" href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("ESRS 2026 check: we would like your help")}`}>Contact us</a>

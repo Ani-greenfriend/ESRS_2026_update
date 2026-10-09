@@ -36,7 +36,7 @@ export default function UnlockDialog({ open, mode, onClose, formProps, done, con
         {mode === "contact" ? (
           <>
             <div className="eyebrow">Who we are</div>
-            <h3 id="gate-h">Want our help?</h3>
+            <h3 id="gate-h">Need our help?</h3>
             {contactSent ? (
               <p className="op-msg ok" role="status">Thanks. We will be in touch soon.</p>
             ) : (
