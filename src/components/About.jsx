@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import Icon from "./Icons.jsx";
-import { useUnlock } from "./unlock.jsx";
 
 export const CONTACT_EMAIL = "anikalerch@greenfriend.org";
 const STEPS = [
@@ -39,7 +38,6 @@ const Cols = ({ s }) => (
 
 export default function About() {
   const root = useRef(null);
-  const { openContact } = useUnlock();
   // Hover opens, click toggles (on devices that can hover).
   useEffect(() => {
     if (!matchMedia("(hover: hover)").matches) return;
@@ -117,16 +115,6 @@ export default function About() {
           )}
         </div>
 
-        <div className="helpcta">
-          <div>
-            <h3>Want our help?</h3>
-            <p className="qhelp">Leave your email or contact us.</p>
-          </div>
-          <div className="helpbtns">
-            <button type="button" className="btn pri" onClick={(e) => openContact(e.currentTarget)}>Leave your email</button>
-            <a className="btn" href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("ESRS 2026 check: we would like your help")}`}>Contact us</a>
-          </div>
-        </div>
       </div>
     </section>
   );
