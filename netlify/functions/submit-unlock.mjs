@@ -13,6 +13,7 @@ const FIELDS = [
   "email", "company", "industry", "consent_contact", "interests", "notice_version",
   "scope_badge", "scope_headline", "scope_answers", "route", "route_from_example", "route_answers",
   "topics", "datapoints_old", "datapoints_new", "datapoints_unconditional", "utm_source", "utm_campaign",
+  "request_type",
 ];
 
 const json = (status, body) =>
@@ -58,6 +59,10 @@ function validate(b) {
   need(industry === null || INDUSTRIES.includes(industry));
 
   need(typeof b.consent_contact === "boolean");
+  // 'download' = PDF unlock, 'contact' = "Want our help?" request, which needs contact consent.
+  const requestType = b.request_type ?? "download";
+  need(requestType === "download" || requestType === "contact");
+  need(requestType === "download" || b.consent_contact === true);
   need(b.notice_version === NOTICE_VERSION);
 
   // Scope: shape only (keys and answer values from the questionnaire), not the logic.
@@ -96,6 +101,7 @@ function validate(b) {
     datapoints_unconditional: count(b.datapoints_unconditional),
     utm_source: optText(b.utm_source, UTM_MAX),
     utm_campaign: optText(b.utm_campaign, UTM_MAX),
+    request_type: requestType,
     status: "current",
   };
 }
