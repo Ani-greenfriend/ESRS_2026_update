@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import Icon from "./Icons.jsx";
-import { useUnlock } from "./unlock.jsx";
 
 export const CONTACT_EMAIL = "anikalerch@greenfriend.org";
 const STEPS = [
@@ -13,7 +12,7 @@ const STEPS = [
 
 const PEOPLE = [
   { initials: "A", first: "Anika", chips: ["Just Eat Takeaway · 23 countries", "Co-founded Caribou", "Custom AI tools"], name: "Anika Lerch, MSc", role: "Founder, greenfriend · Strategy, governance and CSRD", li: "https://www.linkedin.com/in/anikalerch/", b: ["Built the global sustainability function at Just Eat Takeaway across 23 countries, including its first Responsible Business Strategy and governance set-up", "Advises energy, automotive, FMCG and industrial companies from double materiality to implementation roadmap, with board-ready and audit-ready deliverables", "Co-founded Caribou, a B2B CSRD software start-up", "Builds custom AI tools that automate IRO scoring, data synthesis and audit trails"] },
-  { initials: "E", first: "Elena", chips: ["Ex-Sage · FTSE 100", "Award-winning ESG disclosures", "Climate Competitiveness Index"], name: "Elena Zayakova, MSc", role: "Founder, CoreWorks Consultancy · Strategy, reporting and governance", li: "https://www.linkedin.com/in/elenavlzayakova/", b: ["Former Senior Director of Sustainability at Sage, a FTSE 100 tech company", "Led award-winning ESG disclosures in Europe and the Middle East, building reporting teams and processes from scratch", "Works with finance, legal, audit and risk teams across CSRD, ISSB, TCFD, CDP, GRI and the EU Taxonomy", "Co-author of the first Climate Competitiveness Index (2010) with UNEP"] },
+  { initials: "E", first: "Elena", chips: ["Ex-Sage · Senior Director", "Award-winning ESG disclosures", "Climate Competitiveness Index"], name: "Elena Zayakova, MSc", role: "Founder, CoreWorks Consultancy · Strategy, reporting and governance", li: "https://www.linkedin.com/in/elenavlzayakova/", b: ["Former Senior Director of Sustainability at Sage", "Led award-winning ESG disclosures in Europe and the Middle East, building reporting teams and processes from scratch", "Works with finance, legal, audit and risk teams across CSRD, ISSB, TCFD, CDP, GRI and the EU Taxonomy", "Co-author of the first Climate Competitiveness Index (2010) with UNEP"] },
 ];
 
 const List = ({ items }) => (
@@ -39,7 +38,6 @@ const Cols = ({ s }) => (
 
 export default function About() {
   const root = useRef(null);
-  const { openContact } = useUnlock();
   // Hover opens, click toggles (on devices that can hover).
   useEffect(() => {
     if (!matchMedia("(hover: hover)").matches) return;
@@ -117,16 +115,6 @@ export default function About() {
           )}
         </div>
 
-        <div className="helpcta">
-          <div>
-            <h3>Want our help?</h3>
-            <p className="qhelp">Leave your email or contact us.</p>
-          </div>
-          <div className="helpbtns">
-            <button type="button" className="btn pri" onClick={(e) => openContact(e.currentTarget)}>Leave your email</button>
-            <a className="btn" href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("ESRS 2026 check: we would like your help")}`}>Contact us</a>
-          </div>
-        </div>
       </div>
     </section>
   );

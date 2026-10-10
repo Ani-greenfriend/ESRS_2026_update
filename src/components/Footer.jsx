@@ -1,14 +1,21 @@
 import Planes from "./Planes.jsx";
+import { CONTACT_EMAIL } from "./About.jsx";
+import { useUnlock } from "./unlock.jsx";
 
 export default function Footer({ cta = true }) {
+  const { openContact } = useUnlock();
   return (
     <footer className="wrap">
       {cta && (
         <div className="cta">
           <Planes />
-          <h2>Report what you do.</h2>
-          <p>Not sure about your FY2026 route, or how to slim down your double materiality assessment under the revised ESRS? Book a free 20-minute call with Elena and Anika.</p>
-          <a className="addr" href="https://www.greenfriend.org" target="_blank" rel="noopener noreferrer">greenfriend.org</a>
+          <h2>Need our help?</h2>
+          <p>Need to report? Need more information? We will reach out to you.</p>
+          <div className="helpbtns">
+            <button type="button" className="btn pri" onClick={(e) => openContact(e.currentTarget)}>Leave your email</button>
+            <a className="btn" href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("ESRS 2026 check: we would like your help")}`}>Contact us</a>
+            <a className="addr" href="https://www.greenfriend.org" target="_blank" rel="noopener noreferrer">greenfriend.org</a>
+          </div>
         </div>
       )}
       <div className="fine">

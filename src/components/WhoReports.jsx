@@ -54,6 +54,15 @@ export default function WhoReports() {
           ))}
         </div>
       </div>
+      <details className="numnote">
+        <summary>What are wave 1 and wave 2?</summary>
+        <ul>
+          <li><b>Wave 1</b> is only the companies that were already under the old NFRD (Non-Financial Reporting Directive): public-interest entities (listed companies, banks, insurers) with more than 500 employees. They report under the CSRD since FY2024 (first report published in 2025). A company that is not listed, such as a large private or family-owned group, was never wave 1, however large.</li>
+          <li><b>Wave 2</b> is all other large EU companies. Their start was FY2025, later postponed by two years to FY2027.</li>
+          <li><b>Omnibus I (Directive (EU) 2026/470)</b> changed wave 2 in two ways: only companies with more than 1,000 employees and more than €450M turnover stay in, and their first report covers FY2027 (published 2028).</li>
+          <li><b>So</b> a company with more than 1,000 employees and €450M that was not wave 1 does not report on FY2026. It starts with FY2027.</li>
+        </ul>
+      </details>
       <p className="tip"><b>Good to know</b> Years shown are the financial year reported on. Check national law for the FY2025–2026 exemption (transposition by 19 March 2027).</p>
     </section>
   );

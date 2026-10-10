@@ -11,7 +11,7 @@
 | Plan | Free (no backups, pauses after ~1 week idle; monthly CSV export of `unlocks` is the backup) |
 | Postgres | 17 |
 | Written against | docs/product-spec.md v1.1 · docs/access-matrix.md (short form, P1 public stays anonymous) |
-| Last updated | 8 October 2026, session 2 (no database change; note on v1.7 form added in §9) |
+| Last updated | 9 October 2026, session 3 (`unlocks.request_type` added) |
 
 This file is the schema source of truth. It is updated at every save point that touches the database.
 
@@ -41,10 +41,11 @@ This file is the schema source of truth. It is updated at every save point that 
 | superseded_by | uuid → unlocks.id | on delete set null; null while current |
 | anonymised_at | timestamptz | set by the clean-up job |
 | status | text | `current` → `superseded` → `anonymised` (default `current`) |
+| request_type | text | `download` (unlock form, PDF) or `contact` ("Want our help?" box); default `download`; builder request 9 Oct 2026 |
 | created_by, updated_by | uuid → profiles.id | empty (no login) |
 | updated_at | timestamptz | kept current by trigger |
 
-Constraints: `unlocks_email_until_anonymised` (email or anonymised_at), `unlocks_consent_at_only_with_consent`.
+Constraints: `unlocks_email_until_anonymised` (email or anonymised_at), `unlocks_consent_at_only_with_consent`, `unlocks_contact_needs_consent` (a `contact` row always has consent_contact true).
 Indexes: `unlocks_email_current_idx` (email where status = 'current'), `created_at`, `superseded_by`, `created_by`, `updated_by`.
 
 ### `public.profiles` — login-ready, for the later contacts dashboard
@@ -123,6 +124,7 @@ The builder entered these by hand in Netlify (not through the extension). To ver
 - Supabase's advisor reports "RLS enabled, no policy" (INFO) on both tables. That is intended: default deny.
 - New tables get default grants to anon and authenticated from Supabase; every future migration must `revoke all … from anon, authenticated` right after `create table`.
 - Spec v1.7+: the form sends only email, consent and results. `company`, `industry` and `interests` stay in the table, empty (company and industry null, interests `{}`), for a later version.
+- `request_type` separates the two kinds of lead: filter on `request_type = 'contact'` for people who asked for help, `download` for PDF unlocks. A contact request also unlocks the page; it is one row like any unlock, so the supersede rule applies across both kinds (the newest row for an email is the current one).
 - Free plan: no backups. Monthly CSV export of `unlocks` by the builder; restore a paused project in the dashboard.
 
 ## 10. Change log
@@ -132,4 +134,5 @@ The builder entered these by hand in Netlify (not through the extension). To ver
 | 20261007204041_create_profiles_and_unlocks.sql | `set_updated_at()`, `profiles` (+ guard trigger, seed), `unlocks`, RLS on, grants revoked, indexes |
 | 20261007204238_enable_pg_cron.sql | enables pg_cron |
 | 20261007205047_revoke_rls_auto_enable_from_api_roles.sql | revokes execute on the built-in `rls_auto_enable()` from public, anon, authenticated |
+| 20261009090335_add_request_type_to_unlocks.sql | adds `unlocks.request_type` (download / contact, default download) and the contact-needs-consent check |
 | pending/create_cleanup_job.sql | **not applied** — clean-up function and daily job |

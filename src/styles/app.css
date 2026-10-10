@@ -611,3 +611,17 @@ body{overflow-x:hidden}
 .helpbtns .btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center;padding:10px 20px;color:var(--fg)}
 .helpbtns .btn.pri{color:#fff}
 @media (max-width:560px){.helpbtns,.helpbtns .btn{width:100%}}
+.cta .helpbtns{align-items:center;margin-top:4px}
+.cta .helpbtns .addr{align-self:center}
+@media (max-width:560px){.cta .helpbtns .addr{width:auto}}
+/* builder request (9 Oct 2026): on large screens the chapter menu moves into the empty left margin */
+.sidenav{display:none}
+@media (min-width:1420px){
+ nav.chapters{display:none}
+ .sidenav{display:grid;gap:2px;position:fixed;top:88px;left:calc((100vw - 1060px)/2 - 176px);width:160px;z-index:5;opacity:0;visibility:hidden;transition:opacity .2s,visibility .2s}
+ .sidenav.show{opacity:1;visibility:visible}
+ .sidenav-h{font-size:.7rem;letter-spacing:.09em;text-transform:uppercase;color:var(--terra);font-weight:700;margin:0 0 6px 14px}
+ .sidenav a{display:block;padding:6px 10px 6px 12px;border-left:2px solid var(--line);color:var(--muted);text-decoration:none;font-size:.85rem;font-weight:600;line-height:1.3}
+ .sidenav a:hover{color:var(--fg);border-left-color:var(--sand)}
+ .sidenav a.on{color:var(--olive);border-left-color:var(--olive);background:var(--olive-soft);border-radius:0 8px 8px 0}
+}

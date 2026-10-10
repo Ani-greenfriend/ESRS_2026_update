@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Cover from "./components/Cover.jsx";
 import ChapterNav from "./components/ChapterNav.jsx";
 import WhatChanged from "./components/WhatChanged.jsx";
@@ -24,7 +24,7 @@ import { isValidEmail, NOTICE_VERSION } from "./lib/constants.js";
 import { readUnlocked, writeUnlocked } from "./lib/storage.js";
 import { readUtm } from "./lib/utm.js";
 import { submitUnlock } from "./lib/submit.js";
-import { downloadPdf } from "./lib/pdf.js";
+import { downloadPdf, pdfUrl } from "./lib/pdf.js";
 
 const TOPIC_NAME = Object.fromEntries(TOPICS.map((t) => [t[0], t[1]]));
 
@@ -38,6 +38,7 @@ export default function App() {
   const [msg, setMsg] = useState(null);
   const [fresh, setFresh] = useState(false);
   const [pdfError, setPdfError] = useState(false);
+  const [pdfLink, setPdfLink] = useState(null);
   const [gateOpen, setGateOpen] = useState(false);
   const [gateMode, setGateMode] = useState("unlock");
   const [contactSent, setContactSent] = useState(false);
@@ -68,6 +69,16 @@ export default function App() {
     setTimeout(() => opener.current?.focus?.(), 0);
   }, []);
 
+  // Once unlocked, keep a ready-built PDF for the "Open" and "Download" links (rebuilt when answers change).
+  useEffect(() => {
+    if (!unlocked) return;
+    let url = null, live = true;
+    const t = setTimeout(() => {
+      pdfUrl(snap).then((u) => { url = u; if (live) setPdfLink(u); else URL.revokeObjectURL(u); }).catch(() => setPdfError(true));
+    }, 150);
+    return () => { live = false; clearTimeout(t); if (url) setTimeout(() => URL.revokeObjectURL(url), 60000); };
+  }, [unlocked, snap]);
+
   const download = async (s = snap) => {
     try {
       await downloadPdf(s);
@@ -94,6 +105,7 @@ export default function App() {
       email,
       // v1 asks for email and consent only; company, industry and interests stay empty.
       consent_contact: form.consent,
+      request_type: mode === "contact" ? "contact" : "download",
       notice_version: NOTICE_VERSION,
       scope_badge: snap.scope?.badge ?? null,
       scope_headline: snap.scope?.head ?? null,
@@ -125,7 +137,7 @@ export default function App() {
   };
 
   const formProps = { form, setForm, onSubmit, busy, msg };
-  const done = { fresh, pdfError, onDownload: () => download() };
+  const done = { fresh, pdfError, pdfLink, onDownload: () => download() };
 
   return (
     <UnlockContext.Provider value={{ unlocked, openGate, openContact }}>
@@ -133,13 +145,14 @@ export default function App() {
       <ChapterNav />
       <main className="wrap">
         <FastStrip />
+        {/* Large to small: what changed → do I need to report → how do I report 2026 → what do I report */}
         <WhatChanged />
-        <Datapoints topics={topics} setTopics={setTopics} />
         <WhoReports />
         <ScopeCheck scope={scope} setScope={setScope} />
         <NonEU />
         <Cases />
         <Fy2026 route={route} setRoute={setRoute} />
+        <Datapoints topics={topics} setTopics={setTopics} />
         <UnlockSection snap={snap} formProps={formProps} done={done} />
       </main>
       <About />

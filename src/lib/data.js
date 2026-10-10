@@ -3,7 +3,7 @@
 // no EFRAG datapoint names or IDs are included (reuse rights).
 
 export const CHUNKS=[
- {k:"~80%",t:"Fewer companies in scope",s:"Only groups above 1,000 employees and €450M turnover.",d:["Both limbs must be exceeded, on a consolidated basis for parents.","Listed SMEs are out of mandatory scope.","Financial holding undertakings can opt out of consolidated reporting.","Non-EU groups: €450M EU turnover plus a €200M EU subsidiary or branch."]},
+ {k:"~80%",t:"Fewer companies in scope",s:"Only groups above 1,000 employees and €450M turnover.",d:["About 80% fewer companies under the final law (roughly 50,000 down to about 10,000). The 90% you may have read was the European Parliament's proposal during the negotiations (1,750 employees), not the law.","Both limbs must be exceeded, on a consolidated basis for parents.","Listed SMEs are out of mandatory scope.","Financial holding undertakings can opt out of consolidated reporting.","Non-EU groups: €450M EU turnover plus a €200M EU subsidiary or branch."]},
  {k:"323",t:"Datapoints in total",s:"Down from 1,052: 292 mandatory, 0 voluntary, 31 new general ones.",d:["All voluntary datapoints are deleted.","Counted by EFRAG: 783 \u201cshall\u201d datapoints in 2023, 292 in the revised ESRS.","More numbers, less narrative: quantitative datapoints are preferred.","Sector-specific ESRS are replaced by guidance."]},
  {k:"Top-down",t:"A lighter materiality assessment",s:"Conclude at topic level instead of testing every IRO.",d:["ESRS 1 explicitly allows a top-down approach, alone or mixed with bottom-up.","Information that is not material shall not be reported, with narrow exceptions.","Fair presentation applies to the statement as a whole, not datapoint by datapoint.","More discretion on geographic disaggregation."]},
  {k:"VSME cap",t:"Protection for smaller suppliers",s:"Value chain requests are capped from FY2027.",d:["A new voluntary standard, based on VSME, entered into force on 24 Sept 2026.","Value chain partners with on average up to 1,000 employees in the previous year can refuse requests that go beyond that standard.","Missing value chain data: explain efforts and plans during the first three years."]},
@@ -87,8 +87,8 @@ export const G=[
   ["Reports under the existing (2023) ESRS.","Reports under the existing (2023) ESRS.","You choose one of three FY2026 routes. See FY2026 options below.","First year under the revised ESRS, mandatory from FY2027.","Reports under the revised ESRS."]],
  ["Wave 1, now below a threshold","e.g. 600 employees",["rep","opt","opt","out","out"],["","MS option","MS option","Out",""],
   ["Reported under the existing (2023) ESRS.","Member States may exempt these companies for FY2025 and FY2026. Check national law.","Member States may exempt these companies for FY2025 and FY2026. Check national law.","Below the new size test (over 1,000 employees and over €450M): no mandatory reporting.","Below the new size test: no mandatory reporting."]],
- ["Large EU company, not wave 1",">1,000 employees & >€450M",["out","out","out","new","new"],["","","","First year",""],
-  ["Not required to report yet.","Not required to report yet.","Not required to report yet.","First report under the revised ESRS, on FY2027 (published 2028).","Reports under the revised ESRS."]],
+ ["Large EU company, not wave 1","Old wave 2, now >1,000 employees & >€450M",["out","out","out","new","new"],["","","","First year",""],
+  ["Not required to report yet.","Not required to report yet: the wave 2 start (FY2025) was postponed to FY2027.","Not required to report yet: the wave 2 start was postponed to FY2027.","First report under the revised ESRS, on FY2027 (published 2028).","Reports under the revised ESRS."]],
  ["Large company below new thresholds","Old wave 2, e.g. 400 employees",["out","out","out","out","out"],["","","","Voluntary standard",""],
   ["Not required to report.","Not required to report.","Not required to report.","No mandatory reporting. The voluntary standard is available.","No mandatory reporting."]],
  ["Listed SME","Old wave 3",["out","out","out","out","out"],["","","","Out",""],
@@ -101,7 +101,7 @@ export const Q={
  role:{q:"Which entity are you checking?",o:[["parent","The parent of a group","Use consolidated group figures"],["single","A standalone company","No subsidiaries"],["sub","A subsidiary in a group","Use your own figures, or your EU sub-group if you are its parent"]]},
  emp:{q:"Average employees in the financial year?",h:"Consolidated for a parent.",o:[["y","More than 1,000",""],["n","1,000 or fewer",""]]},
  turn:{q:"Net turnover in the financial year?",h:"Consolidated for a parent.",o:[["y","More than €450 million",""],["n","€450 million or less",""]]},
- wave1:{q:"Did you already publish a CSRD report for FY2024?",h:"Wave 1: mostly listed companies and other public-interest entities with more than 500 employees.",o:[["y","Yes, we are wave 1",""],["n","No",""]]},
+ wave1:{q:"Did you already publish a CSRD report for FY2024?",h:"Wave 1 means you were already under the old NFRD: a public-interest entity (listed company, bank or insurer) with more than 500 employees. An unlisted company was never wave 1, however large.",o:[["y","Yes, we are wave 1",""],["n","No",""]]},
  covered:{q:"Will a parent include you in a consolidated report under the ESRS (or an equivalent standard)?",o:[["y","Yes",""],["n","No, or not sure",""]]},
  fhc:{q:"Is the parent a financial holding company?",h:"It does not take part in managing its subsidiaries, which run independent businesses.",o:[["n","No",""],["y","Yes",""]]},
  euturn:{q:"Group net turnover generated in the EU, in each of the last two years?",o:[["y","More than €450 million both years",""],["n","€450 million or less in at least one year",""]]},

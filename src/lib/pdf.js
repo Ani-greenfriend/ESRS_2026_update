@@ -118,7 +118,15 @@ export async function buildPdf(snap) {
   return out.d;
 }
 
+export const PDF_NAME = "greenfriend-revised-esrs-one-pager.pdf";
+
+// A blob URL of the current one-pager, for the "Open" and "Download" links.
+export async function pdfUrl(snap) {
+  const d = await buildPdf(snap);
+  return URL.createObjectURL(d.output("blob"));
+}
+
 export async function downloadPdf(snap) {
   const d = await buildPdf(snap);
-  d.save("greenfriend-revised-esrs-one-pager.pdf");
+  d.save(PDF_NAME);
 }

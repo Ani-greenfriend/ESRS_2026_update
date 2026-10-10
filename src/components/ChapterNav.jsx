@@ -2,12 +2,12 @@ import { useEffect, useRef, useState } from "react";
 
 export const CHAPTERS = [
   ["overview", "What changed"],
-  ["datapoints", "Datapoints"],
   ["who", "Who reports when"],
   ["scope", "Check your scope"],
   ["noneu", "Non-EU groups"],
   ["cases", "Example cases"],
   ["fy2026", "Your 2026 route"],
+  ["datapoints", "Datapoints"],
   ["onepager", "Get the PDF"],
   ["about", "Who we are"],
 ];
@@ -15,6 +15,7 @@ export const CHAPTERS = [
 // The active chapter follows the scroll position; "Who we are" is active at the bottom; none on the cover.
 export default function ChapterNav() {
   const [active, setActive] = useState(null);
+  const [pastCover, setPastCover] = useState(false);
   const bar = useRef(null);
 
   useEffect(() => {
@@ -29,6 +30,8 @@ export default function ChapterNav() {
       });
       if (innerHeight + scrollY >= document.documentElement.scrollHeight - 4) cur = CHAPTERS[CHAPTERS.length - 1][0];
       setActive(cur);
+      const cover = document.querySelector(".cover");
+      setPastCover(!cover || cover.getBoundingClientRect().bottom < 80);
     };
     const onScroll = () => { if (!tick) { tick = true; requestAnimationFrame(spy); } };
     addEventListener("scroll", onScroll, { passive: true });
@@ -43,15 +46,24 @@ export default function ChapterNav() {
     if (a) w.scrollTo({ left: a.offsetLeft - w.offsetLeft - 24, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
   }, [active]);
 
+  const links = CHAPTERS.map(([id, label]) => (
+    <a key={id} href={`#${id}`} className={active === id ? "on" : undefined} aria-current={active === id ? "true" : undefined}>
+      {label}
+    </a>
+  ));
+
   return (
+    <>
+    {/* Large screens only: the same chapters as a slim menu in the empty left margin (CSS switches it on). */}
+    <nav className={`sidenav${pastCover ? " show" : ""}`} aria-label="Sections">
+      <div className="sidenav-h">On this page</div>
+      {links}
+    </nav>
     <nav className="chapters" aria-label="Sections">
       <div className="wrap" ref={bar}>
-        {CHAPTERS.map(([id, label]) => (
-          <a key={id} href={`#${id}`} className={active === id ? "on" : undefined} aria-current={active === id ? "true" : undefined}>
-            {label}
-          </a>
-        ))}
+        {links}
       </div>
     </nav>
+    </>
   );
 }
