@@ -1,6 +1,6 @@
 # Access Matrix — ESRS 2026 Update Check
 
-**Written against:** product-spec.md v1.9 · supabase-setup.md as of not yet created — short run
+**Written against:** product-spec.md v2.3 (no access changes since v2.0: the slides file is built in the browser behind the same unlock) · supabase-setup.md as of not yet created — short run
 **Population pattern:** P1 public, stays anonymous
 **Date:** 7 October 2026
 **Author:** Anika Lerch (greenfriend)
