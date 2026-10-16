@@ -1,6 +1,5 @@
 import { OPT, PQ } from "../lib/data.js";
 import { routeResult } from "../lib/route.js";
-import Planes from "./Planes.jsx";
 import { Gated } from "./unlock.jsx";
 import { ChapterHead } from "./Icons.jsx";
 
@@ -69,7 +68,6 @@ export default function Fy2026({ route, setRoute }) {
         ))}
       </div>
       <div className="pickres" aria-live="polite">
-        <Planes set={["p1", "p2", "p3"]} />
         <div className="eyebrow" style={{ color: "var(--olive)" }}>Recommendation</div>
         <h3>{r.label}</h3>
         <Gated label="The reasons behind your route">

@@ -1,4 +1,3 @@
-import Planes from "./Planes.jsx";
 import Footer from "./Footer.jsx";
 import { NOTICE_VERSION } from "../lib/constants.js";
 
@@ -6,7 +5,6 @@ export default function Privacy() {
   return (
     <>
       <div className="cover">
-        <Planes />
         <header className="wrap top">
           <div className="brand">greenfriend.</div>
           <h1>Privacy notice</h1>

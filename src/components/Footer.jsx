@@ -1,4 +1,3 @@
-import Planes from "./Planes.jsx";
 import { CONTACT_EMAIL } from "./About.jsx";
 import { useUnlock } from "./unlock.jsx";
 
@@ -8,7 +7,6 @@ export default function Footer({ cta = true }) {
     <footer className="wrap">
       {cta && (
         <div className="cta">
-          <Planes />
           <h2>Need our help?</h2>
           <p>Need to report? Need more information? We will reach out to you.</p>
           <div className="helpbtns">

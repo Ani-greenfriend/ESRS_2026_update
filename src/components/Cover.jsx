@@ -1,10 +1,8 @@
-import Planes from "./Planes.jsx";
 import { RULES_DATE } from "../lib/constants.js";
 
 export default function Cover() {
   return (
     <div className="cover">
-      <Planes />
       <header className="wrap top">
         <div className="brand">greenfriend.</div>
         <h1>The revised ESRS, in five minutes</h1>
