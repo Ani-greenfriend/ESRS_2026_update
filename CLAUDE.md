@@ -1,6 +1,6 @@
 # ESRS 2026 Update Check
 ## Identity
-A free public lead-magnet tool that explains the revised ESRS, checks scope, explains the three FY2026 routes and unlocks a one-page square PDF and a slides file (.pptx) for an email. Used by prospective clients reaching it from LinkedIn at check.greenfriend.org.
+A free public lead-magnet tool that explains the revised ESRS, checks scope, explains the three FY2026 routes and unlocks a one-page square PDF for an email. Used by prospective clients reaching it from LinkedIn at check.greenfriend.org.
 Tier: 2 — public tool, no login, submissions persist to Supabase (D3+A1)
 Spec version governed: v2.3 — the version of docs/product-spec.md these rules were derived from.
 Position: Standalone for now; a later contacts dashboard (Tool B, with a login) will share the Supabase project. This tool creates the schema and holds the canonical docs/access-matrix.md, docs/user-stories.md and docs/supabase-setup.md.
@@ -19,7 +19,7 @@ Save point — after completing any module, feature, fix, or schema change:
 4. Tell the builder in one line: "Save point committed: [what changed]."
 Do not start the next piece of work before the save point is pushed. An ending session is a save point.
 First Session Setup (session 1 only):
-1. The files are already placed: docs/ holds product-spec.md, access-matrix.md, user-stories.md, first-prompt.md, update-prompt.md; docs/reference/ holds prototype-reference.html, the sample PDFs and the sample slides file; docs/reference/assets/ holds anika.png and elena.png. Check every file is there; if one is missing, stop: "I cannot find [file]; upload it to the repo and I will place it". Nothing is built while a required document is missing.
+1. The files are already placed: docs/ holds product-spec.md, access-matrix.md, user-stories.md, first-prompt.md, update-prompt.md; docs/reference/ holds prototype-reference.html, the sample PDFs; docs/reference/assets/ holds anika.png and elena.png. Check every file is there; if one is missing, stop: "I cannot find [file]; upload it to the repo and I will place it". Nothing is built while a required document is missing.
 2. Announce what you checked, then commit and push before building anything.
 PROGRESS.md structure (for the recreate rule): status header (Session / Last updated / Live URL / Stage / Supabase project), Current state, Last session (3–5 lines, replace each session), Remaining work (shrinking checklist), Build decisions (one line each), Known issues, Backlog (deferred and approved items, promoted only deliberately), Notes for next session.
 ## Commands
@@ -29,7 +29,7 @@ React · Vite · Tailwind CSS · Netlify (static site + Netlify Functions) · Su
 Deployment: GitHub push to main → Netlify auto-deploys. Claude Code pushes to main; it does NOT connect to Netlify and no Netlify connector or MCP is used. The builder connects the repo to a Netlify site once, connects Supabase to that site with the Supabase extension (it writes the Supabase variables), then redeploys (Vite reads browser variables at build time). A missing Supabase variable is fixed by the extension connection, never a pasted value.
 No new costs: Netlify Free, Supabase Free. Add no paid service without a spec change.
 ## Arms
-Export — browser only, no server function — (1) one square page PDF (280 x 280 mm) built with a bundled jsPDF (npm, never a CDN), gradient header and footer drawn from a canvas image, design per spec Section 3; (2) a slides file (.pptx, 5 slides) built with a bundled PptxGenJS (npm, never a CDN) from the same inputs and states, same disclaimer; both appear in the "Take your results internally or present them in a deck?" box after a successful unlock, the PDF also downloads automatically; one PDF only behind every sign-up path; the PDF never asks the user to redo the check (sections without answers show general guidance, tagged); the prototype's buildPdf() and the sample files in docs/reference/ are the reference
+Export — browser only, no server function — one square page PDF (280 x 280 mm) built with a bundled jsPDF (npm, never a CDN), gradient header and footer drawn from a canvas image, design per spec Section 3; the PDF is the only download (no slides file, no PptxGenJS); it appears in the "Take your results with you" box with one Download PDF button after a successful unlock and also downloads automatically; one PDF only behind every sign-up path; the PDF never asks the user to redo the check (sections without answers show general guidance, tagged); the prototype's buildPdf() and the sample files in docs/reference/ are the reference
 Scheduled — Supabase pg_cron (not a Netlify function) — daily 03:00 Europe/Amsterdam — one SQL function: (1) rows older than 30 days with consent_contact false: email and company set to null, anonymised_at set; (2) rows older than 24 months deleted. No email.
 Submit — user-triggered — /netlify/functions/submit-unlock — the only write path to the database (see Hard Rules)
 ## Environment Variables
@@ -71,8 +71,8 @@ No brand skill. docs/reference/prototype-reference.html (the final mockup) defin
 - Primary indigo #3a3fd1 (blue palette, v2.3); attention coral #e8503f (deadlines, chapter pills, unlock buttons); highlight yellow #ffe27a; info teal #0c8f8f (auditor track) — never Tailwind blue defaults
 - Fonts: Literata (headings), Figtree (body), DM Mono (stamps, labels), League Spartan Bold for the "greenfriend." word mark only; WOFF2 self-hosted in the repo, never from Google
 - No circles in the design; plain gradient cover; 12–16 px radii; no heavy shadows; no emoji; works at 375 px with no sideways scroll; respect reduced motion
-- Profile photos of Anika Lerch and Elena Zayakova are in docs/reference/assets (anika.png, elena.png, already cropped): use them as round 64 px avatars, with alt text. AI disclosure in the footer General information note and in the PDF and slides disclaimer (wording in the spec): keep it verbatim.
-- Text brand "greenfriend." with a yellow dot; no personal names on the cover or in the PDF. Remove the mockup's "Mockup only / Lock again" footer button and the on-page PDF preview (the real PDF and slides download; keep the "Take your results internally or present them in a deck?" box), and replace its Google Fonts links with the self-hosted fonts.
+- Profile photos of Anika Lerch and Elena Zayakova are in docs/reference/assets (anika.png, elena.png, already cropped): use them as round 64 px avatars, with alt text. AI disclosure in the footer General information note and in the PDF disclaimer (wording in the spec): keep it verbatim.
+- Text brand "greenfriend." with a yellow dot; no personal names on the cover or in the PDF. Remove the mockup's "Mockup only / Lock again" footer button and the on-page PDF preview (the real PDF downloads; keep the "Take your results with you" box with its single Download PDF button), and replace its Google Fonts links with the self-hosted fonts.
 ## Business Rules
 - Scope check and the estimator are pure functions implemented exactly as spec Section 9 and the prototype (verdict(), STAT). A scope verdict shows only when every question on the path is answered.
 - FY2026 routes: three fixed cards (A, B, C), no questionnaire, no scoring, no recommendation. Say "Pre-Omnibus ESRS" (the 2023 standards as amended in 2025) and "Revised ESRS", never "existing ESRS".
