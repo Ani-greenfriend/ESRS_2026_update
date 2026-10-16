@@ -4,62 +4,122 @@
 > anything. Update it at every save point. Replace content — do not append.
 > History lives in git.
 
-**Session:** 0 — build not started
-**Last updated:** 15 October 2026 — by Project Governor, pre-build (spec v2.3)
-**Live URL:** none yet [Rule: fill in after the first successful deploy]
+**Session:** 4
+**Last updated:** 16 October 2026
+**Live URL:** https://esrs2026update.netlify.app (Netlify default address until check.greenfriend.org is connected); release v1.0 = merge commit 1f047f6 on main [Rule: fill in after the first successful deploy]
 **Stage:** business logic and database [Rule: one of — business logic and database / second screen and access design / login and access rules together / deploy and maintain. Advance it when that stage's items are absorbed into Current state. The stage is decided by what exists, never by a week or a version number.]
-**Supabase project:** exists and empty — "ESRS 2026 update tool", ref jfalwveuccerzeffxftx, URL https://jfalwveuccerzeffxftx.supabase.co (confirm the ref with the builder in session 1; never create a second project) [Rule: the only place project existence is recorded; CLAUDE.md never carries it]
+**Supabase project:** exists and built — "ESRS 2026 update tool", ref jfalwveuccerzeffxftx, URL https://jfalwveuccerzeffxftx.supabase.co, confirmed with the builder in session 1 [Rule: the only place project existence is recorded; CLAUDE.md never carries it]
 
 ## Current state
-Nothing built. Repo contains CLAUDE.md, PROGRESS.md and docs/ (product-spec.md, access-matrix.md, user-stories.md, first-prompt.md, update-prompt.md, reference/prototype-reference.html, reference/assets/ photos, reference/sample PDFs and slides).
-[Rule: this section describes what exists and works right now — never what is planned. Completed checklist items get absorbed here in compressed form.]
+- Docs in place (spec v2.3, 16 Oct 2026): docs/product-spec.md, first-prompt.md, update-prompt.md, access-matrix.md, user-stories.md, supabase-setup.md; docs/reference/prototype-reference.html (v2.3 mockup) and the two sample PDFs; docs/reference/assets/anika.png and elena.png.
+- The build below is still spec v1.9 plus the session-3 builder requests; the v2.0–v2.3 changes are listed under Remaining work.
+- Frontend (React 18 + Vite 6 + Tailwind 3) builds with `npm run build`: cover, the 30-second strip, sticky chapter menu, what changed, datapoints (fact sheet, estimator, drill-down), who reports when, scope check, non-EU groups, example cases, FY2026 options, unlock section and dialog, who we are, footer, /privacy. Matches the final mockup (spec v1.9) in light and dark: short-answer bars, chapter icons, "For you" / "Our tip" / "Good to know" lines, toggles, one floating tooltip (hover, focus, tap), source i icons, scroll-following nav; no sideways scroll at 375 px.
+- Logic in src/lib as pure functions: scope.js, route.js, estimator.js (hand-checked: defaults 569 → 237, −58%, 163; all topics 783 → 292, 195; example answers → Route B; ties go to the earlier route; every scope verdict path).
+- Estimator shows the "Plus 31 general datapoints" total line (defaults 268, all ten 323); fact sheet has the legend highlight and the "Why the numbers differ between sources" toggle.
+- Unlock form: email plus one optional unticked consent box, button "Get it free"; company, industry and interests are no longer asked (columns stay, empty).
+- Gating: scope reasons, route reasons, cases 3–7 "Why" and requirements beyond 3 are blurred until unlock; `esrs-unlocked` flag kept across reloads.
+- Export: one-page A4 PDF built in the browser with bundled jsPDF 4.2.1, downloads right after a successful unlock; the confirmation then offers "Open your one-pager (PDF)" (new tab) and "Download again", both plain links to a ready-built PDF that is rebuilt when answers change.
+- Leads are typed: `unlocks.request_type` is `download` for the unlock form and `contact` for the "Want our help?" box (contact always with consent).
+- Submit: netlify/functions/submit-unlock.mjs (16 KB limit, strict validation, lower-cased email, insert plus supersede, secret key). Tested against a mock database: valid, bad email, oversized, unknown field, bad values, GET.
+- Live: v1.0 deployed from main; a real unlock on the live site stored one row (9 Oct 2026).
+- Database: `unlocks` and `profiles` built with RLS on, no policy and no grant for anon or authenticated; Anika's profile seeded; pg_cron enabled. The built-in `rls_auto_enable()` RPC is no longer executable by anon.
+- Browser bundle checked: no Supabase key or client, no "ESRS26_" strings, only same-site requests, no "Preview" or "Lock again" leftovers.
 
 ## Last session
-None — the first build session has not happened yet.
+Session 4: clean-up only, nothing built. Today's uploads (spec v2.3, new CLAUDE.md, mockup, sample PDFs, photos) had landed flat at the root and overwritten PROGRESS.md; files moved into docs/, docs/reference/ and docs/reference/assets/ with git mv. PROGRESS.md restored from b2f3c1b (last commit before the uploads) and docs/supabase-setup.md restored too (an upload commit had deleted the docs/ folder). Old and new CLAUDE.md compared: every removed rule is superseded by v2.3, nothing carried over. The v1.9 → v2.3 differences were added to Remaining work.
 [Rule: 3–5 lines maximum. Replace each session — what was built, changed, or fixed.]
 
 ## Remaining work
-- [ ] First Session Setup: create docs/ and docs/reference/, move the spec, the two access files and prototype-reference.html (the final mockup) into docs/reference/ and the rest into docs/ and check each is there, commit (see CLAUDE.md Session Protocol)
-- [ ] Builder: create the GitHub repo, connect it to a Netlify site (one-time), connect Supabase to the site with the Supabase extension (the project already exists; this can happen before session 1)
-- [ ] Connect to Supabase project jfalwveuccerzeffxftx via MCP: confirm the ref with the builder, check the project is still empty, never create a new one
-- [ ] Build tables `unlocks` and `profiles` (named migrations saved in supabase/migrations/) with RLS on from creation, login-ready columns, anon grants revoked and the short-form rules from docs/access-matrix.md; no Auth, no screen reads a table; then write docs/supabase-setup.md following the structure in CLAUDE.md
-- [ ] Build the pg_cron clean-up job (named migration): daily 03:00 Europe/Amsterdam; anonymise no-consent rows after 30 days, delete rows after 24 months; execute revoked from everyone but the job
-- [ ] Set up the React + Vite + Tailwind project: self-hosted fonts (WOFF2), colour tokens and dark mode from CLAUDE.md Brand, pure logic functions for scope and estimator, data tables from the mockup
-- [ ] Build Cover — plain dark band, "greenfriend." brand line, H1, one-line lede and one "Check your company" button (no alert, stamps or colour planes), then the "30-second version" strip (three tiles with icons)
-- [ ] Build Sticky chapter menu — fixed left sidebar (230 px, brand line on top) from 1180 px wide, sticky top bar below that; jump links, active chapter follows the scroll position (including "Who we are"), scrolls sideways on phones and keeps the active link in view
-- [ ] Build What changed — six expandable cards (closed by default, i icon with source, "Source" line inside) and the key-dates timeline
-- [ ] Build Who reports when — threshold cards with "What it means for you" lines and the cohort timeline table (cohorts say EU; "Good to know" explains wave 1 and links to the national transposition measures); every cell and key item explains itself on hover, focus and tap (one floating tooltip)
-- [ ] Build Check your scope — questionnaire, "Your reading" panel, verdict (reasons locked)
-- [ ] Build Datapoints — fact sheet and buckets, own-number estimator (with the "plus 31 general datapoints" total line). No standard-by-standard section
-- [ ] Build Non-EU groups — guided three-question stepper (numbered steps, Yes/No answer boxes, fine-print and Good to know toggles), the "Our tip" line
-- [ ] Build Example cases — seven tabs with org charts (tabs 3–7 and their "Why" locked)
-- [ ] Build Your 2026 route (id fy2026) — three route cards A/B/C (plain names, Pre-Omnibus / Revised ESRS names, effort dots, "Fits if", source icon), Good to know, Our tip (route C as the natural fit for those starting now) and the "Where the three routes come from" toggle. No questions, no scoring, nothing locked
-- [ ] Build Unlock section and Unlock dialog — email-only form, one optional consent box, one-line notice, button "Get it free", four numbered squares (Scope result, FY2026 routes, Datapoint estimate, One-page PDF), "Download again"
-- [ ] Build Who we are and how we help — pitch, three cards, two profile cards with the round photos from docs/reference/assets, steps 0–4 as five cards side by side, each with a service label and a + toggle for the details
-- [ ] Build Footer — no CTA box, AI disclosure in the General information note (spec Footer section), disclaimer, data source line, sources, link to /privacy
-- [ ] Build Privacy notice view at /privacy — full notice, version 2026-10-07
-- [ ] Wire Export: browser-generated square one-page PDF (bundled jsPDF) per spec Section 3 and the sample PDFs in docs/reference/, with the three datapoint states and the general-guidance sections; downloads right after a successful unlock
-- [ ] Wire slides export (v2.3): bundled PptxGenJS builds the 5-slide .pptx from the same inputs as the PDF (see docs/reference/ESRS-update-check-slides-sample.pptx); "Take your results internally or present them in a deck?" box with Download PDF and Download slides after unlock
-- [ ] Wire Submit function `submit-unlock`: 16 KB body limit, every field validated, supersede rule, insert with the secret key; the form posts here only
-- [ ] Public endpoint protections before the first public deploy: confirm no anon policy or grant on any table, the browser bundle holds no Supabase key or client, and the function refuses bad email and oversized bodies. No rate limit, no bot check.
-- [ ] Show the confirmed short data notice under the form, and the consent checkbox (not pre-ticked, `consent_at` and `notice_version` recorded with the row)
-- [ ] Local test pass — full walkthrough of every view and every scope path, desktop and 375 px
-- [ ] Acceptance criteria pass — verify all 18 criteria in spec Section 13 before deploy
-- [ ] Builder: check the Supabase variable values in Netlify start with `sb_`, add the custom domain check.greenfriend.org in Netlify and the CNAME in Wix DNS; redeploy
-- [ ] Push to main → Netlify auto-deploys
+Waiting on the builder before any v2.3 building (session-3 builder decisions conflict with spec v2.3):
+- [ ] Builder: chapter order — keep the 9 Oct large-to-small order (… Your 2026 route → Datapoints → Get the PDF) or follow v2.2 (What changed · Who reports when · Check your scope · Datapoints · Example cases · Your 2026 route · Your 2027 roadmap · Get the PDF · Who we are)?
+- [ ] Builder: wide-screen menu — keep the 1,420 px "On this page" margin list or switch to the spec's fixed 230 px sidebar from 1,180 px?
+- [ ] Builder: "Fewer companies in scope" — keep ~80% (9 Oct decision) or switch to v2.2's ~90% card with the 80%-or-90% note?
+- [ ] Builder: "Want our help?" — v2.2 makes it a band at the top of "Who we are" with "Book a free call" (greenfriend.org); drop the session-3 "Leave your email" contact mode (`request_type = contact`) or keep it in the band?
+- [ ] Builder: keep the round icons on "How we help" steps 1–4 (8 Oct decision) in the v2.0 step cards?
+
+v2.0–v2.3 build (spec v2.3 and docs/update-prompt.md; prototype is the reference):
+- [ ] Brand v2.3: blue "Bold indigo" tokens, light and dark, copied from the prototype's :root blocks (spec Section 10); cards without border, soft shadow, 14 px radius; coral chapter-eyebrow pills; headings up to 2.7 rem; 30-second tiles with indigo-soft fade; remove the colour planes (Planes.jsx)
+- [ ] League Spartan Bold WOFF2, self-hosted, for the "greenfriend." word mark only (menu, cover)
+- [ ] Cover: plain indigo gradient band, "greenfriend.", H1 "ESRS update 2026 in 5 min", one-line lede, one yellow "Check your company" button; no alert, stamps or planes
+- [ ] 30-second strip third tile: "From FY2027 — mandatory for financial years starting on or after 1 January 2027. For FY2026 you choose."
+- [ ] Menu: nine links with "Your 2027 roadmap"; Non-EU groups out of the menu; layout per the builder's answer above
+- [ ] Wording everywhere: "What it means for you" (not "For you"); "Pre-Omnibus ESRS" and "Revised ESRS" (never "existing ESRS"); "criteria", not "tests"
+- [ ] What changed: ~90% card (per the builder's answer) opens full width with the company-type table (before / now) and the "80% or 90%?" note naming the Commission and A&O Shearman; every other fold-out cut to two short bullets (`CHUNKS`)
+- [ ] Who reports when: decision flow (two criteria chips with i icon, three outcome cards); cohorts say EU; Good to know on wave 1 with the EUR-Lex national-measures link (new tab); non-EU strip becomes one line with "See the three questions"; reconcile the session-3 wave toggle and timeline row
+- [ ] Check your scope: "Outside the EU" reveals the non-EU section with the line "Your three-question guide for non-EU groups is right below"; "Start again" hides it unless opened by the link
+- [ ] Non-EU groups: guided three-question stepper (numbered steps, Yes/No answer boxes, fine-print and Good to know toggles, Our tip), hidden under the scope check
+- [ ] Datapoints: remove the standard-by-standard section, labels and drill-down (`DRS`, `DRT`, `TAGS`); add "What are the 31 general datapoints?" (four P/A/M/T cards with chips, Good to know); estimator headline free, breakdown (bars, unconditional count, total with the 31) locked; track "touched" on the topic checkboxes (`estState()`)
+- [ ] Your 2026 route: three fixed cards A/B/C (letter, plain and official name, one line, effort dots, "Fits if", source i icon, the eight shortcuts toggle on B); Good to know, Our tip (route C for first-time reporters); folded "Where this comes from" toggle; remove the questionnaire, scoring, recommendation and src/lib/route.js; the browser stops sending route, route_from_example and route_answers
+- [ ] New chapter "Your 2027 roadmap" (free, not gated), from the scope answers and ticked topics: Gantt Dec 2026–Apr 2028, one bar per row with its own short text, tooltip detail on hover/focus/tap, rows focusable; three variants (wave 1 in scope: FY2026 report first, then DMA refresh / Strategy refresh May–Aug / Gap analysis and match; others: DMA from scratch / Build your strategy Jun–Sep; first-time reporters: longer plan); internal kick-off, data set-up with the datapoint count, dry run, "Fix, pre-draft" Nov–Dec 2027, governance and embed strategy, year-end data and drafting, assurance; violet/teal auditor arrow track with six check-in diamonds near the bottom; hatched annual reporting bars last; terracotta dotted "our step" line with legend; "Financial year ends in" month select shifting axis, tooltips and PDF dates; "Year-end not 31 December?" note; notes for Article 40a and out-of-scope results; Good to know with our work-backwards rule of thumb labelled as ours; sideways scroll on phones
+- [ ] Unlock: section heading "Want it all on one page?", four squares (Scope reasons and next steps · Datapoint breakdown · All seven example cases · One-page PDF with your roadmap), status list (scope done, datapoints, roadmap type); three locked areas (scope reasons, datapoint breakdown, cases 3–7); after unlock the "Take your results with you" box with one Download PDF button (replaces "Open your one-pager" + "Download again"); PDF also downloads automatically; one PDF behind every sign-up path
+- [ ] Who we are: one light blue background with white cards, shorter text; "Want our help?" band on top with "Book a free call"; profile cards with the round 64 px photos from docs/reference/assets (alt text) instead of initials; five step cards side by side with a + toggle only (text visually hidden for screen readers); Elena's text as in the current code
+- [ ] Footer: no CTA box; disclaimer, data source line, sources, /privacy link; the "General information" note at the very end of the page with the source sentence and the AI disclosure verbatim ("We use AI as a support tool to draft and check this content; we review it, and the responsibility for it stays with us.")
+- [ ] PDF rebuilt (replaces the A4 layout in src/lib/pdf.js): one square page 280 × 280 mm, background #f5f7fd; 40 mm gradient header and 28 mm gradient footer drawn from a canvas image (`gradURL()`); inputs strip (scope, topics, financial year-end); 1 Scope (or general guide with the four scope rules), 2 FY2026 route options (three cards), 3 Datapoints (three states: own selection with −X% pill / untouched default as example / none ticked: ESRS 2 alone, no pill; otherwise 57 to 292 with per-topic counts), 4 Dates to plan around, 5 Your 2027 roadmap full width (bars, auditor arrow and diamonds, annual report bars, legend); "General guidance, not based on your answers" tags; footer "Report what you do.", call line and the v2.3 disclaimer with "Prepared with AI support and reviewed by greenfriend."; PDF colours ink #141a4a, indigo #3a3fd1, coral #e8503f; no slides file, no PptxGenJS; check the CSP still allows it
+- [ ] Source policy: name the source on every figure (source line, i icon or fold-out); roadmap labelled "our planning guide"; re-check every source line against its link before launch
+- [ ] Local test pass of the v2.3 page — every view, every scope path, every roadmap variant and year-end shift, all three PDF datapoint states, desktop and 375 px, light and dark
+
+Carried over from session 3:
+- [ ] Builder: check the Supabase variable values in Netlify start with `sb_` (the names work: a live unlock was stored); make sure they apply to deploy previews too if previews should save unlocks
+- [ ] HTTP refusal test as a logged-out visitor with the publishable key (REST read/insert/update/delete on unlocks and profiles, RPC, GraphQL); paste the result into "Refusal test record" in docs/supabase-setup.md §3
+- [ ] Live test of supersede on the deployed site: a second unlock with the same email in different case supersedes the first (one live row already stored correctly)
+- [ ] If a live unlock fails again: read Netlify → Logs → Functions → submit-unlock for that moment (the first live try on 9 Oct failed before reaching the database)
+- [ ] Acceptance criteria pass — verify all 18 criteria in spec Section 13 (v2.3 wording) on the deployed site
+- [ ] Builder: add the custom domain check.greenfriend.org in Netlify and the CNAME in Wix DNS
 [Rule: completed items leave this list and are absorbed into Current state. This list only shrinks.]
 
 ## Build decisions
-None yet.
+- Builder request (9 Oct 2026): sections reordered from large to small for a sustainability manager: What changed → Who reports when → Check your scope → Non-EU groups → Example cases → Your 2026 route → Datapoints → Get the PDF → Who we are (the mockup had Datapoints second). The menu and the 30-second strip (size test, FY2027, then 323 datapoints) follow the same order.
+- Builder request (9 Oct 2026): on screens 1,420 px and wider the chapter menu is a slim list in the empty left margin ("On this page"), shown once the cover has scrolled away; below that width the sticky top bar stays as before.
+- Builder request (9 Oct 2026): wave logic clarified with the builder's wording: scope question 5 help text (wave 1 = old NFRD public-interest entities >500 employees; unlisted never wave 1), timeline row "Old wave 2, now >1,000 employees & >€450M" with postponement tooltips, and a "What are wave 1 and wave 2?" toggle under the timeline. Not checked against the legal texts in this environment.
+- Builder correction (9 Oct 2026): Elena's profile no longer calls Sage a FTSE 100 company (bullet "Former Senior Director of Sustainability at Sage", chip "Ex-Sage · Senior Director").
+- Builder request (9 Oct 2026): the "Fewer companies in scope" card stays at ~80% (the final law, Directive (EU) 2026/470: 1,000 employees and €450M) and its detail explains that the 90% figure was the European Parliament's negotiating proposal (1,750 employees), not the law. Wording and figures (about 50,000 to 10,000) from the builder; not checked against a primary source in this environment.
+- Builder request (9 Oct 2026): `unlocks.request_type` ('download' | 'contact', default 'download') separates PDF unlocks from "Want our help?" contact requests; the function requires consent for 'contact'; a database check enforces the same.
+- Builder feedback (9 Oct 2026, "no downloadable page displayed"): the unlock confirmation offers "Open your one-pager (PDF)" in a new tab and "Download again" as plain links to a prebuilt blob URL; CSP object-src changed from 'none' to 'self' blob: so the browser's PDF viewer can show it.
+- Release tags are created by the builder on GitHub (Releases → new release): this environment can push only to its working branch.
+- Prototype CSS ported as one global stylesheet (src/styles/app.css); Tailwind is set up with brand tokens and preflight off, so the prototype's look is exact.
+- Prototype data tables extracted verbatim into src/lib/data.js; shared constants (industries, interests, notice version, rules date, email check) in src/lib/constants.js, imported by both the browser and the function.
+- Vite `envPrefix` is `PUBLIC_`, so no `VITE_SUPABASE_*` value can reach the browser bundle.
+- Fonts: Latin WOFF2 files for Literata 500/500i/700/800, Figtree 400–700 and DM Mono 400/500 committed in src/fonts with OFL.txt; no font package at runtime.
+- jsPDF 4.2.1 (versions ≤ 4.2.0 have security advisories), loaded on demand only when a PDF is built.
+- Industry and interests are stored as their display labels, so the CSV export reads plainly.
+- `notice_version` and `consent_at` are set by the function, not trusted from the browser.
+- The function sends no data back except `{ok}` or an error code; it never logs email or IP.
+- The privacy link under the form opens /privacy in a new tab so the visitor keeps their answers; /privacy is served by a Netlify rewrite to the single page.
+- `route_from_example` turns false when the visitor changes any FY2026 answer (clicking the already selected answer does not count).
+- The case-tab lock uses an inline SVG instead of the prototype's emoji (no emoji rule).
+- The PDF shrinks body text in steps (down to 80%) if needed so it always stays on one page.
+- The clean-up job runs at 01:00 and 02:00 UTC and acts only in the hour that is 03:00 in Amsterdam (pg_cron uses UTC; this follows daylight saving).
+- The clean-up function lives in a non-exposed `private` schema.
+- Applied migration files are named after the versions Supabase recorded; an unapplied migration waits in supabase/pending/.
+- Work is pushed to branch claude/determined-hawking-moo4nu (the session's assigned branch) instead of directly to main; main receives it by merge.
+- Netlify headers: a Content-Security-Policy that allows only same-site scripts, fonts and connections.
+- Service labels on "How we help" steps 1–4 use the mockup's yellow `.svc` pill (replaces the session-1 teal tag).
+- Builder request (8 Oct 2026): steps 1–4 show a round line icon on the left (DMA target, Strategy signpost, Governance people, Reporting document). This knowingly bends the "no circles" brand rule at the builder's request; on phones the circle sits above the text.
+- Builder request (8 Oct 2026): step 1's label reads "Double materiality assessment (DMA) optimization".
+- Builder request (9 Oct 2026): the dark footer box no longer says "Report what you do."; it is now the "Need our help?" box ("Need to report? Need more information? We will reach out to you." plus "Leave your email", "Contact us" and the greenfriend.org tag), and the separate help box under the steps is removed. The PDF footer still says "Report what you do."
+- Builder request (8 Oct 2026): a "Want our help?" box under the steps with "Leave your email" (opens the email dialog in contact mode: button "Send", the consent box must be ticked, no PDF download; stored as a normal unlock row with consent_contact true, so the supersede rule applies) and "Contact us" (mailto anikalerch@greenfriend.org).
+- The privacy notice stays a separate view at /privacy (spec), not the mockup's #privacy hash view; form links open it in a new tab.
+- After an unlock from the dialog, the dialog stays open and shows the confirmation and "Download again" (the mockup closes it; spec Section 8 asks for the confirmation).
+- The cover keeps the line "Independent tool by greenfriend. Not affiliated with EFRAG or the European Commission." (spec Section 8), although the final mockup leaves it out.
+- The submit function still validates company, industry and interests if ever sent; the browser no longer sends them.
+- Session 4 (16 Oct 2026): docs follow the new CLAUDE.md layout — docs/ (spec, access-matrix, user-stories, first-prompt, update-prompt, supabase-setup), docs/reference/ (prototype, sample PDFs), docs/reference/assets/ (anika.png = blond person, elena.png = glasses person).
+- Session 4 (16 Oct 2026): the builder asked for this clean-up to be pushed straight to main.
 [Rule: one line per decision made during the build that is not in the spec — prompt structures, field formats, naming choices, library picks. Future sessions depend on these to stay consistent.]
 
 ## Known issues
 Before going public (builder): send EFRAG (digital-reporting@efrag.org) the courtesy note on using datapoint counts with attribution; have an auditor or partner read the scope logic; privacy contact signs off the notice.
-Unit tests for the logic are in the spec but not seeded here (see Backlog); the local test pass covers every scope path by hand.
-Open before launch: check the Netherlands note in the Dutch group example case (repair clause for first-wave reporters; sources checked February 2026 only); per-topic datapoint count table (STAT in the prototype) was checked by the builder against the first version, confirm no change since; the FY2026 route section may be rebuilt as a recommendation by situation (Big 4 sources) — wait for the builder before building it; who updates the "rules status" date on cover and PDF; final EFRAG list (end 2026) may change the counts.
+Clean-up job deferred (see Backlog): until it runs, nothing is anonymised after 30 days or deleted after 24 months automatically, although the privacy notice promises both.
+The project still has an enabled legacy anon JWT key (eyJ…). It reaches nothing (no grants), but Netlify must hold the `sb_` keys.
+Anonymisation counts 30 days from created_at; a manual consent withdrawal on an older row is anonymised at the next run.
+Gated content is blurred in the page, not withheld from it (as in the prototype); a technical visitor can read it in the page source.
+Unit tests for the logic are in the spec but not seeded here (see Backlog); the logic was checked by hand against every scope path in session 1.
+Spec Section 7 full notice still says "email and company name are deleted after 30 days"; the build follows the mockup and v1.7 ("your email is deleted"). Align the spec text when it is next revised.
+Spec v2.3 contradictions to fix in the next spec revision: Section 9.5 and CLAUDE.md say two locked areas, but v2.2 (Section 8, Entry points, criterion 8) has three (adds the datapoint breakdown); Sections 8 and 12 still say initials avatars and "waiting for headshots", but v2.3 and CLAUDE.md use the photos; the Section 8 menu list has no roadmap link but the text says nine links; the update prompt's "PDF now 2 pages" line was replaced by the one square page.
+Open: the non-calendar year-end note needs a source check before launch; the Netherlands note in the Dutch group case (sources checked Feb 2026 only); the per-topic counts (STAT) — confirm no change since the first version; who updates the "rules status" date on cover and PDF (src/lib/constants.js RULES_DATE); final EFRAG list (end 2026) may change the counts.
 [Rule: bugs, edge cases, and deferred fixes. One line each. Remove when resolved.]
 
 ## Backlog
+- Clean-up job (pg_cron, daily 03:00 Amsterdam: anonymise no-consent rows after 30 days, delete rows after 24 months) — deferred by the builder on 8 Oct 2026, to be resolved later. Ready to apply: supabase/pending/create_cleanup_job.sql (pg_cron is already enabled); applying it needs the builder to approve Supabase's confirmation for its DELETE within 60 seconds.
 - Contacts dashboard with login (Tool B on this database; first reader Anika Lerch) — its own full Access Architect run first
 - Confirmation email / double opt-in (Resend, greenfriend.org verified) — builder chose format check only
 - Mailbox or domain verification of emails; emailing the PDF — format check and a browser download are enough
@@ -67,11 +127,10 @@ Open before launch: check the Netherlands note in the Dutch group example case (
 - Update greenfriend.org's main privacy policy — separate website task
 - Bot check (Cloudflare Turnstile) — builder's decision for the first version; add if junk submissions appear
 - Analytics or tracking — GDPR and simplicity; Supabase Pro — adds cost
-- Not in place: unit-test suite for scope and estimator logic — what it would take: a test runner and one test file per logic function (spec Section 9 asks for it)
+- Not in place: unit-test suite for scope, estimator and roadmap logic — what it would take: a test runner and one test file per logic function (spec Section 9 asks for it)
 - Not in place: rate limit and bot check on the submit function (v1 has only the 16 KB limit and validation) — what it would take: a free Cloudflare Turnstile widget, a site key and secret key in Netlify, and a token check in the function (a spec change)
 - Handover: backups (Free has none; the builder's monthly CSV export of `unlocks` and the migration files are the rebuild path); a paused project is restored in the Supabase dashboard; check the pg_cron job history monthly; where the keys live and how to rotate one; accounts held by Anika (anikalerch@greenfriend.org); who supports the tool; how to retire it
 [Rule: deferred and approved items live here, nowhere else. When a new stage starts or the spec is revised, review this list: an item now in scope is promoted into Remaining work and removed from here, with a Build decisions line saying so. Nothing here is built without being promoted.]
 
 ## Notes for next session
-None.
 [Rule: the builder writes here between sessions. Claude Code reads these aloud at session start, acts on them, then clears this section.]
