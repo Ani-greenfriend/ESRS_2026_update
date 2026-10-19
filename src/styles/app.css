@@ -639,6 +639,29 @@ html{-webkit-text-size-adjust:100%}
 .chunk[data-i="0"][aria-expanded="true"] .srcl{grid-column:1/-1}
 @media (max-width:760px){.chunk[data-i="0"][aria-expanded="true"] .detail{grid-template-columns:1fr}}
 
+/* ===== Guided non-EU flow ===== */
+.guide{display:grid;gap:14px}
+.gintro{color:var(--muted);font-size:1rem}
+.gsteps{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.gstep{display:grid;grid-template-columns:44px minmax(0,1fr);gap:16px;position:relative;padding-bottom:18px}
+.gstep:last-child{padding-bottom:0}
+.gstep::before{content:"";position:absolute;left:21px;top:44px;bottom:-2px;width:2px;background:var(--line)}
+.gstep:last-child::before{display:none}
+.gno{width:44px;height:44px;border-radius:50%;background:var(--olive);color:var(--surface);display:grid;place-items:center;font-family:var(--serif);font-weight:700;font-size:1.3rem;position:relative;z-index:1}
+.gbody{background:var(--surface);border-radius:14px;padding:18px 20px;display:grid;gap:10px;min-width:0;box-shadow:var(--shadow)}
+.gtag{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--olive)}
+.gstep:nth-child(n+2) .gtag{color:var(--info)}
+.gbody h3{font-size:1.3rem;line-height:1.25}
+.gouts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:760px){.gouts{grid-template-columns:1fr}.gstep{grid-template-columns:36px minmax(0,1fr);gap:12px}.gno{width:36px;height:36px;font-size:1.1rem}.gstep::before{left:17px;top:36px}}
+.go{border-radius:10px;padding:12px 14px;display:grid;gap:3px;font-size:.95rem}
+.go b{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
+.go.yes{background:var(--olive-soft)}.go.yes b{color:var(--olive)}
+.go.no{background:var(--sunk)}.go.no b{color:var(--muted)}
+
+#noneu[hidden]{display:none}
+.nonhint{font-weight:600;color:var(--olive)}
+
 /* ===== Look v2.1–v2.3 (ported from the prototype): soft shadows instead of borders, coral chapter pills, larger headings ===== */
 body{line-height:1.68;font-size:16.5px}
 .cover{background:var(--cover)}

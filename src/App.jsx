@@ -42,6 +42,14 @@ export default function App() {
   const [gateOpen, setGateOpen] = useState(false);
   const [gateMode, setGateMode] = useState("unlock");
   const [contactSent, setContactSent] = useState(false);
+  // Non-EU groups: hidden until the first scope answer is "Outside the EU" or the visitor taps "See the three questions".
+  const [nonPinned, setNonPinned] = useState(false);
+  const showNonEU = scope.A.hq === "non" || nonPinned;
+  const openNonEU = useCallback((e) => {
+    e.preventDefault();
+    setNonPinned(true);
+    setTimeout(() => document.getElementById("noneu")?.scrollIntoView({ behavior: "smooth", block: "start" }), 0);
+  }, []);
   const opener = useRef(null);
   const utm = useMemo(readUtm, []);
 
@@ -147,9 +155,9 @@ export default function App() {
         <FastStrip />
         {/* Spec v2.2 chapter order */}
         <WhatChanged />
-        <WhoReports />
+        <WhoReports onNonEU={openNonEU} />
         <ScopeCheck scope={scope} setScope={setScope} />
-        <NonEU />
+        <NonEU hidden={!showNonEU} />
         <Datapoints topics={topics} setTopics={setTopics} />
         <Cases />
         <Fy2026 route={route} setRoute={setRoute} />
