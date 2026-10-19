@@ -76,8 +76,6 @@ button{font:inherit;color:inherit}
 header.top{padding-block:40px 28px;display:grid;gap:14px}
 .brand{font-family:var(--serif);font-size:1.05rem;color:var(--olive)}
 .brand b{color:var(--terra);font-weight:normal}
-.stamp{display:flex;flex-wrap:wrap;gap:8px;font-size:.82rem;color:var(--muted)}
-.stamp span{border:1px solid var(--line);border-radius:999px;padding:3px 10px;background:var(--surface)}
 
 nav.chapters{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-block:1px solid var(--line)}
 nav.chapters .wrap{display:flex;gap:4px;overflow-x:auto;padding-block:8px;scrollbar-width:none}
@@ -348,10 +346,6 @@ footer{padding-block:48px 64px;display:grid;gap:18px}
 .brand{font-family:"League Spartan",var(--sans);font-weight:700;font-size:1.15rem;color:var(--on-band);display:flex;gap:10px;align-items:center;letter-spacing:.02em}
 .brand::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--mark-solid)}
 .brand span{opacity:.75;font-family:var(--sans);font-weight:600;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase}
-.stamp span{border:1px solid color-mix(in srgb,var(--on-band) 30%,transparent);background:transparent;color:color-mix(in srgb,var(--on-band) 85%,transparent);font-family:var(--mono);font-size:.74rem}
-.alert{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;border-left:4px solid var(--mark-solid);background:color-mix(in srgb,#000 18%,transparent);padding:12px 16px;border-radius:0 8px 8px 0;font-size:.95rem;max-width:720px}
-.alert b{color:var(--mark-solid)}
-.alert a{color:var(--on-band);font-weight:700;text-underline-offset:3px}
 nav.chapters{background:var(--bg)}
 nav.chapters a{font-weight:600}
 nav.chapters a.on{background:var(--olive);color:var(--bg)}
@@ -569,7 +563,6 @@ nav.chapters a.on{background:var(--olive);color:var(--bg)}
 
 /* ---- live build additions ---- */
 html{-webkit-text-size-adjust:100%}
-body{overflow-x:hidden}
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 .op-form select,.gate-card select{width:100%;font:inherit;padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg)}
 .op-form select:focus,.gate-card select:focus,.gate-card input:focus{outline:none;border-color:var(--olive)}
@@ -605,22 +598,20 @@ body{overflow-x:hidden}
 .cta .helpbtns{align-items:center;margin-top:4px}
 .cta .helpbtns .addr{align-self:center}
 @media (max-width:560px){.cta .helpbtns .addr{width:auto}}
-/* builder request (9 Oct 2026): on large screens the chapter menu moves into the empty left margin */
-.sidenav{display:none}
-@media (min-width:1420px){
- nav.chapters{display:none}
- .sidenav{display:grid;gap:2px;position:fixed;top:88px;left:calc((100vw - 1060px)/2 - 176px);width:160px;z-index:5;opacity:0;visibility:hidden;transition:opacity .2s,visibility .2s}
- .sidenav.show{opacity:1;visibility:visible}
- .sidenav-h{font-size:.7rem;letter-spacing:.09em;text-transform:uppercase;color:var(--terra);font-weight:700;margin:0 0 6px 14px}
- .sidenav a{display:block;padding:6px 10px 6px 12px;border-left:2px solid var(--line);color:var(--muted);text-decoration:none;font-size:.85rem;font-weight:600;line-height:1.3}
- .sidenav a:hover{color:var(--fg);border-left-color:var(--sand)}
- .sidenav a.on{color:var(--olive);border-left-color:var(--olive);background:var(--olive-soft);border-radius:0 8px 8px 0}
+/* Spec v2.0: from 1180 px the chapter menu is a fixed left sidebar (230 px, "greenfriend." on top); the page sits to its right. */
+@media (min-width:1180px){
+ body.withnav{padding-left:230px}
+ nav.chapters{position:fixed;left:0;top:0;bottom:0;width:230px;border:0;border-right:1px solid var(--line);padding:28px 14px;overflow-y:auto;z-index:5}
+ nav.chapters::before{content:"greenfriend.";display:block;font-family:"League Spartan",var(--sans);font-weight:700;font-size:1.3rem;letter-spacing:-.01em;margin:0 12px 18px}
+ nav.chapters .wrap{display:flex;flex-direction:column;gap:2px;overflow:visible;padding:0;max-width:none;margin:0}
+ nav.chapters a{white-space:normal;border-radius:10px;padding:9px 12px}
+ section.ch,.about{scroll-margin-top:20px}
 }
 
 /* ===== Look v2.1–v2.3 (ported from the prototype): soft shadows instead of borders, coral chapter pills, larger headings ===== */
 body{line-height:1.68;font-size:16.5px}
 .cover{background:var(--cover)}
-.cover a.cta{background:var(--mark-solid);color:var(--on-mark);justify-self:start;align-self:start;width:auto;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+.cover a.cta{display:inline-block;margin-top:20px;font-weight:700;padding:11px 22px;border-radius:999px;text-decoration:none;background:var(--mark-solid);color:var(--on-mark);justify-self:start;align-self:start;width:auto;box-shadow:0 6px 18px rgba(0,0,0,.25)}
 .cover a.cta:hover{filter:none;transform:translateY(-1px)}
 section.ch h2{font-size:clamp(1.9rem,4vw,2.7rem);letter-spacing:-.02em}
 .chead .eyebrow{background:var(--terra-soft);color:var(--terra);padding:5px 12px;border-radius:999px;width:fit-content}
