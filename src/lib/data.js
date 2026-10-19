@@ -2,16 +2,23 @@
 // Datapoint counts per disclosure requirement are derived from EFRAG's 2026 Draft List of ESRS Datapoints;
 // no EFRAG datapoint names or IDs are included (reuse rights).
 
+// v2.2: the ~90% card opens full width with a company-type table and the "80% or 90%?" note; every other fold-out keeps two short bullets.
 export const CHUNKS=[
- {k:"~80%",t:"Fewer companies in scope",s:"Only groups above 1,000 employees and €450M turnover.",d:["About 80% fewer companies under the final law (roughly 50,000 down to about 10,000). The 90% you may have read was the European Parliament's proposal during the negotiations (1,750 employees), not the law.","Both limbs must be exceeded, on a consolidated basis for parents.","Listed SMEs are out of mandatory scope.","Financial holding undertakings can opt out of consolidated reporting.","Non-EU groups: €450M EU turnover plus a €200M EU subsidiary or branch."]},
- {k:"323",t:"Datapoints in total",s:"Down from 1,052: 292 mandatory, 0 voluntary, 31 new general ones.",d:["All voluntary datapoints are deleted.","Counted by EFRAG: 783 \u201cshall\u201d datapoints in 2023, 292 in the revised ESRS.","More numbers, less narrative: quantitative datapoints are preferred.","Sector-specific ESRS are replaced by guidance."]},
- {k:"Top-down",t:"A lighter materiality assessment",s:"Conclude at topic level instead of testing every IRO.",d:["ESRS 1 explicitly allows a top-down approach, alone or mixed with bottom-up.","Information that is not material shall not be reported, with narrow exceptions.","Fair presentation applies to the statement as a whole, not datapoint by datapoint.","More discretion on geographic disaggregation."]},
- {k:"VSME cap",t:"Protection for smaller suppliers",s:"Value chain requests are capped from FY2027.",d:["A new voluntary standard, based on VSME, entered into force on 24 Sept 2026.","Value chain partners with on average up to 1,000 employees in the previous year can refuse requests that go beyond that standard.","Missing value chain data: explain efforts and plans during the first three years."]},
- {k:"3 routes",t:"A choice for FY2026",s:"Old ESRS, old ESRS plus reliefs, or revised ESRS in full.",d:["Eight reliefs (Article 2(1)(b)): top-down materiality (ESRS 1 para 27), undue cost and value chain limits in the assessment (paras 32-33), acquisitions and disposals (74-75), non-significant activities (90), partial value chain scope (91), joint operations (92), Taxonomy in a separate appendix (106), executive summary (110).","The report must state which version was applied.","From FY2027 the revised ESRS are mandatory for everyone in scope."]},
- {k:"Limited",t:"Assurance stays limited",s:"The planned move to reasonable assurance is dropped.",d:["The Commission must adopt a limited assurance standard by 1 July 2027.","GHG boundary: financial control or operational control.","Anticipated financial effects can be updated later without counting as an error."]}
+ {k:"~90%",t:"Fewer companies in scope",s:"An estimate. Only groups above 1,000 employees and €450M turnover remain.",
+  tbl:[["EU wave 1, already reporting","Public-interest entities over 500 employees","Over 1,000 employees and €450M"],
+   ["Other large EU companies","Two of: 250 employees, €50M turnover, €25M balance sheet","Over 1,000 employees and €450M"],
+   ["Listed SMEs","In scope, simpler standard","Out (voluntary standard)"],
+   ["Non-EU groups","€150M EU turnover, EU entity €40M","€450M EU turnover, EU entity €200M"]],
+  note:"The European Commission estimated its 2025 proposal (over 1,000 employees and either €50M turnover or €25M balance sheet) at about 80%. The final law raises the turnover test to €450M. We show about 90% as the estimate of A&O Shearman, because the Commission has not published a figure for the final text. Neither is an official count of the companies that remain.",
+  d:[]},
+ {k:"323",t:"Datapoints in total",s:"Down from 1,052: 292 mandatory, 0 voluntary, 31 new general ones.",d:["All voluntary datapoints are deleted.","EFRAG count: 783 \u201cshall\u201d datapoints in 2023, 292 now."]},
+ {k:"Top-down",t:"A lighter materiality assessment",s:"Conclude at topic level instead of testing every IRO.",d:["ESRS 1 allows a top-down approach, alone or mixed with bottom-up.","Information that is not material is not reported, with narrow exceptions."]},
+ {k:"VSME cap",t:"Protection for smaller suppliers",s:"Value chain requests are capped from FY2027.",d:["A new voluntary standard based on VSME applies from 24 Sept 2026.","Partners with up to 1,000 employees can refuse requests that go beyond it."]},
+ {k:"3 routes",t:"A choice for FY2026",s:"Pre-Omnibus ESRS, with reliefs, or revised ESRS in full.",d:["Eight reliefs from ESRS 1 (paras 27, 32-33, 74-75, 90, 91, 92, 106, 110).","Say in your report which version you applied."]},
+ {k:"Limited",t:"Assurance stays limited",s:"The planned move to reasonable assurance is dropped.",d:["The Commission must adopt a limited assurance standard by 1 July 2027.","Emissions: count what you control financially, or what you run day to day. Your choice."]}
 ];
 export const REFS=[
- "Directive (EU) 2026/470 (Omnibus I), which amends the Accounting Directive (2013/34/EU), Articles 19a, 29a and 40a.",
+ "Directive (EU) 2026/470 (Omnibus I), amending Accounting Directive 2013/34/EU, Articles 19a, 29a and 40a. 80%: European Commission, Omnibus package page (2025), for its proposal. 90%: A&O Shearman estimate for the final deal, not an official figure.",
  "EFRAG draft list of datapoints and explanatory note (2026), for Delegated Regulation (EU) 2026/1563.",
  "Revised ESRS 1, paragraphs 24 and 27 (Delegated Regulation (EU) 2026/1563, Annex I).",
  "Revised ESRS 1, paragraph 66; Accounting Directive, Articles 19a(3) and 29a(3); Delegated Regulation (EU) 2026/1560, Annex II.",
@@ -83,15 +90,15 @@ export const PHNAME={1:"Wave 1, above thresholds",2:"Wave 1, below thresholds",3
 export const TOPICS=[["E1","Climate change",1],["E2","Pollution",0],["E3","Water",0],["E4","Biodiversity",0],["E5","Resource use",1],["S1","Own workforce",1],["S2","Value chain workers",1],["S3","Communities",0],["S4","Consumers",0],["G1","Business conduct",1]];
 
 export const G=[
- ["Wave 1, still above both thresholds","Reported since FY2024",["rep","rep","rep","new","new"],["","","Choose route","Revised",""],
-  ["Reports under the existing (2023) ESRS.","Reports under the existing (2023) ESRS.","You choose one of three FY2026 routes. See FY2026 options below.","First year under the revised ESRS, mandatory from FY2027.","Reports under the revised ESRS."]],
- ["Wave 1, now below a threshold","e.g. 600 employees",["rep","opt","opt","out","out"],["","MS option","MS option","Out",""],
-  ["Reported under the existing (2023) ESRS.","Member States may exempt these companies for FY2025 and FY2026. Check national law.","Member States may exempt these companies for FY2025 and FY2026. Check national law.","Below the new size test (over 1,000 employees and over €450M): no mandatory reporting.","Below the new size test: no mandatory reporting."]],
+ ["EU wave 1, still above both thresholds","Reported since FY2024",["rep","rep","rep","new","new"],["","","Choose route","Revised",""],
+  ["Reports under the pre-Omnibus (2023) ESRS.","Reports under the pre-Omnibus (2023) ESRS.","You choose one of three FY2026 routes. See FY2026 options below.","First year under the revised ESRS, mandatory from FY2027.","Reports under the revised ESRS."]],
+ ["EU wave 1, now below a threshold","e.g. 600 employees",["rep","opt","opt","out","out"],["","MS option","MS option","Out",""],
+  ["Reported under the pre-Omnibus (2023) ESRS.","Member States may exempt these companies for FY2025 and FY2026. Check national law.","Member States may exempt these companies for FY2025 and FY2026. Check national law.","Below the new size criteria (over 1,000 employees and over €450M): no mandatory reporting.","Below the new size criteria: no mandatory reporting."]],
  ["Large EU company, not wave 1","Old wave 2, now >1,000 employees & >€450M",["out","out","out","new","new"],["","","","First year",""],
   ["Not required to report yet.","Not required to report yet: the wave 2 start (FY2025) was postponed to FY2027.","Not required to report yet: the wave 2 start was postponed to FY2027.","First report under the revised ESRS, on FY2027 (published 2028).","Reports under the revised ESRS."]],
- ["Large company below new thresholds","Old wave 2, e.g. 400 employees",["out","out","out","out","out"],["","","","Voluntary standard",""],
+ ["Large EU company below new thresholds","Old wave 2, e.g. 400 employees",["out","out","out","out","out"],["","","","Voluntary standard",""],
   ["Not required to report.","Not required to report.","Not required to report.","No mandatory reporting. The voluntary standard is available.","No mandatory reporting."]],
- ["Listed SME","Old wave 3",["out","out","out","out","out"],["","","","Out",""],
+ ["Listed EU SME","Old wave 3",["out","out","out","out","out"],["","","","Out",""],
   ["Not required to report.","Not required to report.","Not required to report.","Out of mandatory scope.","Out of mandatory scope."]],
  ["Non-EU group (Art. 40a)",">€450M EU turnover + €200M EU entity",["out","out","out","out","40a"],["","","","","First year"],
   ["Not required to report.","Not required to report.","Not required to report.","Not required to report yet. The EU subsidiary may be caught earlier.","First group-level report under Article 40a, on FY2028."]]];

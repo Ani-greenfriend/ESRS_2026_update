@@ -608,6 +608,37 @@ html{-webkit-text-size-adjust:100%}
  section.ch,.about{scroll-margin-top:20px}
 }
 
+/* v2.0 decision flow in "Who reports when" and the v2.2 full-width ~90% card (ported from the prototype) */
+.tree{display:grid;gap:10px}
+.tq,.tnon{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 20px;display:grid;gap:10px}
+.tqh .src{position:static;flex:none}
+.tqh{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.tarrow{justify-self:center;color:var(--muted);line-height:0}
+.tout3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:760px){.tout3{grid-template-columns:1fr}}
+.to{border-radius:var(--r);padding:14px 16px;display:grid;gap:4px;align-content:start;border:1.5px solid var(--olive);background:var(--olive-soft)}
+.to small{font-size:.76rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.to b{font-family:var(--serif);font-size:1.25rem}.to span{font-size:.9rem}
+.to em{font-style:normal;font-weight:800;background:var(--mark-solid);color:var(--on-mark);padding:0 6px;border-radius:4px}
+.to.c{border-color:var(--line);background:var(--sunk)}.to.c b{color:var(--muted)}
+.tnon{border-color:color-mix(in srgb,var(--info) 50%,var(--line))}
+.tnone{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}
+.tnone>span:nth-child(2){flex:1 1 280px;min-width:0;font-size:.95rem}
+.tnone .nonlink{font-weight:600;color:var(--olive)}
+.ctab{width:100%;border-collapse:collapse;font-size:.82rem;margin:2px 0 8px;text-align:left}
+.ctab th{font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:4px 6px 4px 0}
+.ctab td{padding:6px 6px 6px 0;border-top:1px solid var(--line);vertical-align:top;line-height:1.35}
+.ctab td:first-child{font-weight:600}
+.cnote{font-size:.82rem;color:var(--muted);line-height:1.45}
+.cnote b{color:var(--fg)}
+.chunk .detail ul{margin-block:4px}
+.chunks{align-items:start}
+.chunk[data-i="0"][aria-expanded="true"]{grid-column:1/-1}
+.chunk[data-i="0"][aria-expanded="true"] .detail{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:8px 28px;align-items:start}
+.chunk[data-i="0"][aria-expanded="true"] .ctab{font-size:.9rem}
+.chunk[data-i="0"][aria-expanded="true"] .srcl{grid-column:1/-1}
+@media (max-width:760px){.chunk[data-i="0"][aria-expanded="true"] .detail{grid-template-columns:1fr}}
+
 /* ===== Look v2.1–v2.3 (ported from the prototype): soft shadows instead of borders, coral chapter pills, larger headings ===== */
 body{line-height:1.68;font-size:16.5px}
 .cover{background:var(--cover)}

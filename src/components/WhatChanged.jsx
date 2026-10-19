@@ -2,10 +2,10 @@ import { useState } from "react";
 import { CHUNKS, DATES, REFS } from "../lib/data.js";
 import { ChapterHead } from "./Icons.jsx";
 
-function Chunk({ c, src }) {
+function Chunk({ c, i, src }) {
   const [open, setOpen] = useState(false);
   return (
-    <button type="button" className="chunk" aria-expanded={open} onClick={() => setOpen(!open)}>
+    <button type="button" className="chunk" data-i={i} aria-expanded={open} onClick={() => setOpen(!open)}>
       <span className="src" data-ftip={`Source: ${src}`} aria-hidden="true">i</span>
       <span className="k num">{c.k}</span>
       <span className="t">{c.t}</span>
@@ -13,11 +13,20 @@ function Chunk({ c, src }) {
       <span className="more">{open ? "Hide detail" : "Show detail"}</span>
       {open && (
         <span className="detail">
-          <ul>
-            {c.d.map((x) => (
-              <li key={x}>{x}</li>
-            ))}
-          </ul>
+          {c.tbl && (
+            <table className="ctab">
+              <thead><tr><th>Company type</th><th>Before</th><th>Now</th></tr></thead>
+              <tbody>{c.tbl.map((r) => <tr key={r[0]}>{r.map((x) => <td key={x}>{x}</td>)}</tr>)}</tbody>
+            </table>
+          )}
+          {c.note && <span className="cnote" style={{ display: "block" }}><b>80% or 90%?</b> {c.note}</span>}
+          {c.d.length > 0 && (
+            <ul>
+              {c.d.map((x) => (
+                <li key={x}>{x}</li>
+              ))}
+            </ul>
+          )}
           <span className="srcl" style={{ display: "block" }}><b>Source</b> {src}</span>
         </span>
       )}
@@ -31,7 +40,7 @@ export default function WhatChanged() {
       <ChapterHead icon="check" eyebrow="What changed" title="Six things changed, the short version" short="Smaller scope, far fewer datapoints, a lighter assessment. Tap a card to peek inside." />
       <div className="chunks">
         {CHUNKS.map((c, i) => (
-          <Chunk key={c.t} c={c} src={REFS[i]} />
+          <Chunk key={c.t} c={c} i={i} src={REFS[i]} />
         ))}
       </div>
       <h3 style={{ marginTop: 10 }}>Key dates</h3>

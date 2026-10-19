@@ -1,6 +1,7 @@
 // Simple 2 px line icons from the final mockup (spec Section 10).
 const P = {
   check: <path d="M4 12l5 5L20 6" />,
+  arrowDown: <path d="M12 4v14M6 12l6 6 6-6" />,
   grid: (<><rect x="4" y="4" width="6" height="6" /><rect x="14" y="4" width="6" height="6" /><rect x="4" y="14" width="6" height="6" /><rect x="14" y="14" width="6" height="6" /></>),
   calendar: (<><rect x="4" y="5" width="16" height="15" rx="2" /><path d="M4 10h16M9 3v4M15 3v4" /></>),
   target: (<><circle cx="12" cy="12" r="8" /><circle cx="12" cy="12" r="3" /></>),
