@@ -3,7 +3,7 @@
 // it refuses bodies over 16 KB, validates every field against the allowed values, lower-cases the
 // email, inserts one row and flips the earlier current row for the same email to superseded.
 // No rate limit and no bot check in v1 (deferred). The visitor's IP is never stored or logged.
-import { Q, PQ, TOPICS } from "../../src/lib/data.js";
+import { Q, TOPICS } from "../../src/lib/data.js";
 import { SCOPE_BADGES } from "../../src/lib/scope.js";
 import { COMPANY_MAX, INDUSTRIES, INTERESTS, NOTICE_VERSION, UTM_MAX, isValidEmail } from "../../src/lib/constants.js";
 
@@ -11,7 +11,7 @@ const MAX_BYTES = 16 * 1024;
 const TOPIC_CODES = TOPICS.map((t) => t[0]);
 const FIELDS = [
   "email", "company", "industry", "consent_contact", "interests", "notice_version",
-  "scope_badge", "scope_headline", "scope_answers", "route", "route_from_example", "route_answers",
+  "scope_badge", "scope_headline", "scope_answers",
   "topics", "datapoints_old", "datapoints_new", "datapoints_unconditional", "utm_source", "utm_campaign",
   "request_type",
 ];
@@ -59,10 +59,8 @@ function validate(b) {
   need(industry === null || INDUSTRIES.includes(industry));
 
   need(typeof b.consent_contact === "boolean");
-  // 'download' = PDF unlock, 'contact' = "Want our help?" request, which needs contact consent.
-  const requestType = b.request_type ?? "download";
-  need(requestType === "download" || requestType === "contact");
-  need(requestType === "download" || b.consent_contact === true);
+  // Spec v2.3: only the PDF unlock writes. The "Leave your email" contact request was removed, so 'contact' is refused.
+  need((b.request_type ?? "download") === "download");
   need(b.notice_version === NOTICE_VERSION);
 
   // Scope: shape only (keys and answer values from the questionnaire), not the logic.
@@ -75,12 +73,6 @@ function validate(b) {
   const headline = optText(b.scope_headline, 200);
   need((badge === null) === (headline === null));
 
-  // Route: all seven answers present with allowed values.
-  need(["A", "B", "C"].includes(b.route));
-  need(typeof b.route_from_example === "boolean");
-  need(isObj(b.route_answers) && Object.keys(b.route_answers).length === PQ.length);
-  for (const q of PQ) need(q.o.some((o) => o[0] === b.route_answers[q.id]));
-
   return {
     email,
     company: optText(b.company, COMPANY_MAX),
@@ -92,16 +84,14 @@ function validate(b) {
     scope_badge: badge,
     scope_headline: headline,
     scope_answers: b.scope_answers,
-    route: b.route,
-    route_from_example: b.route_from_example,
-    route_answers: b.route_answers,
+    // Spec v2.0+: no route questionnaire, so route, route_from_example and route_answers stay empty.
     topics: subsetArray(b.topics ?? [], TOPIC_CODES, TOPIC_CODES.length),
     datapoints_old: count(b.datapoints_old),
     datapoints_new: count(b.datapoints_new),
     datapoints_unconditional: count(b.datapoints_unconditional),
     utm_source: optText(b.utm_source, UTM_MAX),
     utm_campaign: optText(b.utm_campaign, UTM_MAX),
-    request_type: requestType,
+    request_type: "download",
     status: "current",
   };
 }

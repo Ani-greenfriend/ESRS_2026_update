@@ -11,7 +11,7 @@
 | Plan | Free (no backups, pauses after ~1 week idle; monthly CSV export of `unlocks` is the backup) |
 | Postgres | 17 |
 | Written against | docs/product-spec.md v1.1 · docs/access-matrix.md (short form, P1 public stays anonymous) |
-| Last updated | 9 October 2026, session 3 (`unlocks.request_type` added) |
+| Last updated | 21 October 2026, session 5 (route columns optional, spec v2.3) |
 
 This file is the schema source of truth. It is updated at every save point that touches the database.
 
@@ -32,16 +32,16 @@ This file is the schema source of truth. It is updated at every save point that 
 | notice_version | text | e.g. `2026-10-07` |
 | scope_badge, scope_headline | text | null when the scope check was not completed |
 | scope_answers | jsonb | question key → answer key |
-| route | text | `A` / `B` / `C` |
-| route_from_example | boolean | true until the visitor changes an answer |
-| route_answers | jsonb | the seven FY2026 answers |
+| route | text | `A` / `B` / `C` or null; empty since spec v2.0 (no questionnaire); older rows keep their value |
+| route_from_example | boolean | null since spec v2.0 |
+| route_answers | jsonb | null since spec v2.0 |
 | topics | text[] | subset of E1…G1 |
 | datapoints_old / datapoints_new / datapoints_unconditional | integer | ≥ 0 |
 | utm_source, utm_campaign | text | ≤ 80 |
 | superseded_by | uuid → unlocks.id | on delete set null; null while current |
 | anonymised_at | timestamptz | set by the clean-up job |
 | status | text | `current` → `superseded` → `anonymised` (default `current`) |
-| request_type | text | `download` (unlock form, PDF) or `contact` ("Want our help?" box); default `download`; builder request 9 Oct 2026 |
+| request_type | text | `download` (unlock form, PDF) or `contact` (the former "Leave your email" box, removed in spec v2.3; `submit-unlock` now accepts `download` only); default `download` |
 | created_by, updated_by | uuid → profiles.id | empty (no login) |
 | updated_at | timestamptz | kept current by trigger |
 
@@ -135,4 +135,5 @@ The builder entered these by hand in Netlify (not through the extension). To ver
 | 20261007204238_enable_pg_cron.sql | enables pg_cron |
 | 20261007205047_revoke_rls_auto_enable_from_api_roles.sql | revokes execute on the built-in `rls_auto_enable()` from public, anon, authenticated |
 | 20261009090335_add_request_type_to_unlocks.sql | adds `unlocks.request_type` (download / contact, default download) and the contact-needs-consent check |
+| 20261021112904_make_route_columns_optional.sql | drops NOT NULL on `route`, `route_from_example`, `route_answers` (spec v2.0+: no route questionnaire) |
 | pending/create_cleanup_job.sql | **not applied** — clean-up function and daily job |

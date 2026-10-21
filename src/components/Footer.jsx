@@ -1,21 +1,7 @@
-import { CONTACT_EMAIL } from "./About.jsx";
-import { useUnlock } from "./unlock.jsx";
-
-export default function Footer({ cta = true }) {
-  const { openContact } = useUnlock();
+// Spec v2.2/v2.3: no CTA box (the "Want our help?" band tops "Who we are"); the "General information" note with the AI disclosure closes the page.
+export default function Footer() {
   return (
     <footer className="wrap">
-      {cta && (
-        <div className="cta">
-          <h2>Need our help?</h2>
-          <p>Need to report? Need more information? We will reach out to you.</p>
-          <div className="helpbtns">
-            <button type="button" className="btn pri" onClick={(e) => openContact(e.currentTarget)}>Leave your email</button>
-            <a className="btn" href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("ESRS 2026 check: we would like your help")}`}>Contact us</a>
-            <a className="addr" href="https://www.greenfriend.org" target="_blank" rel="noopener noreferrer">greenfriend.org</a>
-          </div>
-        </div>
-      )}
       <div className="fine">
         <p><a href="/privacy">Privacy notice</a></p>
         <p>This tool gives an indicative reading of Directive (EU) 2026/470 (Omnibus I) and the revised ESRS (Delegated Regulation (EU) 2026/1563). It is not legal advice. National transposition is due by 19 March 2027 and may differ by Member State, especially for the FY2025–2026 exemption. Confirm your position with your auditor or legal adviser.</p>
@@ -28,6 +14,7 @@ export default function Footer({ cta = true }) {
           <a href="https://sustainablefutures.linklaters.com/post/102o1ou/eu-csrd-revised-esrs-and-voluntary-reporting-standard-are-published-in-the-offic" target="_blank" rel="noopener noreferrer">Linklaters, 21 Sept 2026</a>
         </p>
         <p>Independent tool by greenfriend. Not affiliated with EFRAG or the European Commission.</p>
+        <p className="copynote"><b>General information</b> greenfriend holds no rights to the ESRS or to EFRAG's materials. So we only explain what the rules mean, how the standards are structured and how many datapoints they contain, in our own words. We do not copy standard text, datapoint wording or EFRAG's list. For the exact wording, use the official texts: the Delegated Regulation on EUR-Lex and EFRAG's publications. Our sources are EU legal texts, the European Commission, EFRAG, and the Big 4 and leading law firms for interpretation. We use AI as a support tool to draft and check this content; we review it, and the responsibility for it stays with us. This page is general information, not legal or audit advice.</p>
       </div>
     </footer>
   );
