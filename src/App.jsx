@@ -8,6 +8,7 @@ import ScopeCheck from "./components/ScopeCheck.jsx";
 import NonEU from "./components/NonEU.jsx";
 import Cases from "./components/Cases.jsx";
 import Fy2026 from "./components/Fy2026.jsx";
+import Roadmap from "./components/Roadmap.jsx";
 import UnlockSection from "./components/UnlockSection.jsx";
 import UnlockDialog from "./components/UnlockDialog.jsx";
 import About from "./components/About.jsx";
@@ -18,7 +19,7 @@ import { EMPTY_FORM } from "./components/UnlockForm.jsx";
 import { UnlockContext } from "./components/unlock.jsx";
 import { TOPICS } from "./lib/data.js";
 import { answerLines, verdict } from "./lib/scope.js";
-import { EXAMPLE_ANSWERS, routeResult } from "./lib/route.js";
+import { mapMode, mapSteps, fyShift } from "./lib/roadmap.js";
 import { DEFAULT_TOPICS, estimate } from "./lib/estimator.js";
 import { isValidEmail, NOTICE_VERSION } from "./lib/constants.js";
 import { readUnlocked, writeUnlocked } from "./lib/storage.js";
@@ -31,8 +32,11 @@ const TOPIC_NAME = Object.fromEntries(TOPICS.map((t) => [t[0], t[1]]));
 export default function App() {
   const [unlocked, setUnlocked] = useState(readUnlocked);
   const [scope, setScope] = useState({ A: {}, hist: [] });
-  const [route, setRoute] = useState({ P: EXAMPLE_ANSWERS, touched: false });
-  const [topics, setTopics] = useState(DEFAULT_TOPICS);
+  const [topics, setTopicsRaw] = useState(DEFAULT_TOPICS);
+  // The PDF tells an untouched default selection (an example) apart from the visitor's own (spec v2.3, estState()).
+  const [topicsTouched, setTopicsTouched] = useState(false);
+  const setTopics = useCallback((t) => { setTopicsRaw(t); setTopicsTouched(true); }, []);
+  const [fyEnd, setFyEnd] = useState("");
   const [form, setForm] = useState(EMPTY_FORM);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState(null);
@@ -40,8 +44,6 @@ export default function App() {
   const [pdfError, setPdfError] = useState(false);
   const [pdfLink, setPdfLink] = useState(null);
   const [gateOpen, setGateOpen] = useState(false);
-  const [gateMode, setGateMode] = useState("unlock");
-  const [contactSent, setContactSent] = useState(false);
   // Non-EU groups: hidden until the first scope answer is "Outside the EU" or the visitor taps "See the three questions".
   const [nonPinned, setNonPinned] = useState(false);
   const showNonEU = scope.A.hq === "non" || nonPinned;
@@ -56,22 +58,21 @@ export default function App() {
   // Everything the PDF and the stored row are built from, in one snapshot.
   const snap = useMemo(() => {
     const v = verdict(scope.A);
-    const r = routeResult(route.P);
     const e = estimate(topics);
+    // "example": defaults never changed · "own": the visitor's ticks · "none": nothing ticked (ESRS 2 alone).
+    const state = !topicsTouched ? "example" : e.topics.length ? "own" : "none";
     return {
       scope: v ? { badge: v.b, head: v.h, list: v.l, answers: answerLines(scope.hist, scope.A) } : null,
-      route: { ...r, fromExample: !route.touched },
-      est: { ...e, codes: e.topics, topics: e.topics.map((c) => `${c} ${TOPIC_NAME[c]}`) },
+      est: { ...e, state, codes: e.topics, topics: e.topics.map((c) => `${c} ${TOPIC_NAME[c]}`) },
+      map: { label: mapMode(scope.A).label, steps: mapSteps(scope.A, topics, fyEnd), shift: fyShift(fyEnd) },
     };
-  }, [scope, route, topics]);
+  }, [scope, topics, topicsTouched, fyEnd]);
 
-  const openGate = useCallback((el, mode = "unlock") => {
+  const openGate = useCallback((el) => {
     opener.current = el || document.activeElement;
     setMsg(null);
-    setGateMode(mode);
     setGateOpen(true);
   }, []);
-  const openContact = useCallback((el) => openGate(el, "contact"), [openGate]);
   const closeGate = useCallback(() => {
     setGateOpen(false);
     setTimeout(() => opener.current?.focus?.(), 0);
@@ -96,15 +97,10 @@ export default function App() {
     }
   };
 
-  // mode "contact": the "Want our help?" box. The same unlock row is stored; contact needs the consent box.
-  const onSubmit = async (mode = "unlock") => {
+  const onSubmit = async () => {
     const email = form.email.trim();
     if (!isValidEmail(email)) {
       setMsg({ type: "err", field: "email", text: "Enter a valid email address, for example name@company.com." });
-      return;
-    }
-    if (mode === "contact" && !form.consent) {
-      setMsg({ type: "err", text: "Tick the box so we may contact you." });
       return;
     }
     setBusy(true);
@@ -113,14 +109,11 @@ export default function App() {
       email,
       // v1 asks for email and consent only; company, industry and interests stay empty.
       consent_contact: form.consent,
-      request_type: mode === "contact" ? "contact" : "download",
+      request_type: "download",
       notice_version: NOTICE_VERSION,
       scope_badge: snap.scope?.badge ?? null,
       scope_headline: snap.scope?.head ?? null,
       scope_answers: scope.A,
-      route: snap.route.letter,
-      route_from_example: snap.route.fromExample,
-      route_answers: route.P,
       topics: snap.est.codes,
       datapoints_old: snap.est.old,
       datapoints_new: snap.est.now,
@@ -136,10 +129,6 @@ export default function App() {
     }
     writeUnlocked();
     setUnlocked(true);
-    if (mode === "contact") {
-      setContactSent(true);
-      return;
-    }
     setFresh(true);
     await download(snap);
   };
@@ -148,7 +137,7 @@ export default function App() {
   const done = { fresh, pdfError, pdfLink, onDownload: () => download() };
 
   return (
-    <UnlockContext.Provider value={{ unlocked, openGate, openContact }}>
+    <UnlockContext.Provider value={{ unlocked, openGate }}>
       <Cover />
       <ChapterNav />
       <main className="wrap">
@@ -160,13 +149,14 @@ export default function App() {
         <NonEU hidden={!showNonEU} />
         <Datapoints topics={topics} setTopics={setTopics} />
         <Cases />
-        <Fy2026 route={route} setRoute={setRoute} />
+        <Fy2026 />
+        <Roadmap A={scope.A} topics={topics} fyEnd={fyEnd} setFyEnd={setFyEnd} />
         <UnlockSection snap={snap} formProps={formProps} done={done} />
       </main>
       <About />
       <Footer />
       <FloatingTip />
-      <UnlockDialog open={gateOpen} mode={gateMode} onClose={closeGate} formProps={formProps} done={done} contactSent={contactSent} />
+      <UnlockDialog open={gateOpen} onClose={closeGate} formProps={formProps} done={done} />
     </UnlockContext.Provider>
   );
 }

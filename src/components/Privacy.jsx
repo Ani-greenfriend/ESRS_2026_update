@@ -26,7 +26,7 @@ export default function Privacy() {
           <p><a href="/">← Back to the check</a></p>
         </section>
       </main>
-      <Footer cta={false} />
+      <Footer />
     </>
   );
 }

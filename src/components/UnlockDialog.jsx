@@ -3,7 +3,7 @@ import { useUnlock } from "./unlock.jsx";
 import UnlockForm from "./UnlockForm.jsx";
 import UnlockDone from "./UnlockDone.jsx";
 
-export default function UnlockDialog({ open, mode, onClose, formProps, done, contactSent }) {
+export default function UnlockDialog({ open, onClose, formProps, done }) {
   const { unlocked } = useUnlock();
   const card = useRef(null);
   const emailRef = useRef(null);
@@ -33,32 +33,15 @@ export default function UnlockDialog({ open, mode, onClose, formProps, done, con
     <div className="gate-modal" role="dialog" aria-modal="true" aria-labelledby="gate-h" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
       <div className="gate-card" ref={card}>
         <button type="button" className="gate-x" aria-label="Close" onClick={onClose}>×</button>
-        {mode === "contact" ? (
-          <>
-            <div className="eyebrow">Who we are</div>
-            <h3 id="gate-h">Need our help?</h3>
-            {contactSent ? (
-              <p className="op-msg ok" role="status">Thanks. We will be in touch soon.</p>
-            ) : (
-              <>
-                <p className="qhelp">Leave your email and tick the box, and we will get in touch about your results.</p>
-                <UnlockForm id="gate" className="op-form" emailRef={emailRef} noteFirst submitLabel="Send" {...formProps} onSubmit={() => formProps.onSubmit("contact")} />
-              </>
-            )}
-          </>
-        ) : (
-        <>
         <div className="eyebrow">Your action plan</div>
         <h3 id="gate-h">Unlock your full action plan</h3>
         {unlocked ? (
           <UnlockDone {...done} />
         ) : (
           <>
-            <p className="qhelp">Your full result, every disclosure requirement for your topics and a one-page PDF. Free, just your email.</p>
+            <p className="qhelp">The reasons and next steps for your scope result, your datapoint breakdown, all seven example cases and a one-page PDF with your roadmap for 2027. Free, just your email.</p>
             <UnlockForm id="gate" className="op-form" emailRef={emailRef} noteFirst {...formProps} />
           </>
-        )}
-        </>
         )}
       </div>
     </div>

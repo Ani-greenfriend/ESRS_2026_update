@@ -1,17 +1,14 @@
-import { OPT, PQ } from "../lib/data.js";
-import { routeResult } from "../lib/route.js";
-import { Gated } from "./unlock.jsx";
+import { OPT } from "../lib/data.js";
 import { ChapterHead } from "./Icons.jsx";
 
-// Highest possible score: the best option of every question (bar scale "Matches your answers").
-const MAX_SCORE = PQ.reduce((a, q) => a + Math.max(...q.o.map((o) => Math.max(...o[2]))), 0);
 const EFFORT = ["", "low", "medium", "high"];
 
-function RouteCard({ o, best, score }) {
+// Spec v2.0+: three fixed route cards, no questionnaire, no scoring, nothing locked.
+function RouteCard({ o }) {
+  const src = `Source: Delegated Regulation (EU) 2026/1563, ${o.src}`;
   return (
-    <div className={`o3 ${best ? "best" : ""}`}>
-      {best && <span className="bestlbl">Looks best for you</span>}
-      <span className="src" tabIndex={0} data-ftip={`Source: Delegated Regulation (EU) 2026/1563, ${o.src}`} aria-label={`Source: Delegated Regulation (EU) 2026/1563, ${o.src}`}>i</span>
+    <div className="o3">
+      <span className="src" tabIndex={0} data-ftip={src} aria-label={src}>i</span>
       <span className="L">{o.L}</span>
       <h3>{o.t}</h3>
       <small className="std2">{o.std}</small>
@@ -22,63 +19,36 @@ function RouteCard({ o, best, score }) {
           {[1, 2, 3].map((n) => <i key={n} className={n <= o.eff ? "on" : undefined} />)}
         </span>
       </div>
-      <p className="mean"><b>Best if</b> {o.bi}</p>
+      <p className="mean"><b>Fits if</b> {o.bi}</p>
       {o.more && (
         <details className="o3more">
           <summary>The eight shortcuts</summary>
-          <p>{o.more.replace(/^The eight shortcuts, with their ESRS 1 paragraph: /, "")}</p>
+          <p>{o.more}</p>
         </details>
       )}
-      <div className="fit">
-        <small>Matches your answers</small>
-        <div className="meter" role="img" aria-label={`Fit ${score} of ${MAX_SCORE}`}>
-          <i style={{ width: `${(score / MAX_SCORE) * 100}%` }} />
-        </div>
-      </div>
     </div>
   );
 }
 
-export default function Fy2026({ route, setRoute }) {
-  const { P } = route;
-  const r = routeResult(P);
-  const pick = (id, v) => {
-    if (P[id] === v) return;
-    setRoute({ P: { ...P, [id]: v }, touched: true });
-  };
+export default function Fy2026() {
   return (
     <section className="ch" id="fy2026">
-      <ChapterHead icon="signpost" eyebrow="Your 2026 report" title="Which route should you take for your 2026 report?" short="You pick one of three routes for your 2026 reporting year, and say in the report which one you used." />
+      <ChapterHead icon="signpost" eyebrow="Your 2026 report" title="Three routes for your 2026 report" short="The delegated rules let you choose how to report FY2026. Pick one and say in your report which you used." />
       <div className="opts3">
-        {OPT.map((o, i) => <RouteCard key={o.L} o={o} best={i === r.best} score={r.scores[i]} />)}
+        {OPT.map((o) => <RouteCard key={o.L} o={o} />)}
       </div>
-      <div className="pick">
-        <div className="eyebrow">Seven quick questions · example answers pre-filled</div>
-        {PQ.map((q) => (
-          <div className="pq" key={q.id}>
-            <span className="q" id={`pq-${q.id}`}>{q.q}</span>
-            <div className="seg" role="group" aria-labelledby={`pq-${q.id}`}>
-              {q.o.map((o) => (
-                <button type="button" key={o[0]} aria-pressed={P[q.id] === o[0]} onClick={() => pick(q.id, o[0])}>
-                  {o[1]}
-                </button>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-      <div className="pickres" aria-live="polite">
-        <div className="eyebrow" style={{ color: "var(--olive)" }}>Recommendation</div>
-        <h3>{r.label}</h3>
-        <Gated label="The reasons behind your route">
-          <ul>
-            {r.reasons.map((x) => (
-              <li key={x}>{x}</li>
-            ))}
-          </ul>
-        </Gated>
-        <p className="qhelp">This recommendation is our reading of your answers, not a legal requirement. Whichever route you choose, state clearly in the report which version you applied, and agree it with your auditor early.</p>
-      </div>
+      <p className="tip"><b>Good to know</b> Pre-Omnibus ESRS are the 2023 standards you used for FY2025 (as amended in 2025). Revised ESRS are the new, slimmer ones. From FY2027 the revised ESRS are mandatory for everyone in scope.</p>
+      <p className="advice"><b>Our tip</b> Starting with ESRS now? Route C is usually the natural fit: you have no 2025 report to compare with, so you can begin on the slimmer standards. Whichever route you choose, agree it with your auditor early.</p>
+      <details className="srcbox hov">
+        <summary>Where this comes from</summary>
+        <p>All three routes come from one legal text: Delegated Regulation (EU) 2026/1563 (Official Journal, 21 September 2026, in force from 10 November 2026). Article 2 sets the choice for FY2026.</p>
+        <ul>
+          <li><b>Route A and C</b> Article 2(1)(a): report FY2026 under the Pre-Omnibus ESRS (A) or the Revised ESRS (C).</li>
+          <li><b>Route B</b> Article 2(1)(b): Pre-Omnibus ESRS plus up to eight reliefs, taken from ESRS 1 paragraphs 27, 32-33, 74-75, 90, 91, 92, 106 and 110.</li>
+          <li><b>All routes</b> Article 2(2): state in your report which version you applied. Article 3: the Revised ESRS apply to all in scope from financial years starting on or after 1 January 2027.</li>
+        </ul>
+        <p className="srcnote"><b>Scope and dates</b> Who is in scope comes from the Omnibus I Directive (EU) 2026/470. Datapoint counts come from EFRAG's 2026 draft list and explanatory note.</p>
+      </details>
     </section>
   );
 }

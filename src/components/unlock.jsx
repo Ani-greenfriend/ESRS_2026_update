@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 
-export const UnlockContext = createContext({ unlocked: false, openGate: () => {}, openContact: () => {} });
+export const UnlockContext = createContext({ unlocked: false, openGate: () => {} });
 export const useUnlock = () => useContext(UnlockContext);
 
 export function UnlockButton() {
