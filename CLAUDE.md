@@ -1,8 +1,8 @@
 # ESRS 2026 Update Check
 ## Identity
-A free public lead-magnet tool that explains the revised ESRS, checks scope, explains the three FY2026 routes and unlocks a one-page square PDF for an email. Used by prospective clients reaching it from LinkedIn at check.greenfriend.org.
+A free public lead-magnet tool that explains the revised ESRS, checks scope, explains the three FY2026 routes and unlocks a one-page A2 landscape PDF for an email. Used by prospective clients reaching it from LinkedIn at check.greenfriend.org.
 Tier: 2 — public tool, no login, submissions persist to Supabase (D3+A1)
-Spec version governed: v2.3 — the version of docs/product-spec.md these rules were derived from.
+Spec version governed: v2.4 — the version of docs/product-spec.md these rules were derived from.
 Position: Standalone for now; a later contacts dashboard (Tool B, with a login) will share the Supabase project. This tool creates the schema and holds the canonical docs/access-matrix.md, docs/user-stories.md and docs/supabase-setup.md.
 ## Session Protocol
 At the start of every session:
@@ -29,7 +29,7 @@ React · Vite · Tailwind CSS · Netlify (static site + Netlify Functions) · Su
 Deployment: GitHub push to main → Netlify auto-deploys. Claude Code pushes to main; it does NOT connect to Netlify and no Netlify connector or MCP is used. The builder connects the repo to a Netlify site once, connects Supabase to that site with the Supabase extension (it writes the Supabase variables), then redeploys (Vite reads browser variables at build time). A missing Supabase variable is fixed by the extension connection, never a pasted value.
 No new costs: Netlify Free, Supabase Free. Add no paid service without a spec change.
 ## Arms
-Export — browser only, no server function — one square page PDF (280 x 280 mm) built with a bundled jsPDF (npm, never a CDN), gradient header and footer drawn from a canvas image, design per spec Section 3; the PDF is the only download (no slides file, no PptxGenJS); it appears in the "Take your results with you" box with one Download PDF button after a successful unlock and also downloads automatically; one PDF only behind every sign-up path; the PDF never asks the user to redo the check (sections without answers show general guidance, tagged); the prototype's buildPdf() and the sample files in docs/reference/ are the reference
+Export — browser only, no server function — one A2 landscape page PDF (594 x 420 mm, drawn on a 420 x 297 grid and scaled) built with a bundled jsPDF (npm, never a CDN), gradient header and CTA band drawn from a canvas image, one lavender page background, Helvetica headings, no roadmap in the PDF, design per spec Section 3; the PDF is the only download (no slides file, no PptxGenJS); it appears in the "Take your results with you" box with one Download PDF button after a successful unlock and also downloads automatically; one PDF only behind every sign-up path; the PDF never asks the user to redo the check (sections without answers show general guidance, tagged); the prototype's buildPdf() and the sample files in docs/reference/ are the reference
 Scheduled — Supabase pg_cron (not a Netlify function) — daily 03:00 Europe/Amsterdam — one SQL function: (1) rows older than 30 days with consent_contact false: email and company set to null, anonymised_at set; (2) rows older than 24 months deleted. No email.
 Submit — user-triggered — /netlify/functions/submit-unlock — the only write path to the database (see Hard Rules)
 ## Environment Variables
@@ -85,6 +85,7 @@ Out of scope — do not build:
 - Contacts dashboard with login; confirmation email / double opt-in; mailbox or domain verification; emailing the PDF
 - EFRAG datapoint names or IDs; updating greenfriend.org's main privacy policy; analytics or tracking
 - Bot check / Cloudflare Turnstile (deferred by the builder); Supabase Pro; a calm colour variant
+- Roadmap (v2.4): one general step-based plan, a snaking SVG road with seven stops between KICK-OFF and FINAL REPORT, no dates, no month axis, no financial-year-end selector, nothing gated, not in the PDF; titles visible, details only in the hover card (also on focus and tap); "Runs alongside all steps" holds Reporting governance and Auditor alignment only. Steps, texts and look are in spec Section 8 and the prototype (`MAIN` in `renderMap()`). Page order: Who is in scope, Parent/subsidiary/neither, What changed, Which standard, What: datapoints, When: roadmap, Get the PDF, Who we are (eight menu links).
 - Voice: friendly supporter for sustainability managers and C-level. Warm, light, plain words, "we". Every chapter opens with a one-line short answer (yellow bar); "What it means for you" lines, "Our tip" and "Good to know" tips as in the mockup; detail behind toggles; everything that appears on hover must also work on keyboard focus and tap; sources behind an i icon. Copy comes from the spec and the mockup; do not invent wording or legal references.
 ## Reference Docs
 Read before building the related part:
