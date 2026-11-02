@@ -36,7 +36,7 @@ export default function UnlockDialog({ open, onClose, formProps, done }) {
         <div className="eyebrow">Your PDF</div>
         <h3 id="gate-h">Get your results as one PDF</h3>
         {unlocked ? (
-          <UnlockDone {...done} />
+          <UnlockDone {...done} withButton />
         ) : (
           <>
             <p className="qhelp">One page with your scope result, FY2026 route, datapoint number, ready to forward to your CFO or board. Free, just your email. It also opens the blurred details on this page.</p>

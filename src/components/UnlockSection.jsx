@@ -2,6 +2,7 @@ import { useUnlock } from "./unlock.jsx";
 import UnlockForm from "./UnlockForm.jsx";
 import UnlockDone from "./UnlockDone.jsx";
 import Icon from "./Icons.jsx";
+import { PDF_NAME } from "../lib/pdf.js";
 
 const TILES = [
   ["Scope", "Your answers, whether and from when you report, and what it means for you."],
@@ -10,7 +11,8 @@ const TILES = [
   ["Dates to plan around", "The timeline from Omnibus I to FY2027, in one line."],
 ];
 
-// "Your results, as one PDF" (spec v2.4): four tiles that match the PDF, the format line, a live status list and the form.
+// "Your results, as one PDF" (spec v2.4): four tiles that match the PDF, the format line, a live status list and the form;
+// after an unlock the "Take your results with you" box with one Download PDF button (CLAUDE.md v2.4, Export).
 export default function UnlockSection({ snap, formProps, done }) {
   const { unlocked } = useUnlock();
   const e = snap.est;
@@ -43,6 +45,19 @@ export default function UnlockSection({ snap, formProps, done }) {
         </div>
         {unlocked ? <UnlockDone {...done} /> : <UnlockForm id="op" className="op-form" {...formProps} />}
       </div>
+      {unlocked && (
+        <div className="deckbox">
+          <div>
+            <h3>Take your results with you</h3>
+            <p>One page, A2 landscape, with your scope, route options, datapoints and the dates to plan around. Forward it to your CFO or board.</p>
+          </div>
+          <div className="deckbtns">
+            {done.pdfLink
+              ? <a className="btn pri" href={done.pdfLink} download={PDF_NAME}>Download PDF</a>
+              : <button type="button" className="btn pri" onClick={done.onDownload}>Download PDF</button>}
+          </div>
+        </div>
+      )}
     </section>
   );
 }
