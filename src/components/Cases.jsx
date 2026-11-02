@@ -26,7 +26,7 @@ export default function Cases() {
   );
   return (
     <section className="ch" id="cases">
-      <ChapterHead icon="people" eyebrow="Example cases" title="Parent, subsidiary, or neither?" short="Seven made-up groups. Find the one that looks like yours." />
+      <ChapterHead icon="people" eyebrow="Who is in scope · examples" title="Parent, subsidiary, or neither?" short="Seven made-up groups. Find the one that looks like yours and see what it means for you." />
       <div className="cases-tabs" role="group" aria-label="Example cases">
         {CASES.map((x, i) => (
           <button type="button" key={x.t} aria-pressed={i === cur} onClick={() => setCur(i)}>
@@ -53,8 +53,13 @@ export default function Cases() {
         </div>
         <div className="why">
           <div className="eyebrow">Why</div>
-          {cur < 2 ? why : <Gated label="Unlock all seven cases">{why}</Gated>}
+          {cur < 2 ? why : <Gated label="The other cases come with your free PDF">{why}</Gated>}
         </div>
+      </div>
+      {/* v2.4: CTA under the example cases */}
+      <div className="rhelp top" style={{ marginTop: 20 }}>
+        <div><b>Not sure on which level you report?</b><span>We can help you find out whether you report as a parent, subsidiary or neither, and from which year. Send us a short email.</span></div>
+        <a className="pb pri" href={`mailto:anikalerch@greenfriend.org?subject=${encodeURIComponent("ESRS update check: on which level do we report?")}`}>Email us</a>
       </div>
     </section>
   );

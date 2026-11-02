@@ -1,14 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 
-// Spec v2.2 order; Non-EU groups is not in the menu (it opens under "Check your scope").
+// Spec v2.4: eight links in page order; Non-EU groups is not in the menu (it opens under "Who is in scope").
 export const CHAPTERS = [
+  ["who", "Who is in scope"],
+  ["cases", "Parent, subsidiary or neither"],
   ["overview", "What changed"],
-  ["who", "Who reports when"],
-  ["scope", "Check your scope"],
-  ["datapoints", "Datapoints"],
-  ["cases", "Example cases"],
-  ["fy2026", "Your 2026 route"],
-  ["roadmap", "Your 2027 roadmap"],
+  ["fy2026", "Which standard"],
+  ["datapoints", "What: datapoints"],
+  ["roadmap", "When: roadmap"],
   ["onepager", "Get the PDF"],
   ["about", "Who we are"],
 ];

@@ -1,7 +1,6 @@
-// One square page (280 x 280 mm) built in the browser (spec Section 3, v2.3). Reference: buildPdf() and gradURL() in the prototype.
+// One A2 landscape page (594 x 420 mm) built in the browser (spec Section 3, v2.4). Reference: buildPdf() and gradURL() in the prototype.
 import { RULES_DATE } from "./constants.js";
-import { OPT, STAT, TOPICS } from "./data.js";
-import { MN, monthAt } from "./roadmap.js";
+import { DATES, OPT, STAT, TOPICS } from "./data.js";
 
 // Helvetica's encoding cannot draw these; replace them with plain equivalents.
 export function pdfText(s) {
@@ -29,141 +28,189 @@ function gradURL(w, h) {
   return c.toDataURL("image/jpeg", 0.92);
 }
 
-const INK = [17, 26, 61], INDIGO = [58, 63, 209], CORAL = [232, 80, 63], MUTED = [86, 96, 137], SOFT = [230, 232, 255], YELLOW = [255, 226, 122], AUD = [12, 143, 143], LINE = [221, 227, 243];
-const S = 280, W = S, M = 14, CW = W - 2 * M;
+const INK = [17, 26, 61], INDIGO = [58, 63, 209], CORAL = [232, 80, 63], MUTED = [86, 96, 137], SOFT = [230, 232, 255], YELLOW = [255, 226, 122], LINE = [221, 227, 243];
+const FINE = [96, 104, 138];
+// Designed on a 420 x 297 grid and scaled up by K to A2 landscape, so every size below is in grid units.
+const K = 594 / 420, W = 420, S = 297, M = 14, CW = W - 2 * M;
 const GENERAL_SCOPE = [
   "More than 1,000 employees AND more than EUR 450M net turnover (group figures for a parent): from FY2027.",
   "Below either threshold: likely out, but customers and investors may still ask for data.",
   "Non-EU group: more than EUR 450M EU turnover two years in a row plus an EU entity above EUR 200M: from FY2028.",
   "Reported for FY2024? Check your national rules for FY2025 and FY2026.",
 ];
+const DISCLAIMER = [
+  ["A GENERAL STARTING POINT", "This PDF is built automatically from your answers and gives general information only. It is not legal advice. Every company is different, so come to us with your specific situation and we take the time to look into it with you. greenfriend accepts no liability for the information or for decisions taken on the basis of it. Please also confirm your position with your auditor or legal adviser."],
+  ["SOURCES AND COPYRIGHT", "Based on Directive (EU) 2026/470 and the revised ESRS (Delegated Regulation (EU) 2026/1563). greenfriend does not own, and claims no copyright in, the ESRS, EFRAG materials or the legal texts. We describe their content in our own words. For the exact wording, please see the official texts."],
+  ["CREATED WITH AI", "This document was created with the help of AI and reviewed by greenfriend. AI can make mistakes, so please check anything you rely on against the original sources."],
+];
+// Short labels for the "YOUR ANSWERS" table.
+const answerLabel = (q) =>
+  /ultimate parent/i.test(q) ? "Group parent based"
+  : /securities listed/i.test(q) ? "Listed in the EU"
+  : /generated in the EU/i.test(q) ? "EU turnover, 2 years"
+  : /branch with net turnover/i.test(q) ? "EU entity above EUR 200M"
+  : /EU sub-group/i.test(q) ? "Large EU subsidiary"
+  : /Which entity/i.test(q) ? "Entity checked"
+  : /financial holding/i.test(q) ? "Financial holding company"
+  : /employees/i.test(q) ? "Average employees"
+  : /turnover/i.test(q) ? "Net turnover"
+  : /already publish/i.test(q) ? "Reported for FY2024"
+  : q.replace(/\?$/, "");
 
 function draw(jsPDF, snap) {
-  const d = new jsPDF({ unit: "mm", format: [S, S] });
-  d.setFillColor(245, 247, 253);
-  d.rect(0, 0, W, S, "F");
+  const d0 = new jsPDF({ unit: "mm", format: [594, 420], orientation: "landscape" });
+  // Grid-unit wrapper around jsPDF: positions, sizes and font sizes are multiplied by K.
+  const d = {
+    setFillColor: (...c) => d0.setFillColor(...c), setDrawColor: (...c) => d0.setDrawColor(...c), setTextColor: (...c) => d0.setTextColor(...c),
+    setFont: (a, b) => d0.setFont(a, b), setFontSize: (s) => d0.setFontSize(s * K), setLineWidth: (w) => d0.setLineWidth(w * K),
+    getTextWidth: (t) => d0.getTextWidth(t) / K, splitTextToSize: (t, w) => d0.splitTextToSize(t, w * K),
+    text: (t, x, y, o) => d0.text(t, x * K, y * K, o), line: (a, b, c, e) => d0.line(a * K, b * K, c * K, e * K),
+    rect: (x, y, w, h, s) => d0.rect(x * K, y * K, w * K, h * K, s),
+    roundedRect: (x, y, w, h, rx, ry, s) => d0.roundedRect(x * K, y * K, w * K, h * K, rx * K, ry * K, s),
+    circle: (x, y, r, s) => d0.circle(x * K, y * K, r * K, s),
+    addImage: (u, f, x, y, w, h) => d0.addImage(u, f, x * K, y * K, w * K, h * K),
+  };
   const T = (t, x, y, sz, bold, col, o) => { d.setFont("helvetica", bold ? "bold" : "normal"); d.setFontSize(sz); d.setTextColor(...col); d.text(pdfText(t), x, y, o); };
   const wrap = (t, x, y, w, sz, bold, col, lh) => { d.setFont("helvetica", bold ? "bold" : "normal"); d.setFontSize(sz); d.setTextColor(...col); const ls = d.splitTextToSize(pdfText(t), w); d.text(ls, x, y); return y + ls.length * (lh || sz * 0.42); };
-  const bul = (arr, x, y, w, sz, col) => { arr.forEach((t) => { d.setFillColor(...INDIGO); d.circle(x + 1, y - 1, 0.6, "F"); y = wrap(t, x + 3.4, y, w - 3.4, sz, false, col || INK) + 1; }); return y; };
-  const tag = (t, gen, x, y) => {
-    T(t.toUpperCase(), x, y, 7.5, true, CORAL);
-    if (gen) { const tw = d.getTextWidth(t.toUpperCase()); T("General guidance, not based on your answers", x + tw + 3, y, 6.8, false, MUTED); }
+  const bul = (arr, x, y, w, sz) => { arr.forEach((t) => { d.setFillColor(...INDIGO); d.circle(x + 1, y - 1, 0.6, "F"); y = wrap(t, x + 3.4, y, w - 3.4, sz, false, INK) + 1; }); return y; };
+  // Section heading: numbered indigo disc, sans-serif bold title, optional "General guidance" tag.
+  const tag = (n, h, gen, x, y) => {
+    d.setFillColor(...INDIGO); d.circle(x + 3.3, y - 1.9, 3.3, "F");
+    T(n, x + 3.3, y - 0.7, 8.5, true, [255, 255, 255], { align: "center" });
+    T(h, x + 9.6, y, 15, true, INK);
+    if (gen) { d.setFont("helvetica", "bold"); d.setFontSize(15); const tw = d.getTextWidth(h); T("General guidance, not based on your answers", x + 9.6 + tw + 3, y, 6.8, false, MUTED); }
   };
-  const s1 = snap.scope, e = snap.est, est = e.state, fs = snap.map.shift;
-  const yearEnd = fs ? MN[(fs + 11) % 12] : "December";
+  const s1 = snap.scope, e = snap.est, own = e.state === "own";
 
-  // Header
-  d.addImage(gradURL(W, 40), "JPEG", 0, 0, W, 40);
-  d.setFillColor(...YELLOW); d.circle(M + 1.6, 13, 1.6, "F");
-  T("greenfriend.", M + 6, 14.2, 12, true, [244, 246, 255]);
-  T("ESRS UPDATE 2026", W - M, 13.5, 8.5, true, YELLOW, { align: "right" });
-  T("Your revised ESRS check", M, 27, 24, true, [255, 255, 255]);
+  d.setFillColor(236, 238, 255); d.rect(0, 0, W, S, "F");
+
+  // Header band
+  d.addImage(gradURL(W, 32), "JPEG", 0, 0, W, 32);
+  d.setFillColor(...YELLOW); d.circle(M + 1.6, 11, 1.6, "F");
+  T("greenfriend.", M + 6, 12.4, 13, true, [244, 246, 255]);
+  T("ESRS UPDATE 2026", W - M, 11.5, 8.5, true, YELLOW, { align: "right" });
+  T("Your ESRS 2026 Update Check", M, 24, 27, true, [255, 255, 255]);
   const date = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
-  T(`Prepared ${date}  ·  Status of rules: ${RULES_DATE}`, M, 34.5, 8, false, [201, 206, 255]);
+  T(`Prepared ${date}  ·  Status of rules: ${RULES_DATE}`, W - M, 23, 8.5, false, [201, 206, 255], { align: "right" });
 
-  // Inputs strip
-  const topicsLine = est === "own" ? `${e.codes.length} selected` : est === "none" ? "None selected: ESRS 2 only" : "Not selected: all topics shown";
-  const items = [["Scope check", s1 ? "Completed" : "Not completed: general guide below"], ["Topics", topicsLine], ["Financial year-end", yearEnd]];
-  d.setFillColor(...SOFT); d.roundedRect(M, 45, CW, 11, 2, 2, "F");
-  const bw = CW / 3;
-  items.forEach((it, k) => { T(it[0].toUpperCase(), M + 4 + k * bw, 49.2, 6.3, true, MUTED); T(it[1], M + 4 + k * bw, 53.4, 8.3, true, INK); });
+  // Row 1: scope, route options, datapoints
+  let y0 = 52;
+  const X2 = M + 120, X3 = M + 278, RH = s1 ? 120 : 110;
+  tag("1", "Scope", !s1, M, y0);
+  tag("2", "FY2026 route options", false, X2, y0);
+  tag("3", "Datapoints", !own, X3, y0);
+  y0 += 5;
 
-  // Row 1: scope + route options
-  let y0 = 62;
-  tag("1  Scope", !s1, M, y0);
-  tag("2  FY2026 route options", false, M + 108, y0);
-  y0 += 3;
-  d.setFillColor(...SOFT); d.roundedRect(M, y0, 102, 59, 3, 3, "F");
-  T(s1 ? s1.badge : "General guide", M + 5, y0 + 7, 7.5, true, INDIGO);
-  const yy = wrap(s1 ? s1.head : "Who has to report, and from when", M + 5, y0 + 13, 92, 11, true, INK, 4.6) + 1.5;
-  bul(s1 ? s1.list : GENERAL_SCOPE, M + 5, yy + 1, 92, 7.8);
-  const rc = [CORAL, INDIGO, AUD];
-  OPT.forEach((o, k) => {
-    const cy = y0 + k * 20.3;
-    d.setFillColor(255, 255, 255); d.setDrawColor(...LINE); d.setLineWidth(0.25); d.roundedRect(M + 108, cy, 134, 18.4, 2.5, 2.5, "FD");
-    T(`ROUTE ${o.L}`, M + 112, cy + 5, 6.8, true, rc[k]);
-    T(o.t, M + 112, cy + 10.2, 10, true, INK);
-    wrap(`Fits if: ${o.bi}`, M + 112, cy + 14.2, 126, 7.2, false, MUTED, 3);
-  });
-
-  // Row 2: datapoints + dates
-  let y2 = y0 + 59 + 5;
-  tag("3  Datapoints", est === "example", M, y2);
-  tag("4  Dates to plan around", false, M + 150, y2);
-  y2 += 3;
-  d.setFillColor(255, 255, 255); d.setDrawColor(...LINE);
-  d.roundedRect(M, y2, 142, 40, 3, 3, "FD");
-  d.roundedRect(M + 148, y2, 94, 40, 3, 3, "FD");
-  if (est === "example") {
-    const mx = STAT["ESRS 2"][1] + TOPICS.reduce((a, t) => a + STAT[t[0]][1], 0);
-    const bt = `${STAT["ESRS 2"][1]} to ${mx}`;
-    d.setFont("helvetica", "bold"); d.setFontSize(17);
-    const bw2 = d.getTextWidth(bt);
-    T(bt, M + 6, y2 + 11, 17, true, INDIGO);
-    T("mandatory datapoints", M + 6 + bw2 + 3, y2 + 11, 9, true, INK);
-    wrap("ESRS 2 always applies, each material topic adds its own (decided in your double materiality assessment):", M + 6, y2 + 15.5, 130, 7.4, false, MUTED, 3);
-    const rt = [["ESRS 2", STAT["ESRS 2"][1]], ...TOPICS.map((t) => [`${t[0]} ${t[1]}`, STAT[t[0]][1]])], half = Math.ceil(rt.length / 2);
-    rt.forEach((r, k) => { const cx = M + 6 + (k < half ? 0 : 68), cy = y2 + 21.5 + (k % half) * 3.2; T(r[0], cx, cy, 7.2, false, INK); T(String(r[1]), cx + 58, cy, 7.2, true, INK, { align: "right" }); });
-  } else {
-    T(String(e.old), M + 6, y2 + 14, 22, true, MUTED);
-    const ow = d.getTextWidth(String(e.old));
-    d.setDrawColor(...MUTED); d.setLineWidth(0.7); d.line(M + 6, y2 + 10.5, M + 6 + ow, y2 + 10.5);
-    T("->", M + 6 + ow + 4, y2 + 13, 13, false, MUTED);
-    T(String(e.now), M + 6 + ow + 17, y2 + 14, 22, true, INDIGO);
-    if (est === "own") {
-      d.setFont("helvetica", "bold"); d.setFontSize(22);
-      const px = M + 6 + ow + 17 + d.getTextWidth(String(e.now)) + 5;
-      d.setFillColor(...YELLOW); d.roundedRect(px, y2 + 6, 24, 9, 4.5, 4.5, "F");
-      T(`-${e.pct}%`, px + 12, y2 + 12.2, 11, true, [42, 36, 0], { align: "center" });
-    }
-    const basis = est === "own" ? `ESRS 2 plus ${e.codes.join(", ")}` : "ESRS 2 alone (no topic ticked)";
-    wrap(`${basis}. ${e.unc} apply without conditions. Mandatory datapoints, counts from EFRAG's 2026 Draft List, excluding the general datapoints.`, M + 6, y2 + 21, 130, 7.6, false, MUTED, 3.2);
+  // 1 Scope
+  d.setFillColor(255, 255, 255); d.setDrawColor(...LINE); d.setLineWidth(0.25); d.roundedRect(M, y0, 112, RH, 3, 3, "FD");
+  {
+    const bt = pdfText((s1 ? s1.badge : "General guide").toUpperCase());
+    d.setFont("helvetica", "bold"); d.setFontSize(6.6);
+    const bw = d.getTextWidth(bt);
+    d.setFillColor(253, 227, 220); d.roundedRect(M + 5, y0 + 3, bw + 6, 5.2, 2.6, 2.6, "F");
+    T(bt, M + 8, y0 + 6.6, 6.6, true, CORAL);
   }
-  bul(["10 Nov 2026: revised ESRS enter into force", "19 Mar 2027: Member State deadline to transpose Omnibus I", "FY2027: revised ESRS mandatory for everyone in scope (report in 2028)", "FY2028: non-EU groups under Article 40a (report in 2029)"], M + 153, y2 + 8, 86, 7.6);
-
-  // Row 3: roadmap
-  let y3 = y2 + 40 + 5;
-  tag("5  Your 2027 roadmap", !s1, M, y3);
-  const rows = snap.map.steps, gx = M, cw = CW / 17, rh = Math.min(4.2, 52 / rows.length);
-  y3 += 4;
-  let st0 = 1;
-  for (let c = 2; c <= 18; c++) {
-    if (c === 18 || monthAt(c, fs).y !== monthAt(st0, fs).y) { T(String(monthAt(st0, fs).y), gx + (st0 - 1) * cw + 1, y3 + 2.5, 7.5, true, INDIGO); st0 = c; }
-  }
-  y3 += 4.5;
-  for (let c = 1; c <= 17; c++) T(MN[monthAt(c, fs).m][0], gx + (c - 1) * cw + cw / 2, y3 + 2, 6, false, MUTED, { align: "center" });
-  y3 += 3.5;
-  const gy = y3;
-  d.setDrawColor(...LINE); d.setLineWidth(0.15);
-  for (let c = 0; c <= 17; c++) d.line(gx + c * cw, gy, gx + c * cw, gy + rows.length * rh);
-  const bar = (a, b, ry, label, col, txt, off) => {
-    d.setFillColor(...col); d.roundedRect(gx + (a - 1) * cw, ry + 0.5, (b - a) * cw, rh - 1, 1.4, 1.4, "F");
-    T(label, gx + (a - 1) * cw + 2 + off, ry + rh / 2 + 1, 6.4, true, txt);
-  };
-  rows.forEach((x, i) => {
-    const ry = gy + i * rh, col = x.arrow ? AUD : x.fin ? [255, 214, 204] : INDIGO, txt = x.fin ? [111, 28, 16] : [255, 255, 255];
-    // The auditor label starts after the first run of check-in diamonds, so it stays clear of them.
-    let off = 0;
-    if (x.arrow) { const ks = x.ck.map((k) => k[0]); let c = Math.min(...ks); while (ks.includes(c + 1)) c++; off = (c - x.a + 1) * cw; }
-    bar(x.a, x.b, ry, x.s, col, txt, off);
-    if (x.a2) bar(x.a2, x.b2, ry, x.s, col, txt, 0);
-    (x.ck || []).forEach((c) => {
-      const cx = gx + (c[0] - 1) * cw + cw / 2, cy = ry + rh / 2;
-      d.setFillColor(...YELLOW); d.setDrawColor(...INK); d.setLineWidth(0.25);
-      d.lines([[1.2, 1.2], [-1.2, 1.2], [-1.2, -1.2], [1.2, -1.2]], cx, cy - 1.2, [1, 1], "FD", true);
+  let yy = wrap(s1 ? s1.head : "Who has to report, and from when", M + 5, y0 + 14.5, 102, 11.5, true, INK, 4.6) + 1.5;
+  if (s1) {
+    yy += 3;
+    T("YOUR ANSWERS", M + 5, yy, 6.4, true, CORAL);
+    s1.answers.forEach(([q, a], k) => {
+      const ry = yy + 6.5 + k * 6.6;
+      d.setDrawColor(...LINE); d.setLineWidth(0.2); d.line(M + 5, ry + 1.7, M + 107, ry + 1.7);
+      T(answerLabel(q), M + 5, ry, 7.6, false, MUTED);
+      // The answer that decides the wave is highlighted.
+      if (/wave/i.test(a)) { d.setFont("helvetica", "bold"); d.setFontSize(8.2); d.setFillColor(...YELLOW); d.roundedRect(M + 52 - 1.2, ry - 3.4, d.getTextWidth(pdfText(a)) + 2.4, 4.4, 1.2, 1.2, "F"); }
+      T(a, M + 52, ry, 8.2, true, INK);
     });
-  });
-  const ly = gy + rows.length * rh + 3.6;
-  T(`Plan: ${snap.map.label}${fs ? `  |  year-end ${yearEnd}` : ""}  |  Blue: your work   Teal arrow: auditor track, diamonds are check-ins   Light coral: annual financial reporting   |  Planning guide, not a legal requirement`, M, ly, 6.4, false, MUTED);
+    yy += 6.5 + s1.answers.length * 6.6 + 5;
+    T("WHAT IT MEANS", M + 5, yy, 6.4, true, CORAL);
+    yy += 3.5;
+  }
+  bul(s1 ? s1.list : GENERAL_SCOPE, M + 5, yy + 1, 102, 8.6);
 
-  // Footer
-  const fy = S - 28;
-  d.addImage(gradURL(W, 28), "JPEG", 0, fy, W, 28);
-  T("Report what you do.", M, fy + 8, 12, true, [255, 255, 255]);
-  T("Want a second opinion? Book a free 20-minute call at greenfriend.org", M, fy + 13.5, 8.3, false, [230, 232, 255]);
-  d.setFont("helvetica", "normal"); d.setFontSize(6); d.setTextColor(201, 206, 255);
-  d.text(d.splitTextToSize("Automated view generated from the inputs you entered. Indicative reading of Directive (EU) 2026/470 and the revised ESRS (Delegated Regulation (EU) 2026/1563), provided without warranty and not legal advice. greenfriend is not responsible for this output or for how it is used. Prepared with AI support and reviewed by greenfriend. Confirm your position with your auditor or legal adviser.", CW), M, fy + 18.2);
-  return d;
+  // 2 Route cards
+  OPT.forEach((o, k) => {
+    const pt = (RH + 3) / 3, cy = y0 + k * pt, ch = pt - 3;
+    // Accent bar: a coloured card behind the white card, showing as a strip on top.
+    d.setFillColor(...INDIGO); d.roundedRect(X2, cy, 150, ch, 2.5, 2.5, "F");
+    d.setFillColor(255, 255, 255); d.setDrawColor(...LINE); d.setLineWidth(0.25); d.roundedRect(X2, cy + 1.3, 150, ch - 1.3, 2.5, 2.5, "FD");
+    d.setFillColor(255, 255, 255); d.rect(X2 + 0.3, cy + 1.3, 149.4, 2, "F");
+    T(o.L, X2 + 9, cy + 15, 26, true, INDIGO, { align: "center" });
+    T(o.t, X2 + 19, cy + 11, 13, true, INK);
+    T(o.std, X2 + 19, cy + 16.5, 8, true, INDIGO);
+    wrap(o.d, X2 + 19, cy + 22.5, 50, 7.8, false, MUTED, 3.4);
+    T("EFFORT NOW", X2 + 126, cy + 7.8, 5.6, true, MUTED, { align: "right" });
+    [1, 2, 3].forEach((n) => { d.setFillColor(...(n <= o.eff ? CORAL : SOFT)); d.circle(X2 + 129 + n * 3.6, cy + 7, 1.2, "F"); });
+    const fx = X2 + 72;
+    d.setFillColor(...YELLOW); d.roundedRect(fx, cy + 12, 10, 4, 2, 2, "F");
+    T("FITS IF", fx + 5, cy + 14.8, 5.8, true, [42, 36, 0], { align: "center" });
+    wrap(o.bi, fx, cy + 21, 74, 8.4, false, INK, 3.7);
+  });
+
+  // 3 Datapoints
+  d.setFillColor(255, 255, 255); d.setDrawColor(...LINE); d.setLineWidth(0.25); d.roundedRect(X3, y0, 114, RH, 3, 3, "FD");
+  const bx = X3 + 6, bw = 102;
+  if (own) {
+    const { old: o, now: n, unc: u } = e;
+    wrap(`From ${o} to ${n} mandatory datapoints, ${e.pct}% fewer`, bx, y0 + 9, bw, 10.5, true, INK, 4.4);
+    [["Current ESRS (2023)", o, [214, 200, 168]], ["Revised ESRS", n, INDIGO], ["Of these, apply without conditions", u, CORAL]].forEach(([l, v, c], k) => {
+      const by = y0 + 23 + k * 9;
+      T(l, bx, by, 7.2, false, INK);
+      d.setFillColor(...SOFT); d.roundedRect(bx + 50, by - 2.4, 40, 2.8, 1.4, 1.4, "F");
+      d.setFillColor(...c); d.roundedRect(bx + 50, by - 2.4, Math.max(2, (40 * v) / o), 2.8, 1.4, 1.4, "F");
+      T(String(v), bx + bw, by, 8, true, INK, { align: "right" });
+    });
+    const rows = [["ESRS 2 (always)", STAT["ESRS 2"][0], STAT["ESRS 2"][1]], ...e.topics.map((t, i) => [t, STAT[e.codes[i]][0], STAT[e.codes[i]][1]])];
+    // Two columns of 49.5 with a 3-unit gap when more than five rows, so the columns do not touch.
+    const half = Math.ceil(rows.length / 2), two = rows.length > 5, cw = two ? 49.5 : bw, gap = 3, ty = y0 + 56;
+    (two ? [0, 1] : [0]).forEach((c) => {
+      const cx = bx + c * (cw + gap);
+      T("PER TOPIC", cx, ty, 5.8, true, CORAL);
+      T("2023", cx + cw - 16, ty, 5.8, true, MUTED, { align: "right" });
+      T("REVISED", cx + cw - 1, ty, 5.8, true, MUTED, { align: "right" });
+    });
+    rows.forEach((r, k) => {
+      const c = two && k >= half ? 1 : 0, i = two && k >= half ? k - half : k, cx = bx + c * (cw + gap), cy = ty + 6.5 + i * 6.4;
+      d.setDrawColor(...LINE); d.setLineWidth(0.2); d.line(cx, cy + 1.4, cx + cw - 1, cy + 1.4);
+      T(r[0].length > 24 ? `${r[0].slice(0, 23)}.` : r[0], cx, cy, 6.8, false, INK);
+      T(String(r[1]), cx + cw - 16, cy, 6.8, false, MUTED, { align: "right" });
+      T(String(r[2]), cx + cw - 1, cy, 6.8, true, INK, { align: "right" });
+    });
+    wrap(`Plus 31 general datapoints that apply to everyone: your total is ${n + 31}. Counts from EFRAG's 2026 Draft List.`, bx, y0 + RH - 12, bw, 7, false, MUTED, 3);
+  } else {
+    const lo = STAT["ESRS 2"][1], mx = lo + TOPICS.reduce((a, t) => a + STAT[t[0]][1], 0);
+    wrap(`From ${lo} up to ${mx} mandatory datapoints`, bx, y0 + 9, bw, 10.5, true, INK, 4.4);
+    wrap("ESRS 2 always applies. Each material topic adds its own datapoints, so your number depends on which topics your double materiality assessment confirms. Per topic (revised ESRS):", bx, y0 + 15, bw, 7, false, MUTED, 2.9);
+    const rt = [["ESRS 2 (always)", lo], ...TOPICS.map((t) => [`${t[0]} ${t[1]}`, STAT[t[0]][1]])], half = Math.ceil(rt.length / 2);
+    rt.forEach((r, k) => { const cx = bx + (k < half ? 0 : 54), cy = y0 + 29.5 + (k % half) * 4.5; T(r[0], cx, cy, 7, false, INK); T(String(r[1]), cx + 46, cy, 7, true, INK, { align: "right" }); });
+    wrap(`Plus 31 general datapoints that apply to everyone: ${lo + 31} to ${mx + 31} in total. Counts from EFRAG's 2026 Draft List.`, bx, y0 + 58, bw, 6.8, false, MUTED, 2.8);
+  }
+
+  // Row 2: dates strip (the same dates as the tool)
+  let y2 = y0 + RH + 20;
+  tag("4", "Dates to plan around", false, M, y2);
+  y2 += 5;
+  d.setFillColor(255, 255, 255); d.setDrawColor(...LINE); d.setLineWidth(0.25); d.roundedRect(M, y2, CW, 36, 3, 3, "FD");
+  {
+    const cwd = CW / DATES.length, ly = y2 + 18;
+    d.setDrawColor(...LINE); d.setLineWidth(0.7); d.line(M + cwd / 2, ly, M + CW - cwd / 2, ly);
+    DATES.forEach((x, k) => {
+      const cx = M + cwd * (k + 0.5), now = /now/.test(x.c), past = !now && !/future/.test(x.c);
+      if (now) { d.setFillColor(...INDIGO); d.setDrawColor(...SOFT); d.setLineWidth(1.2); d.circle(cx, ly, 2.4, "FD"); }
+      else { d.setFillColor(...(past ? [170, 176, 205] : INDIGO)); d.circle(cx, ly, 1.7, "F"); }
+      T(x.d, cx, y2 + 11.5, 11.5, true, past ? MUTED : INK, { align: "center" });
+      T(x.t, cx, y2 + 29, 8.8, now, now ? INK : MUTED, { align: "center" });
+    });
+  }
+
+  // Disclaimer in three muted columns, then the gradient CTA band at the very bottom
+  const fy = S - 45;
+  const dw = (CW - 16) / 3;
+  DISCLAIMER.forEach(([h, t], k) => { const cx = M + k * (dw + 8); T(h, cx, fy + 9, 6, true, FINE); wrap(t, cx, fy + 13, dw, 7.2, false, FINE, 3.2); });
+  d.addImage(gradURL(W, 15), "JPEG", 0, S - 15, W, 15);
+  T("Report what you do.", M, S - 5.8, 13, true, [255, 255, 255]);
+  T("Want a second opinion? Book a free 20-minute call at greenfriend.org", W - M, S - 6, 9, false, [230, 232, 255], { align: "right" });
+  return d0;
 }
 
 export async function buildPdf(snap) {
@@ -171,9 +218,9 @@ export async function buildPdf(snap) {
   return draw(jsPDF, snap);
 }
 
-export const PDF_NAME = "greenfriend-revised-esrs-check.pdf";
+export const PDF_NAME = "greenfriend-esrs-2026-update-check.pdf";
 
-// A blob URL of the current one-pager, for the download links.
+// A blob URL of the current PDF, for the Download PDF link.
 export async function pdfUrl(snap) {
   const d = await buildPdf(snap);
   return URL.createObjectURL(d.output("blob"));

@@ -7,7 +7,7 @@ export function UnlockButton() {
   const { openGate } = useUnlock();
   return (
     <button type="button" className="unlock" onClick={(e) => openGate(e.currentTarget)}>
-      Unlock your action plan
+      Get your free PDF
     </button>
   );
 }

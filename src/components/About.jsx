@@ -51,7 +51,7 @@ export default function About() {
     <section className="about" id="about" style={{ scrollMarginTop: 60 }} ref={root}>
       <div className="wrap">
         <div className="rhelp top">
-          <div><b>Want our help?</b><span>We run this plan with you, start to published report. Book a free 20-minute call with Elena and Anika.</span></div>
+          <div><b>Want our help?</b><span>We run this plan with you, start to published report. Book a free 20-minute call with Anika and Elena.</span></div>
           <a className="pb pri" href="https://greenfriend.org" target="_blank" rel="noopener noreferrer">Book a free call</a>
         </div>
         <div className="pitch">

@@ -1,7 +1,6 @@
 import { Q } from "../lib/data.js";
 import { answerLines, nextQuestion, totalSteps, verdict } from "../lib/scope.js";
 import { Gated } from "./unlock.jsx";
-import { ChapterHead } from "./Icons.jsx";
 
 function Answers({ hist, A }) {
   return (
@@ -68,8 +67,7 @@ export default function ScopeCheck({ scope, setScope }) {
 
   const v = verdict(A);
   return (
-    <section className="ch" id="scope">
-      <ChapterHead icon="target" eyebrow="Check your scope" title="Are you in? Let us check" short="Up to six questions. Parents: use group figures." />
+    <section id="scope" className="coverquiz" aria-label="Check your scope">
       <div className="quiz">
         <div className="qbox" aria-live="polite">{qbox}</div>
         <div className="rbox">
@@ -84,7 +82,7 @@ export default function ScopeCheck({ scope, setScope }) {
               <div className="verdict">
                 <span className={`vbadge ${v.c}`}>{v.b}</span>
                 <h3>{v.h}</h3>
-                <Gated label="Why, and your next steps">
+                <Gated label="Full reasons and next steps come with your free PDF">
                   <ul className="vlist">
                     {v.l.map((x) => (
                       <li key={x}>{x}</li>

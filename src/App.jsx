@@ -13,13 +13,11 @@ import UnlockSection from "./components/UnlockSection.jsx";
 import UnlockDialog from "./components/UnlockDialog.jsx";
 import About from "./components/About.jsx";
 import Footer from "./components/Footer.jsx";
-import FastStrip from "./components/FastStrip.jsx";
 import FloatingTip from "./components/FloatingTip.jsx";
 import { EMPTY_FORM } from "./components/UnlockForm.jsx";
 import { UnlockContext } from "./components/unlock.jsx";
 import { TOPICS } from "./lib/data.js";
 import { answerLines, verdict } from "./lib/scope.js";
-import { mapMode, mapSteps, fyShift } from "./lib/roadmap.js";
 import { DEFAULT_TOPICS, estimate } from "./lib/estimator.js";
 import { isValidEmail, NOTICE_VERSION } from "./lib/constants.js";
 import { readUnlocked, writeUnlocked } from "./lib/storage.js";
@@ -36,7 +34,6 @@ export default function App() {
   // The PDF tells an untouched default selection (an example) apart from the visitor's own (spec v2.3, estState()).
   const [topicsTouched, setTopicsTouched] = useState(false);
   const setTopics = useCallback((t) => { setTopicsRaw(t); setTopicsTouched(true); }, []);
-  const [fyEnd, setFyEnd] = useState("");
   const [form, setForm] = useState(EMPTY_FORM);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState(null);
@@ -64,9 +61,8 @@ export default function App() {
     return {
       scope: v ? { badge: v.b, head: v.h, list: v.l, answers: answerLines(scope.hist, scope.A) } : null,
       est: { ...e, state, codes: e.topics, topics: e.topics.map((c) => `${c} ${TOPIC_NAME[c]}`) },
-      map: { label: mapMode(scope.A).label, steps: mapSteps(scope.A, topics, fyEnd), shift: fyShift(fyEnd) },
     };
-  }, [scope, topics, topicsTouched, fyEnd]);
+  }, [scope, topics, topicsTouched]);
 
   const openGate = useCallback((el) => {
     opener.current = el || document.activeElement;
@@ -138,19 +134,19 @@ export default function App() {
 
   return (
     <UnlockContext.Provider value={{ unlocked, openGate }}>
-      <Cover />
+      <Cover>
+        <ScopeCheck scope={scope} setScope={setScope} />
+      </Cover>
       <ChapterNav />
       <main className="wrap">
-        <FastStrip />
-        {/* Spec v2.2 chapter order */}
-        <WhatChanged />
+        {/* Spec v2.4 chapter order */}
         <WhoReports onNonEU={openNonEU} />
-        <ScopeCheck scope={scope} setScope={setScope} />
         <NonEU hidden={!showNonEU} />
-        <Datapoints topics={topics} setTopics={setTopics} />
         <Cases />
+        <WhatChanged />
         <Fy2026 />
-        <Roadmap A={scope.A} topics={topics} fyEnd={fyEnd} setFyEnd={setFyEnd} />
+        <Datapoints topics={topics} setTopics={setTopics} />
+        <Roadmap />
         <UnlockSection snap={snap} formProps={formProps} done={done} />
       </main>
       <About />

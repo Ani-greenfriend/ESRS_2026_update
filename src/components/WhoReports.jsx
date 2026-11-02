@@ -1,5 +1,5 @@
 import { G } from "../lib/data.js";
-import Icon, { ChapterHead } from "./Icons.jsx";
+import { ChapterHead } from "./Icons.jsx";
 
 const YEARS = ["FY2024", "FY2025", "FY2026", "FY2027", "FY2028"];
 const KEY = [
@@ -10,31 +10,40 @@ const KEY = [
   ["c-out", "Out of mandatory scope", "Not subject to mandatory reporting in that year."],
 ];
 
+// v2.4: the group as a small pill, the description as a bold line (prototype whoHtml()).
+const WHO = {
+  "Large EU company below new thresholds": ["Large EU company", "Below the new thresholds"],
+  "Listed EU SME": ["Listed EU SME", "Smaller listed company"],
+  "Non-EU group (Art. 40a)": ["Non-EU group", "Article 40a"],
+};
+function Who({ n }) {
+  let k, t;
+  if (WHO[n]) [k, t] = WHO[n];
+  else {
+    const i = n.indexOf(", ");
+    k = n.slice(0, i);
+    t = n[i + 2].toUpperCase() + n.slice(i + 3);
+  }
+  return <><em className="wk">{k}</em><b>{t}</b></>;
+}
+
 export default function WhoReports({ onNonEU }) {
   return (
     <section className="ch" id="who">
-      <ChapterHead icon="calendar" eyebrow="Who reports when" title="Do you have to report? Two quick criteria" short="Short answer: meet both criteria and you report under the revised ESRS from FY2027 (non-EU groups from FY2028)." />
-      {/* v2.0 decision flow: criteria card → arrow → three outcomes; non-EU groups in one line with a link to the three questions */}
-      <div className="tree">
-        <div className="tq">
-          <div className="tqh">
-            <span className="eyebrow" style={{ color: "var(--olive)" }}>1 · EU company or EU group: do you meet both criteria?</span>
-            <span className="src" tabIndex={0} data-ftip="Old test: 250 employees and €50M turnover (any two of three criteria). Parent companies use consolidated group figures." aria-label="More info">i</span>
-          </div>
+      <ChapterHead icon="calendar" eyebrow="Who is in scope" title="Who reports when" short="Test the two thresholds, then find your row by company type and year." steps={[["Test", "the two thresholds"], ["Find", "your row"], ["Check", "the years that apply to you"]]} />
+      {/* v2.4: the thresholds as one strip, non-EU groups in one line, then the "Find your row" table */}
+      <div className="thrstrip">
+        <div className="ts-l">
+          <span className="eyebrow" style={{ color: "var(--olive)" }}>The two thresholds behind the check</span>
           <div className="gate"><span className="g">&gt; 1,000 employees</span><span className="andop">AND</span><span className="g">&gt; €450M net turnover</span></div>
         </div>
-        <div className="tarrow" aria-hidden="true"><Icon name="arrowDown" size={22} /></div>
-        <div className="tout3">
-          <div className="to a"><small>2 · Yes, and you report today</small><b>Keep reporting</b><span>Switch to the revised ESRS in <em>FY2027</em></span></div>
-          <div className="to b"><small>2 · Yes, but you are new</small><b>Start reporting</b><span>Your first report is <em>FY2027</em></span></div>
-          <div className="to c"><small>No, below a line</small><b>Not mandatory</b><span>Out from FY2027. FY2025–26 depends on your country.</span></div>
-        </div>
-        <div className="tnon tnone">
-          <span className="eyebrow" style={{ color: "var(--info)" }}>Group based outside the EU?</span>
-          <span>Non-EU groups report through a large EU subsidiary (FY2027) or at group level under Article 40a (FY2028).</span>
-          <a href="#noneu" className="nonlink" onClick={onNonEU}>See the three questions</a>
-        </div>
+        <p className="ts-r">
+          Meet both and you report under the revised ESRS: keep going if you report today, first report <b>FY2027</b> if you are new. Parents use group figures.{" "}
+          <span className="src" tabIndex={0} data-ftip="Old test: 250 employees and €50M turnover (any two of three criteria). Parent companies use consolidated group figures." aria-label="More info">i</span>
+        </p>
       </div>
+      <p className="nonline"><b>Group based outside the EU?</b> You report through a large EU subsidiary (FY2027) or at group level under Article 40a (FY2028). <a href="#noneu" className="nonlink" onClick={onNonEU}>See the three questions</a></p>
+      <h3 className="gtitle">Find your row</h3>
       <div className="gantt">
         <table>
           <thead>
@@ -43,7 +52,7 @@ export default function WhoReports({ onNonEU }) {
           <tbody>
             {G.map((r) => (
               <tr key={r[0]}>
-                <td className="who"><b>{r[0]}</b><span>{r[1]}</span></td>
+                <td className="who"><Who n={r[0]} /><span>{r[1]}</span></td>
                 {r[2].map((c, j) => (
                   <td key={j}>
                     <div className={`cell c-${c}`} tabIndex={0} data-ftip={`${r[0]}, ${YEARS[j]}: ${r[4][j]}`}>{r[3][j] || ""}</div>

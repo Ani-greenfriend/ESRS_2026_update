@@ -62,7 +62,7 @@ function FactSheet() {
           <ul>
             <li><b>323 = 292 + 31.</b> All counts come from EFRAG's 2026 draft list and explanatory note. Other sources may use a different stage or basis.</li>
             <li><b>More rows in EFRAG's sheet.</b> 30 heading rows (3 per topic) and 6 technical rows are not disclosures, so we skip them. E1: 87 rows, 84 datapoints.</li>
-            <li><b>Percentages.</b> 783 → 292 = −63%. 1,052 → 292 = −72%. 1,052 → 323 = −69%.</li>
+            <li><b>Percentages.</b> 783 → 292 = −63%. 1,052 → 292 = −72%.</li>
           </ul>
         </details>
       </div>
@@ -100,7 +100,7 @@ function Estimator({ topics, setTopics }) {
         <p className="headline">
           You go from <span className="num">{e.old}</span> to <em className="num">{e.now}</em> mandatory datapoints. That is <em className="num">{e.pct}%</em> fewer. Nice.
         </p>
-        <Gated label="See your full datapoint breakdown">
+        <Gated label="Full breakdown comes with your free PDF">
           <Bars o={e.old} n={e.now} u={e.unc} max={e.old} />
           <p className="est-add">
             <b>Plus 31 general datapoints</b> on policies, actions, targets and metrics. They apply whatever topics you tick, so your total is <b className="num">{e.now + 31}</b> ({e.now} + 31). With all ten topics ticked that is 323, the headline figure above.
@@ -125,7 +125,7 @@ const GDR = [
 export default function Datapoints({ topics, setTopics }) {
   return (
     <section className="ch" id="datapoints">
-      <ChapterHead icon="grid" eyebrow="Datapoints" title="From 1,052 datapoints to 323" short="Short answer: a lot less to report. Try your own number below." />
+      <ChapterHead icon="grid" eyebrow="What: datapoints" title="From 1,052 datapoints to 323" short="Short answer: a lot less to report. Try your own number below." />
       <FactSheet />
 
       <h3>Your own number</h3>

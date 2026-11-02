@@ -33,12 +33,14 @@ function RouteCard({ o }) {
 export default function Fy2026() {
   return (
     <section className="ch" id="fy2026">
-      <ChapterHead icon="signpost" eyebrow="Your 2026 report" title="Three routes for your 2026 report" short="The delegated rules let you choose how to report FY2026. Pick one and say in your report which you used." />
+      <ChapterHead icon="signpost" eyebrow="Which standard" title="Which standards for your 2026 report? You choose" short="For FY2026 the rules let you decide how to report. Compare the three routes, pick the one that fits your team and your auditor, and say in your report which you used." />
       <div className="opts3">
         {OPT.map((o) => <RouteCard key={o.L} o={o} />)}
       </div>
+      <div className="fynotes">
       <p className="tip"><b>Good to know</b> Pre-Omnibus ESRS are the 2023 standards you used for FY2025 (as amended in 2025). Revised ESRS are the new, slimmer ones. From FY2027 the revised ESRS are mandatory for everyone in scope.</p>
       <p className="advice"><b>Our tip</b> Starting with ESRS now? Route C is usually the natural fit: you have no 2025 report to compare with, so you can begin on the slimmer standards. Whichever route you choose, agree it with your auditor early.</p>
+      </div>
       <details className="srcbox hov">
         <summary>Where this comes from</summary>
         <p>All three routes come from one legal text: Delegated Regulation (EU) 2026/1563 (Official Journal, 21 September 2026, in force from 10 November 2026). Article 2 sets the choice for FY2026.</p>
