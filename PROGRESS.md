@@ -41,6 +41,10 @@ Session 6: placed the spec v2.4 docs (five documents from the root upload, then 
 
 ## Remaining work
 Spec v2.4 — open:
+- [ ] Builder: test the live version through the Netlify link with known testers this week (test rows stay in `unlocks`; delete them on request before the public launch)
+- [ ] Builder (end of this week): connect check.greenfriend.org — Netlify: Domain management → Add a domain; Wix DNS: CNAME `check` → `esrs2026update.netlify.app`; HTTPS follows automatically
+- [ ] Builder: send one test through the "Not sure on which level you report?" form on the live site (no `contact` row exists yet)
+- [ ] Supabase Free pauses the project after about a week without activity: when the warning email comes, restore it in the Supabase dashboard (saving emails stops while paused; the page stays online)
 - [ ] Builder: have a lawyer read the PDF disclaimer wording before launch (spec Section 8, v2.4 block)
 - [ ] Source policy: re-check every source line against its link before launch
 - [ ] Acceptance criteria 14, 19, 20 and 21 (spec Section 13, v2.4) on the deployed site
