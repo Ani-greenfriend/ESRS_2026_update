@@ -27,6 +27,13 @@ function Who({ n }) {
   return <><em className="wk">{k}</em><b>{t}</b></>;
 }
 
+// "Out|Voluntary standard optional": a main label and a small second line (builder request, 3 Nov 2026).
+function Label({ t }) {
+  if (!t.includes("|")) return t;
+  const [main, sub] = t.split("|");
+  return <><span>{main}</span><small>{sub}</small></>;
+}
+
 export default function WhoReports({ onNonEU }) {
   return (
     <section className="ch" id="who">
@@ -56,7 +63,7 @@ export default function WhoReports({ onNonEU }) {
                 <td className="who"><Who n={r[0]} /><span>{r[1]}</span></td>
                 {r[2].map((c, j) => (
                   <td key={j}>
-                    <div className={`cell c-${c}`} tabIndex={0} data-ftip={`${r[0]}, ${YEARS[j]}: ${r[4][j]}`}>{r[3][j] || ""}</div>
+                    <div className={`cell c-${c}${r[3][j].includes("|") ? " outv" : ""}`} tabIndex={0} data-ftip={`${r[0]}, ${YEARS[j]}: ${r[4][j]}`}><Label t={r[3][j]} /></div>
                   </td>
                 ))}
               </tr>
