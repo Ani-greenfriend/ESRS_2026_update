@@ -99,6 +99,11 @@ export function FindYourRow() {
         </ul>
       </details>
       <p className="tip"><b>Good to know</b> Years shown are the financial year reported on. Wave 1 means EU companies that already reported for FY2024. Member States must transpose Omnibus I by 19 March 2027, so check national law for the FY2025–2026 exemption. Each country's measures are listed on EUR-Lex, on the page of Directive (EU) 2026/470 under "National transposition".</p>
+      {/* Builder request (3 Nov 2026): the "Email us" band closes the EU / non-EU / thresholds part, before the example cases. */}
+      <div className="rhelp top" style={{ marginTop: 20 }}>
+        <div><b>Not sure on which level you report?</b><span>We can help you find out whether you report as a parent, subsidiary or neither, and from which year. Send us a short email.</span></div>
+        <a className="pb pri" href={`mailto:anikalerch@greenfriend.org?subject=${encodeURIComponent("ESRS update check: on which level do we report?")}`}>Email us</a>
+      </div>
     </section>
   );
 }
