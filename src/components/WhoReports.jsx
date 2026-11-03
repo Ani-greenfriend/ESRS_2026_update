@@ -11,8 +11,12 @@ const KEY = [
 ];
 
 // v2.4: the group as a small pill, the description as a bold line (prototype whoHtml()).
+// Builder request (3 Nov 2026): the badge says whether the row is listed (wave 1 = listed companies, banks and insurers).
 const WHO = {
-  "Large EU company below new thresholds": ["Large EU company", "Below the new thresholds"],
+  "EU wave 1, still above both thresholds": ["EU wave 1 · listed", "Still above both thresholds"],
+  "EU wave 1, now below a threshold": ["EU wave 1 · listed", "Now below a threshold"],
+  "Large EU company, not wave 1": ["Large EU company · not listed", "Not wave 1"],
+  "Large EU company below new thresholds": ["Large EU company · listed or not", "Below the new thresholds"],
   "Listed EU SME": ["Listed EU SME", "Smaller listed company"],
   "Non-EU group (Art. 40a)": ["Non-EU group", "Article 40a"],
 };

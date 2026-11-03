@@ -42,11 +42,11 @@ export const TOT=[783,292,195];
 export const TOPICS=[["E1","Climate change",1],["E2","Pollution",0],["E3","Water",0],["E4","Biodiversity",0],["E5","Resource use",1],["S1","Own workforce",1],["S2","Value chain workers",1],["S3","Communities",0],["S4","Consumers",0],["G1","Business conduct",1]];
 
 export const G=[
- ["EU wave 1, still above both thresholds","Reported since FY2024",["rep","rep","rep","new","new"],["","","Choose route","Revised",""],
+ ["EU wave 1, still above both thresholds","Listed company, bank or insurer; reported since FY2024",["rep","rep","rep","new","new"],["","","Choose route","Revised",""],
   ["Reports under the pre-Omnibus (2023) ESRS.","Reports under the pre-Omnibus (2023) ESRS.","You choose one of three FY2026 routes. See FY2026 options below.","First year under the revised ESRS, mandatory from FY2027.","Reports under the revised ESRS."]],
- ["EU wave 1, now below a threshold","e.g. 600 employees",["rep","opt","opt","out","out"],["","MS option","MS option","Out|Voluntary standard optional","Out|Voluntary standard optional"],
+ ["EU wave 1, now below a threshold","Listed company, bank or insurer; e.g. 600 employees",["rep","opt","opt","out","out"],["","MS option","MS option","Out|Voluntary standard optional","Out|Voluntary standard optional"],
   ["Reported under the pre-Omnibus (2023) ESRS.","Member States may exempt these companies for FY2025 and FY2026. Check national law.","Member States may exempt these companies for FY2025 and FY2026. Check national law.","Below the new size criteria (over 1,000 employees and over €450M): no mandatory reporting. Optional: the voluntary standard (based on VSME).","Below the new size criteria: no mandatory reporting. Optional: the voluntary standard (based on VSME)."]],
- ["Large EU company, not wave 1","Old wave 2, now >1,000 employees & >€450M",["out","out","out","new","new"],["","","","First year",""],
+ ["Large EU company, not wave 1","Not listed, e.g. family-owned; old wave 2, now >1,000 employees & >€450M",["out","out","out","new","new"],["","","","First year",""],
   ["Not required to report yet.","Not required to report yet: the wave 2 start (FY2025) was postponed to FY2027.","Not required to report yet: the wave 2 start was postponed to FY2027.","First report under the revised ESRS, on FY2027 (published 2028).","Reports under the revised ESRS."]],
  ["Large EU company below new thresholds","Old wave 2, e.g. 400 employees",["out","out","out","out","out"],["","","","Out|Voluntary standard optional","Out|Voluntary standard optional"],
   ["Not required to report.","Not required to report.","Not required to report.","No mandatory reporting. Optional: the voluntary standard (based on VSME).","No mandatory reporting. Optional: the voluntary standard (based on VSME)."]],
