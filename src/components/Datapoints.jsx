@@ -119,7 +119,7 @@ export default function Datapoints({ topics, setTopics }) {
       <ChapterHead icon="grid" eyebrow="What: datapoints" title="From 1,052 datapoints to 323" short="Short answer: a lot less to report. Try your own number below." />
       <FactSheet />
 
-      <h3>Your own number</h3>
+      <h3 className="sec-h">Your own number</h3>
       <Estimator topics={topics} setTopics={setTopics} />
 
     </section>

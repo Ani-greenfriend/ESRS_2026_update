@@ -1051,3 +1051,16 @@ body{overflow-x:clip}
 @media (max-width:640px){.about{margin-top:16px}.about .wrap{padding-block:28px 40px}}
 /* Builder request (3 Nov 2026): the note under "Find your row" is a plain disclaimer line on the page background */
 .disclaim{margin:-4px 0 4px;font-size:.88rem;color:var(--muted);line-height:1.5}
+/* Builder request (3 Nov 2026): one type scale for the whole page.
+   Level 1 chapter titles · level 2 section titles · level 3 card titles; subtitles all use .lede.short. */
+section.ch h2,section.about h2{font-family:var(--serif);font-weight:700;font-size:clamp(1.9rem,4vw,2.7rem);line-height:1.12;letter-spacing:-.02em}
+.sec-h,.thrstrip .ts-h,.kb-h h3,.diff h3,#rows .gtitle{font-family:var(--serif);font-weight:700;font-size:clamp(1.35rem,2.6vw,1.6rem);line-height:1.2;letter-spacing:-.01em;margin:0}
+#fy2026 .o3 h3,.o3 h3,.about .person h3,.about .step h3,.step h3,.way2 h3{font-family:var(--serif);font-weight:700;font-size:1.2rem;line-height:1.25}
+.lede.short{font-size:1.06rem;font-weight:500;color:var(--fg)}
+.thrstrip .ts-r{font-size:1rem}
+/* "In the EU" and "Outside the EU": two matching panels */
+.thrstrip.eupanel{gap:14px}
+#noneu .eupanel{justify-items:stretch}
+#noneu .eupanel .ts-h,#noneu .eupanel .ts-r{justify-self:center;text-align:center}
+#noneu .ways{margin-top:4px;text-align:left}
+.w2fy{font-family:var(--serif);font-weight:800}

@@ -44,7 +44,7 @@ export default function WhoReports() {
     <section className="ch" id="who">
       <ChapterHead icon="calendar" eyebrow="Who is in scope" title="Who reports when" short="Check the new legal thresholds that changed in 2026." />
       {/* "In the EU": the two thresholds (builder request, 3 Nov 2026); "Outside the EU? Two ways in" follows */}
-      <div className="thrstrip">
+      <div className="thrstrip eupanel">
         <div className="ts-l">
           <h3 className="ts-h">In the EU</h3>
           <div className="gate"><span className="g">&gt; 1,000 employees</span><span className="andop">AND</span><span className="g">&gt; €450M net turnover</span></div>
@@ -63,7 +63,7 @@ export default function WhoReports() {
 export function FindYourRow({ onContact }) {
   return (
     <section className="ch" id="rows" aria-labelledby="rows-h">
-      <h3 className="gtitle" id="rows-h">Find your row</h3>
+      <h3 className="gtitle sec-h" id="rows-h">Find your row</h3>
       <div className="gantt">
         <table>
           <thead>

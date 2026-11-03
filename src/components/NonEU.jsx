@@ -1,4 +1,3 @@
-import { ChapterHead } from "./Icons.jsx";
 
 // Builder request (3 Nov 2026): "Outside the EU? Two ways in" replaces the hidden three-question stepper.
 // Always visible, directly under "Who reports when".
@@ -24,7 +23,10 @@ const ROUTES = [
 export default function NonEU() {
   return (
     <section className="ch" id="noneu">
-      <ChapterHead title="Outside the EU? Two ways in" short="A non-EU group can fall under both routes. Check both." />
+      {/* Builder request (3 Nov 2026): same panel and title style as "In the EU" above it. */}
+      <div className="thrstrip eupanel">
+        <h3 className="ts-h">Outside the EU</h3>
+        <p className="ts-r">A non-EU group can fall under both routes. Check both.</p>
       <div className="ways">
         {ROUTES.map((r) => (
           <div key={r.k} className={`way2 ${r.k}`}>
@@ -37,6 +39,7 @@ export default function NonEU() {
             <p className="w2note">{r.note}</p>
           </div>
         ))}
+      </div>
       </div>
     </section>
   );

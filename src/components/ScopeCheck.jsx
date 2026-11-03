@@ -92,7 +92,7 @@ export default function ScopeCheck({ scope, setScope }) {
               <p className="qhelp">Indicative only, not legal advice. National transposition is due by 19 March 2027.</p>
             </>
           )}
-          {A.hq === "non" && <p className="qhelp nonhint">Outside the EU? See "Two ways in" under "Who reports when" below.</p>}
+          {A.hq === "non" && <p className="qhelp nonhint">Outside the EU? See "Outside the EU" under "Who reports when" below.</p>}
         </div>
       </div>
     </section>

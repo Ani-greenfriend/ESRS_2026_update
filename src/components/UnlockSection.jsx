@@ -21,7 +21,7 @@ export default function UnlockSection({ snap, formProps, done }) {
         <div className="op-text">
           <div className="eyebrow"><Icon name="doc" />Your PDF</div>
           <h2>Your results, as one PDF</h2>
-          <p className="lede">Work through the page above, enter your email address and download your free overview for 2027!</p>
+          <p className="lede short">Work through the page above, enter your email address and download your free overview for 2027!</p>
         </div>
         {unlocked ? <UnlockDone {...done} /> : <UnlockForm id="op" className="op-form" {...formProps} />}
         {/* Builder request (3 Nov 2026): the PDF contents run across the full width under the intro and the form. */}

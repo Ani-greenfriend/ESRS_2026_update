@@ -58,7 +58,7 @@ export default function About() {
         </div>
 
         <div className="diff">
-          <h3>How we work differently</h3>
+          <h3 className="sec-h">How we work differently</h3>
           <ol>
             {DIFF.map(([t, p]) => (
               <li key={t}><details className="hov"><summary>{t}</summary><p>{p}</p></details></li>
@@ -82,7 +82,7 @@ export default function About() {
         </div>
 
         <div style={{ display: "grid", gap: 10 }}>
-          <h3 style={{ fontSize: "1.4rem" }}>How we help, step by step</h3>
+          <h3 className="sec-h">How we help, step by step</h3>
           <p className="qhelp">Each step builds on the one before. You can start at any of them.</p>
         </div>
         <div className="steps">
