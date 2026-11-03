@@ -81,16 +81,15 @@ export default function ScopeCheck({ scope, setScope }) {
               <div className="verdict">
                 <span className={`vbadge ${v.c}`}>{v.b}</span>
                 <h3>{v.h}</h3>
-                {/* Builder request (3 Nov 2026): the result shows in full here, with no lock and no buttons. */}
+                {/* Builder requests (3 Nov 2026): no lock, no buttons; only the two key points here, the full list is in the PDF. */}
                 <ul className="vlist">
-                  {v.l.map((x) => (
+                  {v.l.slice(0, 2).map((x) => (
                     <li key={x}>{x}</li>
                   ))}
                 </ul>
                 <p className="vnext">Run through this one-pager and download your personalized PDF below.</p>
               </div>
-              <Answers hist={hist} A={A} />
-              <p className="qhelp">Indicative only. National transposition is due by 19 March 2027.</p>
+              <p className="qhelp">Indicative only, not legal advice. National transposition is due by 19 March 2027.</p>
             </>
           )}
           {A.hq === "non" && <p className="qhelp nonhint">Outside the EU? See "Two ways in" under "Who reports when" below.</p>}
