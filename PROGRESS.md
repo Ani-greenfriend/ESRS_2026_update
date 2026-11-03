@@ -131,6 +131,7 @@ Carried over from session 3:
 - Builder request (3 Nov 2026): the roadmap hover cards no longer show the yellow "greenfriend step n" pill (the `sv` values stay in the data, unused).
 - Builder request (3 Nov 2026): the scope result in the cover shows the badge, the headline and only the first two points of the verdict (the PDF keeps the full list and the answers); the repeated answer list is gone from the result; the closing note reads "Indicative only, not legal advice. National transposition is due by 19 March 2027."
 - Builder request (3 Nov 2026): the non-EU block drops its Good to know toggle (EU branch reports when there is no EU subsidiary; subsidiary exempt under a covering parent report); only the two route cards remain.
+- Builder request (3 Nov 2026): "Which standard" short answer reads "We see most companies switch to the revised ESRS early, but you have the option. Compare the three routes and say in your report which one you used." Phrased as our observation ("We see"), because the source policy asks for a named source on any estimate; replace with a sourced figure if one exists.
 [Rule: one line per decision made during the build that is not in the spec — prompt structures, field formats, naming choices, library picks. Future sessions depend on these to stay consistent.]
 
 ## Known issues
