@@ -142,6 +142,7 @@ Carried over from session 3:
 - Builder request (3 Nov 2026): one type scale for the page: chapter titles (Literata 700, up to 2.7 rem, incl. "We help companies…"), section titles (Literata 700, up to 1.6 rem: In the EU, Outside the EU, Find your row, Remember these dates, Your own number, How we work differently, How we help), card titles (Literata 700, 1.2 rem), chapter subtitles all with the yellow-bar style (incl. the PDF section). "Outside the EU" now has the same panel and title as "In the EU" (the chapter heading "Outside the EU? Two ways in" is gone).
 - Builder request (3 Nov 2026): "FY2027" / "FY2028" on the non-EU route cards use the same size and weight as the "In the EU" threshold boxes (Literata 700, up to 1.55 rem).
 - Builder request (3 Nov 2026): the blue band text drops "Leave your email address, we will reach out to you."; in "How we help, step by step" opening one card no longer stretches the other cards in the row (cards align to the top).
+- Builder request (3 Nov 2026): the PDF sign-up card uses the cover gradient with white text and a white email field so it stands out; "What is in your PDF" (tiles and format line) moves below the card as a small folded toggle, closed by default.
 [Rule: one line per decision made during the build that is not in the spec — prompt structures, field formats, naming choices, library picks. Future sessions depend on these to stay consistent.]
 
 ## Known issues

@@ -1068,3 +1068,26 @@ section.ch h2,section.about h2{font-family:var(--serif);font-weight:700;font-siz
 .w2fy{font-family:var(--serif);font-weight:700;font-size:clamp(1.15rem,3vw,1.55rem);line-height:1.1;letter-spacing:0}
 /* Builder request (3 Nov 2026): opening one step card no longer stretches the others in its row */
 #about .steps{align-items:start}
+/* Builder request (3 Nov 2026): the PDF sign-up pops out (gradient card like the cover); its contents fold away below */
+.op.op-hero{background:var(--cover);color:var(--on-band);border:0;box-shadow:0 24px 60px -24px rgba(18,23,69,.55);padding:34px 34px 30px;align-items:center}
+.op-hero .eyebrow{background:rgba(255,255,255,.14);color:var(--mark-solid)}
+.op-hero h2{color:#fff}
+.op-hero .lede.short{color:#fff;border-left-color:var(--mark-solid)}
+.op-hero .op-form label,.op-hero .chk{color:#fff}
+.op-hero .op-form input[type=email]{background:#fff;border-color:transparent;color:#111a3d}
+.op-hero .op-note,.op-hero .op-note a{color:rgba(255,255,255,.82)}
+.op-hero .op-msg.ok{color:#fff}
+.op-hero .op-msg.err{color:#ffd9d2}
+.op-hero .op-done .btn.pri{color:#fff}
+@media (max-width:640px){.op.op-hero{padding:24px 20px}}
+.op-more{margin-top:12px;font-size:.9rem}
+.op-more summary{cursor:pointer;font-weight:600;color:var(--olive);list-style:none;display:inline-flex;gap:8px;align-items:center}
+.op-more summary::-webkit-details-marker{display:none}
+.op-more summary::after{content:"+";color:var(--terra);font-weight:700}
+.op-more[open] summary::after{content:"–"}
+.op-more .optiles{grid-template-columns:repeat(4,minmax(0,1fr));max-width:none;margin:10px 0 6px}
+.op-more .optiles div{padding:8px 10px}
+.op-more .optiles strong{font-size:.85rem}
+@media (max-width:900px){.op-more .optiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.op-more .optiles{grid-template-columns:1fr}}
+.op-hero .eyebrow{width:fit-content;padding:5px 12px;border-radius:999px}
