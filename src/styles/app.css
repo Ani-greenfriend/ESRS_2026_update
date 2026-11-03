@@ -1004,3 +1004,6 @@ body{overflow-x:clip}
 .cc-row input{flex:1 1 200px;min-width:0;font:inherit;padding:10px 14px;border:1.5px solid var(--line);border-radius:999px;background:var(--bg);color:var(--fg)}
 .cc-form .op-msg:empty{display:none}
 .w2more p{margin:10px 0 0;color:var(--muted);font-size:.95rem}.w2more p b{color:var(--fg)}
+/* "Find your row" as its own block after the non-EU routes */
+#rows{padding-top:8px}
+#rows .gtitle{margin-top:0}

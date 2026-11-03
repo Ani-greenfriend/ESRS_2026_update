@@ -42,7 +42,7 @@ export default function WhoReports({ onNonEU }) {
   return (
     <section className="ch" id="who">
       <ChapterHead icon="calendar" eyebrow="Who is in scope" title="Who reports when" short="Check the new legal thresholds that changed in 2026." />
-      {/* v2.4: the thresholds as one strip, non-EU groups in one line, then the "Find your row" table */}
+      {/* v2.4: the thresholds as one strip and non-EU groups in one line; "Find your row" follows the non-EU block */}
       <div className="thrstrip">
         <div className="ts-l">
           <span className="eyebrow" style={{ color: "var(--olive)" }}>The two thresholds behind the check</span>
@@ -53,9 +53,18 @@ export default function WhoReports({ onNonEU }) {
           <span className="src" tabIndex={0} data-ftip="Old test: 250 employees and €50M turnover (any two of three criteria). Parent companies use consolidated group figures." aria-label="More info">i</span>
         </p>
       </div>
-      {/* Builder request (3 Nov 2026): one short line; the link jumps to "Outside the EU? Two ways in" below the table. */}
+      {/* Builder request (3 Nov 2026): one short line; the link jumps to "Outside the EU? Two ways in" right below. */}
       <p className="nonline"><b>If you are outside the EU,</b> <a href="#noneu" className="nonlink" onClick={onNonEU}>keep reading below</a>.</p>
-      <h3 className="gtitle">Find your row</h3>
+    </section>
+  );
+}
+
+
+// Builder request (3 Nov 2026): "Find your row" sits below "Outside the EU? Two ways in", before the example cases.
+export function FindYourRow() {
+  return (
+    <section className="ch" id="rows" aria-labelledby="rows-h">
+      <h3 className="gtitle" id="rows-h">Find your row</h3>
       <div className="gantt">
         <table>
           <thead>

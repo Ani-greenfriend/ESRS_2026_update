@@ -3,7 +3,7 @@ import Cover from "./components/Cover.jsx";
 import ChapterNav from "./components/ChapterNav.jsx";
 import WhatChanged from "./components/WhatChanged.jsx";
 import Datapoints from "./components/Datapoints.jsx";
-import WhoReports from "./components/WhoReports.jsx";
+import WhoReports, { FindYourRow } from "./components/WhoReports.jsx";
 import ScopeCheck from "./components/ScopeCheck.jsx";
 import NonEU from "./components/NonEU.jsx";
 import Cases from "./components/Cases.jsx";
@@ -148,6 +148,7 @@ export default function App() {
         {/* Spec v2.4 chapter order */}
         <WhoReports onNonEU={toNonEU} />
         <NonEU />
+        <FindYourRow />
         <Cases onContact={sendContact} />
         <WhatChanged />
         <Fy2026 />
