@@ -106,6 +106,7 @@ Carried over from session 3:
 - Session 6 (v2.4): the PDF route cards all use the indigo accent as in the mockup and the sample PDFs; the YOUR ANSWERS table has short labels for the non-EU questions too (the prototype mapped only the EU questions, so long non-EU questions overlapped the answers); the PER TOPIC table's two columns have a 3-unit gap.
 - Session 6 (v2.4): the roadmap hover cards and stop labels follow the dark theme (the mockup is light only); the PDF file is named greenfriend-esrs-2026-update-check.pdf.
 - Builder request (3 Nov 2026, preview of pull request 4): the scope result in the cover shows its reasons in full (no blur, no "Get your free PDF" lock) and drops the "Pick your FY2026 route" and "Get this as a PDF" buttons; one line follows: "Run through this one-pager and download your personalized PDF below." This replaces the locked scope reasons of the spec and CLAUDE.md.
+- Builder request (3 Nov 2026): "Who reports when" drops the Test / Find / Check pill line; its short answer reads "Check the new legal thresholds that changed in 2026." (spec v2.4 kept the pills only there, so no chapter has them now except What changed and the roadmap).
 [Rule: one line per decision made during the build that is not in the spec — prompt structures, field formats, naming choices, library picks. Future sessions depend on these to stay consistent.]
 
 ## Known issues

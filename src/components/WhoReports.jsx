@@ -30,7 +30,7 @@ function Who({ n }) {
 export default function WhoReports({ onNonEU }) {
   return (
     <section className="ch" id="who">
-      <ChapterHead icon="calendar" eyebrow="Who is in scope" title="Who reports when" short="Test the two thresholds, then find your row by company type and year." steps={[["Test", "the two thresholds"], ["Find", "your row"], ["Check", "the years that apply to you"]]} />
+      <ChapterHead icon="calendar" eyebrow="Who is in scope" title="Who reports when" short="Check the new legal thresholds that changed in 2026." />
       {/* v2.4: the thresholds as one strip, non-EU groups in one line, then the "Find your row" table */}
       <div className="thrstrip">
         <div className="ts-l">
