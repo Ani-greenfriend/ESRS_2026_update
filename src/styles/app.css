@@ -1034,3 +1034,7 @@ body{overflow-x:clip}
 .bar.total{border-top:1px solid var(--line);padding-top:10px;font-weight:700}
 .bar.total .tnote{font-weight:400;color:var(--muted);font-size:.8rem}
 .bar.total b{font-size:1.05rem}
+/* Builder request (3 Nov 2026): less space between "Make it yours" and "Your results, as one PDF" */
+#roadmap{padding-bottom:12px}
+#onepager{padding-top:24px}
+@media (max-width:640px){#roadmap{padding-bottom:8px}#onepager{padding-top:20px}}
