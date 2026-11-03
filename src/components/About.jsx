@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Icon from "./Icons.jsx";
 
 // Spec v2.0+: five step cards side by side, a yellow label, one short sentence, details behind a + toggle.
@@ -38,6 +38,9 @@ const Cols = ({ s }) => (
 
 export default function About() {
   const root = useRef(null);
+  // Builder request (3 Nov 2026): the step cards fold out all together.
+  const [stepsOpen, setStepsOpen] = useState(false);
+  const toggleSteps = (e) => { e.preventDefault(); setStepsOpen((o) => !o); };
   // Hover opens, click toggles (on devices that can hover).
   useEffect(() => {
     if (!matchMedia("(hover: hover)").matches) return;
@@ -93,8 +96,8 @@ export default function About() {
                 <h3>{s.h}</h3>
                 <span className="svc">{s.svc}</span>
                 <p className="plain">{s.p}</p>
-                <details className="more">
-                  <summary title="What we do and what you get"><span className="vh">What we do and what you get</span></summary>
+                <details className="more" open={stepsOpen}>
+                  <summary title="What we do and what you get" onClick={toggleSteps}><span className="vh">What we do and what you get</span></summary>
                   <div className="cols"><Cols s={s} /></div>
                 </details>
               </div>
