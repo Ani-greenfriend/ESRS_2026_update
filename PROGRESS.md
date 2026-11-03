@@ -122,6 +122,7 @@ Carried over from session 3:
 - Builder request (3 Nov 2026): the datapoint breakdown (bars and "Plus 31 general datapoints") is open too, so nothing on the page is locked any more; the email only delivers the PDF (and a contact request from the two contact forms). The dialog no longer says it opens blurred details.
 - Builder request (3 Nov 2026): "What are the 31 general datapoints?" (four P/A/M/T cards and Good to know) is removed, as in the v2.4 mockup; the "Plus 31 general datapoints" line in the estimator stays.
 - Builder request (3 Nov 2026): the roadmap drops its Follow / See / Tailor pill line, so no chapter has step pills any more.
+- Builder request (3 Nov 2026): the roadmap gets an eighth stop "Strategy development" (signpost icon, greenfriend step 2 · Strategy) right after the double materiality assessment; hover text ours ("Build your strategy on the material topics: an objective, a starting point and a target for each, with the policies and actions behind them. The targets then feed your yearly goals and the report."); "Report draft" no longer mentions linking topics to targets. The road now runs 3 + 3 + 2 stops, FINAL REPORT at the end of the third row, and "Runs alongside all steps" sits under the road.
 [Rule: one line per decision made during the build that is not in the spec — prompt structures, field formats, naming choices, library picks. Future sessions depend on these to stay consistent.]
 
 ## Known issues

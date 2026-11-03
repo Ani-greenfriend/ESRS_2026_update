@@ -1017,3 +1017,7 @@ body{overflow-x:clip}
 .ccband .cc-row input{background:var(--surface);border-color:transparent}
 :root[data-theme="dark"] .casecta.ccband{color:#06201c}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .casecta.ccband{color:#0d1128}:root:not([data-theme="light"]) .ccband .cc-text span,:root:not([data-theme="light"]) .ccband .chk,:root:not([data-theme="light"]) .ccband .op-note,:root:not([data-theme="light"]) .ccband .op-note a{color:#0d1128}}
+/* Builder request (3 Nov 2026): eight stops; "Runs alongside all steps" sits under the road */
+.salong.below{position:static;transform:none;width:auto;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 14px;margin:-4px 0 18px}
+.salong.below .alh{grid-column:1/-1}
+@media(max-width:760px){.salong.below{grid-template-columns:1fr;margin-top:0}}

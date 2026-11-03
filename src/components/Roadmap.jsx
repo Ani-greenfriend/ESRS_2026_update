@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { ChapterHead } from "./Icons.jsx";
 
-// When: roadmap (spec v2.4): one general plan for everyone, no dates. A snaking road with KICK-OFF, seven stops and
+// When: roadmap (spec v2.4): one general plan for everyone, no dates. A snaking road with KICK-OFF, eight stops (strategy added) and
 // FINAL REPORT; details only in the hover card (hover, focus, tap). Port of renderMap() in the prototype.
 const SVN = ["Where you stand", "Double materiality", "Strategy", "Governance", "Reporting"];
 
-// Fine line icons (1.3 px stroke): magnifier, scales, checklist, two people, replay with play, document, shield with tick.
+// Fine line icons (1.3 px stroke): magnifier, scales, signpost, checklist, two people, replay with play, document, shield with tick.
 const ICO = [
   <><circle cx="11" cy="11" r="6" /><path d="M20 20l-4.5-4.5" /></>,
   <path d="M12 4v16M5 8h14M5 8l-2.5 6a3 3 0 0 0 5 0zM19 8l-2.5 6a3 3 0 0 0 5 0z" transform="translate(-0.5 0)" />,
+  <path d="M12 3v18M12 6h7l-2 3 2 3h-7M12 12H5l2-3-2-3" />,
   <><rect x="5" y="4" width="14" height="17" rx="2" /><path d="M9 4V3h6v1M8.5 11l1.5 1.5 3-3M8.5 17h7" /></>,
   <><circle cx="9" cy="8" r="3.2" /><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6M16.5 5.5a3 3 0 0 1 0 5.5M18 14.5c2 .7 3.5 2.6 3.5 5.5" /></>,
   <><path d="M20 12a8 8 0 1 1-2.5-5.8M20 4v4h-4" /><path d="M10 9l5 3-5 3z" /></>,
@@ -19,10 +20,11 @@ const ICO = [
 const MAIN = [
   { t: "Screening and scoping", sv: 0, d: "Check whether you report, from which year and on which standard route. Collect what you already have (policies, reports, data sources, owners) and bring sponsor, finance, HR, legal, IT and the data holders together." },
   { t: "Double materiality assessment", sv: 1, d: "Refresh your last assessment or run a new one. Conclude at topic level: the lighter top-down approach no longer asks you to test every impact, risk and opportunity." },
+  { t: "Strategy development", sv: 2, d: "Build your strategy on the material topics: an objective, a starting point and a target for each, with the policies and actions behind them. The targets then feed your yearly goals and the report." },
   { t: "Data gap analysis", sv: 4, d: "Compare the datapoints for your material topics with the data you have today. List what is missing, where it could come from and how big the gap is." },
   { t: "Data set-up and owner mapping", sv: 4, d: "Name an owner for every datapoint. Set up templates, controls and a calendar so the data is captured during the year, not at the end." },
   { t: "Data collection and quality checks", sv: 4, d: "Collect the data, run the process on part-year figures first, close the gaps it shows and brief data owners on the year-end instructions." },
-  { t: "Report draft", sv: 4, d: "Draft the narrative and tables with the final figures. Link each material topic to targets, policies and actions, and review the draft with finance and legal." },
+  { t: "Report draft", sv: 4, d: "Draft the narrative and tables with the final figures, and review the draft with finance and legal." },
   { t: "Assurance", sv: null, d: "Your auditor reviews the statement (limited assurance), usually in parallel with the financial audit. Agree the check-ins and the evidence needed early." },
 ];
 
@@ -32,9 +34,10 @@ const SIDE = [
 ];
 
 // Stop centres in % of the road box (row 1 left to right, row 2 right to left, row 3 left to right).
-const POS = [[23, 15.25], [50, 15.25], [77, 15.25], [77, 49.15], [50, 49.15], [23, 49.15], [23, 83.05]];
-const ARROWS = [[36.5, 15.25], [63.5, 15.25], [63.5, 49.15, 1], [36.5, 49.15, 1], [36.5, 83.05]];
-const ROAD = "M 55 90 H 900 A 100 100 0 0 1 900 290 H 100 A 100 100 0 0 0 100 490 H 500";
+// Eight stops (builder request, 3 Nov 2026: strategy after the DMA): rows of 3, 3 and 2, then FINAL REPORT.
+const POS = [[23, 15.25], [50, 15.25], [77, 15.25], [77, 49.15], [50, 49.15], [23, 49.15], [23, 83.05], [50, 83.05]];
+const ARROWS = [[36.5, 15.25], [63.5, 15.25], [63.5, 49.15, 1], [36.5, 49.15, 1], [36.5, 83.05], [63.5, 83.05]];
+const ROAD = "M 55 90 H 900 A 100 100 0 0 1 900 290 H 100 A 100 100 0 0 0 100 490 H 770";
 
 export default function Roadmap() {
   const [open, setOpen] = useState(null);
@@ -56,7 +59,7 @@ export default function Roadmap() {
           </svg>
           <div className="se st" style={{ left: "6.5%", top: "15.25%" }} aria-hidden="true">KICK-<br />OFF</div>
           {ARROWS.map(([x, y, l]) => <span key={`${x}-${y}`} className="ar" style={{ left: `${x}%`, top: `${y}%` }} aria-hidden="true">{l ? "◀" : "▶"}</span>)}
-          <div className="se fi" style={{ left: "50%", top: "83.05%" }} aria-hidden="true">FINAL<br />REPORT</div>
+          <div className="se fi" style={{ left: "77%", top: "83.05%" }} aria-hidden="true">FINAL<br />REPORT</div>
           {MAIN.map((x, i) => {
             const [left, top] = POS[i];
             const al = left < 30 ? "l" : left > 70 ? "r" : "c";
@@ -76,7 +79,8 @@ export default function Roadmap() {
               </div>
             );
           })}
-          <div className="salong" style={{ left: "80%", top: "82%" }}>
+        </div>
+          <div className="salong below">
             <div className="alh">
               <b>Runs alongside all steps</b>
               <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#ee7b5e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 4v15M6 13l6 6 6-6" /></svg>
@@ -92,7 +96,6 @@ export default function Roadmap() {
               </div>
             ))}
           </div>
-        </div>
       </div>
       <div className="rnotes">
         <div><b>Make it yours</b><p>This is a generic planning guide, not a legal requirement. Length, order and overlap of the blocks depend on your size, your data, your existing assessments and your auditor. Use it as a first draft.</p></div>
