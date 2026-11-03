@@ -4,8 +4,8 @@
 > anything. Update it at every save point. Replace content — do not append.
 > History lives in git.
 
-**Session:** 6
-**Last updated:** 2 November 2026
+**Session:** 7
+**Last updated:** 3 November 2026
 **Live URL:** https://esrs2026update.netlify.app (Netlify default address until check.greenfriend.org is connected); release v1.0 = merge commit 1f047f6 on main [Rule: fill in after the first successful deploy]
 **Stage:** business logic and database [Rule: one of — business logic and database / second screen and access design / login and access rules together / deploy and maintain. Advance it when that stage's items are absorbed into Current state. The stage is decided by what exists, never by a week or a version number.]
 **Supabase project:** exists and built — "ESRS 2026 update tool", ref jfalwveuccerzeffxftx, URL https://jfalwveuccerzeffxftx.supabase.co, confirmed with the builder in session 1 [Rule: the only place project existence is recorded; CLAUDE.md never carries it]
@@ -41,7 +41,10 @@ Session 6: placed the spec v2.4 docs (five documents from the root upload, then 
 
 ## Remaining work
 Spec v2.4 — open:
-- [ ] Builder: review the branch (deploy preview once a pull request exists) and merge it to main
+- [ ] Builder: test the live version through the Netlify link with known testers this week (test rows stay in `unlocks`; delete them on request before the public launch)
+- [ ] Builder (end of this week): connect check.greenfriend.org — Netlify: Domain management → Add a domain; Wix DNS: CNAME `check` → `esrs2026update.netlify.app`; HTTPS follows automatically
+- [ ] Builder: send one test through the "Not sure on which level you report?" form on the live site (no `contact` row exists yet)
+- [ ] Supabase Free pauses the project after about a week without activity: when the warning email comes, restore it in the Supabase dashboard (saving emails stops while paused; the page stays online)
 - [ ] Builder: have a lawyer read the PDF disclaimer wording before launch (spec Section 8, v2.4 block)
 - [ ] Source policy: re-check every source line against its link before launch
 - [ ] Acceptance criteria 14, 19, 20 and 21 (spec Section 13, v2.4) on the deployed site
@@ -140,6 +143,10 @@ Carried over from session 3:
 - Builder request (3 Nov 2026): "Your results, as one PDF" is laid out in two rows: heading and intro left, form right; then "What is in your PDF" with the four tiles in one row and the format line across the full width (two tiles per row under 900 px, one under 520 px).
 - Builder request (3 Nov 2026): the "Want our help? Book a free call" band at the top of "Who we are" is removed; the only calls to action are the email forms and the PDF download. Less space above "Who we are" (24 px margin, 36 px padding instead of 56 + 56). The PDF's bottom band still says "Want a second opinion? Book a free 20-minute call at greenfriend.org" (spec v2.4 wording; ask before changing).
 - Builder requests (3 Nov 2026): the thresholds i icon says "Former criteria: 250 employees and €50M turnover…" (not "Old test"); the note under "Find your row" is a plain disclaimer line "* This is not legal advice. Start with your EU subsidiary, its deadline comes first (FY2027). If you are still unsure, check with your auditor or legal adviser, or leave your email address below for our advice." (no box, no mailto); "Why the numbers differ between sources" keeps only the "323 = 292 + 31" line; the roadmap note reads "Make it yours!"; the PDF section lede reads "Work through the page above, enter your email address and download your free overview for 2027!"
+- Builder request (3 Nov 2026): one type scale for the page: chapter titles (Literata 700, up to 2.7 rem, incl. "We help companies…"), section titles (Literata 700, up to 1.6 rem: In the EU, Outside the EU, Find your row, Remember these dates, Your own number, How we work differently, How we help), card titles (Literata 700, 1.2 rem), chapter subtitles all with the yellow-bar style (incl. the PDF section). "Outside the EU" now has the same panel and title as "In the EU" (the chapter heading "Outside the EU? Two ways in" is gone).
+- Builder request (3 Nov 2026): "FY2027" / "FY2028" on the non-EU route cards use the same size and weight as the "In the EU" threshold boxes (Literata 700, up to 1.55 rem).
+- Builder request (3 Nov 2026): the blue band text drops "Leave your email address, we will reach out to you."; in "How we help, step by step" the + on any card folds all five cards out (and back) together, with equal card heights.
+- Builder request (3 Nov 2026): the PDF sign-up card uses the cover gradient with white text and a white email field so it stands out; "What is in your PDF" (tiles and format line) moves below the card as a small folded toggle, closed by default.
 [Rule: one line per decision made during the build that is not in the spec — prompt structures, field formats, naming choices, library picks. Future sessions depend on these to stay consistent.]
 
 ## Known issues

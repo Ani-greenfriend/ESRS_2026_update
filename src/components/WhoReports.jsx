@@ -44,7 +44,7 @@ export default function WhoReports() {
     <section className="ch" id="who">
       <ChapterHead icon="calendar" eyebrow="Who is in scope" title="Who reports when" short="Check the new legal thresholds that changed in 2026." />
       {/* "In the EU": the two thresholds (builder request, 3 Nov 2026); "Outside the EU? Two ways in" follows */}
-      <div className="thrstrip">
+      <div className="thrstrip eupanel">
         <div className="ts-l">
           <h3 className="ts-h">In the EU</h3>
           <div className="gate"><span className="g">&gt; 1,000 employees</span><span className="andop">AND</span><span className="g">&gt; €450M net turnover</span></div>
@@ -63,7 +63,7 @@ export default function WhoReports() {
 export function FindYourRow({ onContact }) {
   return (
     <section className="ch" id="rows" aria-labelledby="rows-h">
-      <h3 className="gtitle" id="rows-h">Find your row</h3>
+      <h3 className="gtitle sec-h" id="rows-h">Find your row</h3>
       <div className="gantt">
         <table>
           <thead>
@@ -92,7 +92,7 @@ export function FindYourRow({ onContact }) {
       <p className="disclaim">* This is not legal advice. Start with your EU subsidiary, its deadline comes first (FY2027). If you are still unsure, check with your auditor or legal adviser, or leave your email address below for our advice.</p>
       {/* Builder requests (3 Nov 2026): the band closes the EU / non-EU / thresholds part; an email field instead of "Email us". */}
       <ContactBox id="rows" band onContact={onContact} title="Not sure on which level you report?"
-        text="We can help you find out whether you report as a parent, subsidiary or neither, and from which year. Leave your email address, we will reach out to you." />
+        text="We can help you find out whether you report as a parent, subsidiary or neither, and from which year." />
     </section>
   );
 }

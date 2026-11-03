@@ -17,24 +17,24 @@ export default function UnlockSection({ snap, formProps, done }) {
   const { unlocked } = useUnlock();
   return (
     <section className="ch" id="onepager">
-      <div className="op">
+      <div className="op op-hero">
         <div className="op-text">
           <div className="eyebrow"><Icon name="doc" />Your PDF</div>
           <h2>Your results, as one PDF</h2>
-          <p className="lede">Work through the page above, enter your email address and download your free overview for 2027!</p>
+          <p className="lede short">Work through the page above, enter your email address and download your free overview for 2027!</p>
         </div>
         {unlocked ? <UnlockDone {...done} /> : <UnlockForm id="op" className="op-form" {...formProps} />}
-        {/* Builder request (3 Nov 2026): the PDF contents run across the full width under the intro and the form. */}
-        <div className="op-pdf">
-          <p className="optitle"><b>What is in your PDF</b></p>
-          <div className="optiles">
-            {TILES.map(([t, d], i) => (
-              <div key={t}><b>{i + 1}</b><span><strong>{t}</strong><small>{d}</small></span></div>
-            ))}
-          </div>
-          <p className="optitle fmt">One page, A2 landscape, ready to print or forward to your CFO or board. The 2027 roadmap stays in the tool above. It includes a short disclaimer on liability, sources and AI use.</p>
-        </div>
       </div>
+      {/* Builder request (3 Nov 2026): the PDF contents sit below the card, small and folded. */}
+      <details className="op-more">
+        <summary>What is in your PDF</summary>
+        <div className="optiles">
+          {TILES.map(([t, d], i) => (
+            <div key={t}><b>{i + 1}</b><span><strong>{t}</strong><small>{d}</small></span></div>
+          ))}
+        </div>
+        <p className="optitle fmt">One page, A2 landscape, ready to print or forward to your CFO or board. The 2027 roadmap stays in the tool above. It includes a short disclaimer on liability, sources and AI use.</p>
+      </details>
       {unlocked && (
         <div className="deckbox">
           <div>

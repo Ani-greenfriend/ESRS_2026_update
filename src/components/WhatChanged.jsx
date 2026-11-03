@@ -46,7 +46,7 @@ export default function WhatChanged() {
       <div className="keyblock">
         <div className="kb-h">
           <div className="kb-eyebrow">Key dates</div>
-          <h3>Remember these dates</h3>
+          <h3 className="sec-h">Remember these dates</h3>
           <p>Put them in your calendar. They decide when you can start with the revised ESRS, when your country's rules apply and from which year it is mandatory.</p>
         </div>
       <div className="dates">
