@@ -144,7 +144,7 @@ export default function App() {
         <WhoReports />
         <NonEU />
         <FindYourRow onContact={sendContact} />
-        <Cases onContact={sendContact} />
+        <Cases />
         <WhatChanged />
         <Fy2026 />
         <Datapoints topics={topics} setTopics={setTopics} />

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { CASES } from "../lib/data.js";
-import ContactBox from "./ContactBox.jsx";
 import { ChapterHead } from "./Icons.jsx";
 
 function Node({ n }) {
@@ -13,7 +12,7 @@ function Node({ n }) {
   );
 }
 
-export default function Cases({ onContact }) {
+export default function Cases() {
   const [cur, setCur] = useState(0);
   const c = CASES[cur];
   const why = (
@@ -25,7 +24,7 @@ export default function Cases({ onContact }) {
   );
   return (
     <section className="ch" id="cases">
-      <ChapterHead icon="people" eyebrow="Who is in scope · examples" title="Parent, subsidiary, or neither?" short="Seven made-up groups. Find the one that looks like yours and see what it means for you." />
+      <ChapterHead icon="people" eyebrow="Who is in scope · examples" title="Examples: parent, subsidiary or neither?" short="Seven made-up groups. Find the one that looks like yours and see what it means for you." />
       <div className="cases-tabs" role="group" aria-label="Example cases">
         {CASES.map((x, i) => (
           <button type="button" key={x.t} aria-pressed={i === cur} onClick={() => setCur(i)}>
@@ -54,8 +53,6 @@ export default function Cases({ onContact }) {
           {why}
         </div>
       </div>
-      <ContactBox id="cc" onContact={onContact} title="Not sure what applies to you?"
-        text="Every group is set up differently. Leave your email address here and we will get back to you on whether you report as a parent, subsidiary or neither, and from which year." />
     </section>
   );
 }
