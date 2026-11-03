@@ -51,7 +51,7 @@ export default function WhoReports() {
         </div>
         <p className="ts-r">
           Meet both and you report under the revised ESRS: keep going if you report today, first report <b>FY2027</b> if you are new. Parents use group figures.{" "}
-          <span className="src" tabIndex={0} data-ftip="Old test: 250 employees and €50M turnover (any two of three criteria). Parent companies use consolidated group figures." aria-label="More info">i</span>
+          <span className="src" tabIndex={0} data-ftip="Former criteria: 250 employees and €50M turnover (any two of three criteria). Parent companies use consolidated group figures." aria-label="More info">i</span>
         </p>
       </div>
     </section>
@@ -89,7 +89,7 @@ export function FindYourRow({ onContact }) {
         </div>
       </div>
       {/* Builder request (3 Nov 2026): the "not legal advice" note sits right above the contact band. */}
-      <p className="advice w2tip">This is not legal advice. Start with your EU subsidiary, its deadline comes first (FY2027). If you are still unsure, check with your auditor or legal adviser, or <a href={`mailto:anikalerch@greenfriend.org?subject=${encodeURIComponent("ESRS update check: non-EU group")}`}>email us</a>.</p>
+      <p className="disclaim">* This is not legal advice. Start with your EU subsidiary, its deadline comes first (FY2027). If you are still unsure, check with your auditor or legal adviser, or leave your email address below for our advice.</p>
       {/* Builder requests (3 Nov 2026): the band closes the EU / non-EU / thresholds part; an email field instead of "Email us". */}
       <ContactBox id="rows" band onContact={onContact} title="Not sure on which level you report?"
         text="We can help you find out whether you report as a parent, subsidiary or neither, and from which year. Leave your email address, we will reach out to you." />

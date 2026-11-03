@@ -1049,3 +1049,5 @@ body{overflow-x:clip}
 .about{margin-top:24px}
 .about .wrap{padding-block:36px 48px}
 @media (max-width:640px){.about{margin-top:16px}.about .wrap{padding-block:28px 40px}}
+/* Builder request (3 Nov 2026): the note under "Find your row" is a plain disclaimer line on the page background */
+.disclaim{margin:-4px 0 4px;font-size:.88rem;color:var(--muted);line-height:1.5}

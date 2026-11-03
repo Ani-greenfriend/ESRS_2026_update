@@ -60,8 +60,6 @@ function FactSheet() {
           <summary>Why the numbers differ between sources</summary>
           <ul>
             <li><b>323 = 292 + 31.</b> All counts come from EFRAG's 2026 draft list and explanatory note. Other sources may use a different stage or basis.</li>
-            <li><b>More rows in EFRAG's sheet.</b> 30 heading rows (3 per topic) and 6 technical rows are not disclosures, so we skip them. E1: 87 rows, 84 datapoints.</li>
-            <li><b>Percentages.</b> 783 → 292 = −63%. 1,052 → 292 = −72%.</li>
           </ul>
         </details>
       </div>

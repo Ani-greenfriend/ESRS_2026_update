@@ -96,7 +96,7 @@ export default function Roadmap() {
           </div>
       </div>
       <div className="rnotes">
-        <div><b>Make it yours</b><p>This is a generic planning guide, not a legal requirement. Length, order and overlap of the blocks depend on your size, your data, your existing assessments and your auditor. Use it as a first draft.</p></div>
+        <div><b>Make it yours!</b><p>This is a generic planning guide, not a legal requirement. Length, order and overlap of the blocks depend on your size, your data, your existing assessments and your auditor. Use it as a first draft.</p></div>
       </div>
     </section>
   );
