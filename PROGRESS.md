@@ -107,6 +107,7 @@ Carried over from session 3:
 - Session 6 (v2.4): the roadmap hover cards and stop labels follow the dark theme (the mockup is light only); the PDF file is named greenfriend-esrs-2026-update-check.pdf.
 - Builder request (3 Nov 2026, preview of pull request 4): the scope result in the cover shows its reasons in full (no blur, no "Get your free PDF" lock) and drops the "Pick your FY2026 route" and "Get this as a PDF" buttons; one line follows: "Run through this one-pager and download your personalized PDF below." This replaces the locked scope reasons of the spec and CLAUDE.md.
 - Builder request (3 Nov 2026): "Who reports when" drops the Test / Find / Check pill line; its short answer reads "Check the new legal thresholds that changed in 2026." (spec v2.4 kept the pills only there, so no chapter has them now except What changed and the roadmap).
+- Builder request (3 Nov 2026): the non-EU line in "Who reports when" is shortened to "If you are outside the EU, keep reading below."; "keep reading below" is the link that opens the hidden non-EU guide under it and scrolls to it (it replaces "See the three questions").
 [Rule: one line per decision made during the build that is not in the spec — prompt structures, field formats, naming choices, library picks. Future sessions depend on these to stay consistent.]
 
 ## Known issues
