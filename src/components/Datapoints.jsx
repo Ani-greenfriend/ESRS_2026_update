@@ -107,8 +107,7 @@ function Estimator({ topics, setTopics }) {
             <b>Plus 31 general datapoints</b> on policies, actions, targets and metrics. They apply whatever topics you tick.
           </p>
         <p className="qhelp">
-          ESRS 2 plus {e.topics.length} material topic{e.topics.length === 1 ? "" : "s"}
-          {e.topics.length ? ` (${e.topics.join(", ")})` : ""}. Counts from EFRAG's 2026 Draft List. Your real number also depends on which conditions apply to you.
+          Your real number also depends on which conditions apply to you.
         </p>
       </div>
     </div>
