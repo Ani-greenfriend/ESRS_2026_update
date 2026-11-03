@@ -1045,3 +1045,7 @@ body{overflow-x:clip}
 .op-pdf .optiles{grid-template-columns:repeat(4,minmax(0,1fr));max-width:none;margin:0}
 @media (max-width:900px){.op-pdf .optiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:520px){.op-pdf .optiles{grid-template-columns:1fr}}
+/* Builder request (3 Nov 2026): no "Book a free call" band; less empty space before "Who we are" */
+.about{margin-top:24px}
+.about .wrap{padding-block:36px 48px}
+@media (max-width:640px){.about{margin-top:16px}.about .wrap{padding-block:28px 40px}}

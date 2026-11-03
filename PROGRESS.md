@@ -138,6 +138,7 @@ Carried over from session 3:
 - Builder request (3 Nov 2026): less space under the roadmap's "Make it yours" note (about 36 px instead of 104 px before "Your results, as one PDF").
 - Builder request (3 Nov 2026): "Your results, as one PDF" drops the live status list (scope result and datapoint numbers under the format line).
 - Builder request (3 Nov 2026): "Your results, as one PDF" is laid out in two rows: heading and intro left, form right; then "What is in your PDF" with the four tiles in one row and the format line across the full width (two tiles per row under 900 px, one under 520 px).
+- Builder request (3 Nov 2026): the "Want our help? Book a free call" band at the top of "Who we are" is removed; the only calls to action are the email forms and the PDF download. Less space above "Who we are" (24 px margin, 36 px padding instead of 56 + 56). The PDF's bottom band still says "Want a second opinion? Book a free 20-minute call at greenfriend.org" (spec v2.4 wording; ask before changing).
 [Rule: one line per decision made during the build that is not in the spec — prompt structures, field formats, naming choices, library picks. Future sessions depend on these to stay consistent.]
 
 ## Known issues
