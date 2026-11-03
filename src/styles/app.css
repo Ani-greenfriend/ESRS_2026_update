@@ -1066,3 +1066,5 @@ section.ch h2,section.about h2{font-family:var(--serif);font-weight:700;font-siz
 .w2fy{font-family:var(--serif);font-weight:800}
 /* Builder request (3 Nov 2026): FY2027 / FY2028 at the size of the "In the EU" threshold boxes */
 .w2fy{font-family:var(--serif);font-weight:700;font-size:clamp(1.15rem,3vw,1.55rem);line-height:1.1;letter-spacing:0}
+/* Builder request (3 Nov 2026): opening one step card no longer stretches the others in its row */
+#about .steps{align-items:start}

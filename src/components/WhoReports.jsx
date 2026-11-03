@@ -92,7 +92,7 @@ export function FindYourRow({ onContact }) {
       <p className="disclaim">* This is not legal advice. Start with your EU subsidiary, its deadline comes first (FY2027). If you are still unsure, check with your auditor or legal adviser, or leave your email address below for our advice.</p>
       {/* Builder requests (3 Nov 2026): the band closes the EU / non-EU / thresholds part; an email field instead of "Email us". */}
       <ContactBox id="rows" band onContact={onContact} title="Not sure on which level you report?"
-        text="We can help you find out whether you report as a parent, subsidiary or neither, and from which year. Leave your email address, we will reach out to you." />
+        text="We can help you find out whether you report as a parent, subsidiary or neither, and from which year." />
     </section>
   );
 }
