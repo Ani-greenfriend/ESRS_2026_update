@@ -118,6 +118,7 @@ Carried over from session 3:
 - Builder request (3 Nov 2026): the v2.4 band "Not sure on which level you report?" with "Email us" (mailto, spec subject) is back, at the end of the "Find your row" block (after EU / non-EU and the thresholds), before the example cases; the "Not sure what applies to you?" email box under the cases stays.
 - Builder request (3 Nov 2026): the blue band after "Find your row" ("Not sure on which level you report?") holds the same contact form as the box under the cases (email, required consent, Send; stored as `contact`), with "Leave your email address, we will reach out to you." instead of "Email us" (src/components/ContactBox.jsx serves both).
 - Builder request (3 Nov 2026): "Effort now" and its dots are gone from the route cards on the page and in the PDF; the `eff` values are removed from the data; the PDF tile reads "Routes A, B and C and when each one fits."
+- Builder request (3 Nov 2026): "Which standard" drops the Good to know line explaining Pre-Omnibus and Revised ESRS; Our tip and "Where this comes from" stay.
 [Rule: one line per decision made during the build that is not in the spec — prompt structures, field formats, naming choices, library picks. Future sessions depend on these to stay consistent.]
 
 ## Known issues

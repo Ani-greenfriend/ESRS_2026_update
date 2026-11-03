@@ -30,7 +30,6 @@ export default function Fy2026() {
         {OPT.map((o) => <RouteCard key={o.L} o={o} />)}
       </div>
       <div className="fynotes">
-      <p className="tip"><b>Good to know</b> Pre-Omnibus ESRS are the 2023 standards you used for FY2025 (as amended in 2025). Revised ESRS are the new, slimmer ones. From FY2027 the revised ESRS are mandatory for everyone in scope.</p>
       <p className="advice"><b>Our tip</b> Starting with ESRS now? Route C is usually the natural fit: you have no 2025 report to compare with, so you can begin on the slimmer standards. Whichever route you choose, agree it with your auditor early.</p>
       </div>
       <details className="srcbox hov">
