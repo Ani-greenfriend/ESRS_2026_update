@@ -25,12 +25,17 @@ export default function Icon({ name, size = 16 }) {
 }
 
 // Chapter heading: eyebrow with icon, title, and the yellow-bar short answer.
-export function ChapterHead({ icon, eyebrow, title, short }) {
+export function ChapterHead({ icon, eyebrow, title, short, steps }) {
   return (
     <div className="chead">
-      <div className="eyebrow"><Icon name={icon} />{eyebrow}</div>
+      {eyebrow && <div className="eyebrow"><Icon name={icon} />{eyebrow}</div>}
       <h2>{title}</h2>
       {short && <p className="lede short">{short}</p>}
+      {steps && (
+        <ol className="fy-do">
+          {steps.map(([b, t]) => <li key={b}><b>{b}</b> {t}</li>)}
+        </ol>
+      )}
     </div>
   );
 }

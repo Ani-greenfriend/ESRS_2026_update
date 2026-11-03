@@ -37,13 +37,18 @@ function Chunk({ c, i, src }) {
 export default function WhatChanged() {
   return (
     <section className="ch" id="overview">
-      <ChapterHead icon="check" eyebrow="What changed" title="Six things changed, the short version" short="Smaller scope, far fewer datapoints, a lighter assessment. Tap a card to peek inside." />
+      <ChapterHead icon="check" eyebrow="What changed" title="Six things changed in the ESRS 2026" short="Smaller scope, far fewer datapoints, a lighter assessment, plus the dates to put in your calendar." />
       <div className="chunks">
         {CHUNKS.map((c, i) => (
           <Chunk key={c.t} c={c} i={i} src={REFS[i]} />
         ))}
       </div>
-      <h3 style={{ marginTop: 10 }}>Key dates</h3>
+      <div className="keyblock">
+        <div className="kb-h">
+          <div className="kb-eyebrow">Key dates</div>
+          <h3>Remember these dates</h3>
+          <p>Put them in your calendar. They decide when you can start with the revised ESRS, when your country's rules apply and from which year it is mandatory.</p>
+        </div>
       <div className="dates">
         <div className="dates-in">
           <div className="dline" />
@@ -57,6 +62,7 @@ export default function WhatChanged() {
             ))}
           </div>
         </div>
+      </div>
       </div>
     </section>
   );

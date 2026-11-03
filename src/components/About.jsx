@@ -50,16 +50,10 @@ export default function About() {
   return (
     <section className="about" id="about" style={{ scrollMarginTop: 60 }} ref={root}>
       <div className="wrap">
-        <div className="rhelp top">
-          <div><b>Want our help?</b><span>We run this plan with you, start to published report. Book a free 20-minute call with Elena and Anika.</span></div>
-          <a className="pb pri" href="https://greenfriend.org" target="_blank" rel="noopener noreferrer">Book a free call</a>
-        </div>
-        <div className="pitch">
-          <div className="chead" style={{ display: "grid", gap: 10 }}>
-            <div className="eyebrow"><Icon name="heart" />Hi, we are Anika and Elena</div>
-            <h2>We help companies report what they actually do</h2>
-            <p className="lede">From double materiality to a plan your teams actually use.</p>
-          </div>
+        {/* Builder request (3 Nov 2026): no lede; the quote sits next to the title, centred on it. */}
+        <div className="pitch pitch2">
+          <div className="eyebrow"><Icon name="heart" />Hi, we are Anika and Elena</div>
+          <h2>We help companies report what they actually do</h2>
           <blockquote>No 100-page manual that nobody reads. Lean frameworks your teams can work with.</blockquote>
         </div>
 

@@ -59,8 +59,11 @@ function validate(b) {
   need(industry === null || INDUSTRIES.includes(industry));
 
   need(typeof b.consent_contact === "boolean");
-  // Spec v2.3: only the PDF unlock writes. The "Leave your email" contact request was removed, so 'contact' is refused.
-  need((b.request_type ?? "download") === "download");
+  // 'download' = PDF unlock; 'contact' = "Not sure what applies to you?" under the example cases (builder request,
+  // 3 Nov 2026), which needs contact consent (the database checks the same).
+  const requestType = b.request_type ?? "download";
+  need(requestType === "download" || requestType === "contact");
+  need(requestType === "download" || b.consent_contact === true);
   need(b.notice_version === NOTICE_VERSION);
 
   // Scope: shape only (keys and answer values from the questionnaire), not the logic.
@@ -91,7 +94,7 @@ function validate(b) {
     datapoints_unconditional: count(b.datapoints_unconditional),
     utm_source: optText(b.utm_source, UTM_MAX),
     utm_campaign: optText(b.utm_campaign, UTM_MAX),
-    request_type: "download",
+    request_type: requestType,
     status: "current",
   };
 }

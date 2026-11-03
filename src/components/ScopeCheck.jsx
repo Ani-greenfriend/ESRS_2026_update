@@ -1,7 +1,5 @@
 import { Q } from "../lib/data.js";
 import { answerLines, nextQuestion, totalSteps, verdict } from "../lib/scope.js";
-import { Gated } from "./unlock.jsx";
-import { ChapterHead } from "./Icons.jsx";
 
 function Answers({ hist, A }) {
   return (
@@ -68,8 +66,7 @@ export default function ScopeCheck({ scope, setScope }) {
 
   const v = verdict(A);
   return (
-    <section className="ch" id="scope">
-      <ChapterHead icon="target" eyebrow="Check your scope" title="Are you in? Let us check" short="Up to six questions. Parents: use group figures." />
+    <section id="scope" className="coverquiz" aria-label="Check your scope">
       <div className="quiz">
         <div className="qbox" aria-live="polite">{qbox}</div>
         <div className="rbox">
@@ -84,23 +81,18 @@ export default function ScopeCheck({ scope, setScope }) {
               <div className="verdict">
                 <span className={`vbadge ${v.c}`}>{v.b}</span>
                 <h3>{v.h}</h3>
-                <Gated label="Why, and your next steps">
-                  <ul className="vlist">
-                    {v.l.map((x) => (
-                      <li key={x}>{x}</li>
-                    ))}
-                  </ul>
-                </Gated>
-                <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                  {v.fy && <a href="#fy2026" className="btn pri" style={{ textDecoration: "none" }}>Pick your FY2026 route</a>}
-                  <a href="#onepager" className="btn pdfbtn" style={{ textDecoration: "none" }}>Get this as a PDF</a>
-                </div>
+                {/* Builder requests (3 Nov 2026): no lock, no buttons; only the two key points here, the full list is in the PDF. */}
+                <ul className="vlist">
+                  {v.l.slice(0, 2).map((x) => (
+                    <li key={x}>{x}</li>
+                  ))}
+                </ul>
+                <p className="vnext">Run through this one-pager and download your personalized PDF below.</p>
               </div>
-              <Answers hist={hist} A={A} />
-              <p className="qhelp">Indicative only. National transposition is due by 19 March 2027.</p>
+              <p className="qhelp">Indicative only, not legal advice. National transposition is due by 19 March 2027.</p>
             </>
           )}
-          {A.hq === "non" && <p className="qhelp nonhint">Your three-question guide for non-EU groups is right below.</p>}
+          {A.hq === "non" && <p className="qhelp nonhint">Outside the EU? See "Two ways in" under "Who reports when" below.</p>}
         </div>
       </div>
     </section>

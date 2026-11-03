@@ -33,13 +33,13 @@ export default function UnlockDialog({ open, onClose, formProps, done }) {
     <div className="gate-modal" role="dialog" aria-modal="true" aria-labelledby="gate-h" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
       <div className="gate-card" ref={card}>
         <button type="button" className="gate-x" aria-label="Close" onClick={onClose}>×</button>
-        <div className="eyebrow">Your action plan</div>
-        <h3 id="gate-h">Unlock your full action plan</h3>
+        <div className="eyebrow">Your PDF</div>
+        <h3 id="gate-h">Get your results as one PDF</h3>
         {unlocked ? (
-          <UnlockDone {...done} />
+          <UnlockDone {...done} withButton />
         ) : (
           <>
-            <p className="qhelp">The reasons and next steps for your scope result, your datapoint breakdown, all seven example cases and a one-page PDF with your roadmap for 2027. Free, just your email.</p>
+            <p className="qhelp">One page with your scope result, FY2026 route, datapoint number, ready to forward to your CFO or board. Free, just your email.</p>
             <UnlockForm id="gate" className="op-form" emailRef={emailRef} noteFirst {...formProps} />
           </>
         )}

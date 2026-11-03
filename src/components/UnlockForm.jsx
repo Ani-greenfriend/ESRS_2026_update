@@ -10,7 +10,7 @@ export function ShortNotice() {
 }
 
 // Email only plus one optional, unticked consent box (spec v1.7). Shared by the section and the dialog.
-export default function UnlockForm({ id, form, setForm, onSubmit, busy, msg, className, emailRef, noteFirst, submitLabel = "Get it free" }) {
+export default function UnlockForm({ id, form, setForm, onSubmit, busy, msg, className, emailRef, noteFirst, submitLabel = "Get my PDF" }) {
   const message = <p className={`op-msg ${msg?.type || ""}`} id={`${id}-msg`} role="status">{msg?.text || ""}</p>;
   return (
     <form className={className} noValidate onSubmit={(e) => { e.preventDefault(); onSubmit(); }}>

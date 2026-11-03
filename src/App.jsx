@@ -3,7 +3,7 @@ import Cover from "./components/Cover.jsx";
 import ChapterNav from "./components/ChapterNav.jsx";
 import WhatChanged from "./components/WhatChanged.jsx";
 import Datapoints from "./components/Datapoints.jsx";
-import WhoReports from "./components/WhoReports.jsx";
+import WhoReports, { FindYourRow } from "./components/WhoReports.jsx";
 import ScopeCheck from "./components/ScopeCheck.jsx";
 import NonEU from "./components/NonEU.jsx";
 import Cases from "./components/Cases.jsx";
@@ -13,13 +13,11 @@ import UnlockSection from "./components/UnlockSection.jsx";
 import UnlockDialog from "./components/UnlockDialog.jsx";
 import About from "./components/About.jsx";
 import Footer from "./components/Footer.jsx";
-import FastStrip from "./components/FastStrip.jsx";
 import FloatingTip from "./components/FloatingTip.jsx";
 import { EMPTY_FORM } from "./components/UnlockForm.jsx";
 import { UnlockContext } from "./components/unlock.jsx";
 import { TOPICS } from "./lib/data.js";
 import { answerLines, verdict } from "./lib/scope.js";
-import { mapMode, mapSteps, fyShift } from "./lib/roadmap.js";
 import { DEFAULT_TOPICS, estimate } from "./lib/estimator.js";
 import { isValidEmail, NOTICE_VERSION } from "./lib/constants.js";
 import { readUnlocked, writeUnlocked } from "./lib/storage.js";
@@ -36,7 +34,6 @@ export default function App() {
   // The PDF tells an untouched default selection (an example) apart from the visitor's own (spec v2.3, estState()).
   const [topicsTouched, setTopicsTouched] = useState(false);
   const setTopics = useCallback((t) => { setTopicsRaw(t); setTopicsTouched(true); }, []);
-  const [fyEnd, setFyEnd] = useState("");
   const [form, setForm] = useState(EMPTY_FORM);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState(null);
@@ -44,14 +41,6 @@ export default function App() {
   const [pdfError, setPdfError] = useState(false);
   const [pdfLink, setPdfLink] = useState(null);
   const [gateOpen, setGateOpen] = useState(false);
-  // Non-EU groups: hidden until the first scope answer is "Outside the EU" or the visitor taps "See the three questions".
-  const [nonPinned, setNonPinned] = useState(false);
-  const showNonEU = scope.A.hq === "non" || nonPinned;
-  const openNonEU = useCallback((e) => {
-    e.preventDefault();
-    setNonPinned(true);
-    setTimeout(() => document.getElementById("noneu")?.scrollIntoView({ behavior: "smooth", block: "start" }), 0);
-  }, []);
   const opener = useRef(null);
   const utm = useMemo(readUtm, []);
 
@@ -64,9 +53,8 @@ export default function App() {
     return {
       scope: v ? { badge: v.b, head: v.h, list: v.l, answers: answerLines(scope.hist, scope.A) } : null,
       est: { ...e, state, codes: e.topics, topics: e.topics.map((c) => `${c} ${TOPIC_NAME[c]}`) },
-      map: { label: mapMode(scope.A).label, steps: mapSteps(scope.A, topics, fyEnd), shift: fyShift(fyEnd) },
     };
-  }, [scope, topics, topicsTouched, fyEnd]);
+  }, [scope, topics, topicsTouched]);
 
   const openGate = useCallback((el) => {
     opener.current = el || document.activeElement;
@@ -97,19 +85,12 @@ export default function App() {
     }
   };
 
-  const onSubmit = async () => {
-    const email = form.email.trim();
-    if (!isValidEmail(email)) {
-      setMsg({ type: "err", field: "email", text: "Enter a valid email address, for example name@company.com." });
-      return;
-    }
-    setBusy(true);
-    setMsg(null);
-    const payload = {
+  // One stored row per request; "contact" comes from the box under the example cases and always carries consent.
+  const payloadFor = (email, consent, requestType) => ({
       email,
       // v1 asks for email and consent only; company, industry and interests stay empty.
-      consent_contact: form.consent,
-      request_type: "download",
+      consent_contact: consent,
+      request_type: requestType,
       notice_version: NOTICE_VERSION,
       scope_badge: snap.scope?.badge ?? null,
       scope_headline: snap.scope?.head ?? null,
@@ -120,8 +101,17 @@ export default function App() {
       datapoints_unconditional: snap.est.unc,
       utm_source: utm.utm_source,
       utm_campaign: utm.utm_campaign,
-    };
-    const res = await submitUnlock(payload);
+  });
+
+  const onSubmit = async () => {
+    const email = form.email.trim();
+    if (!isValidEmail(email)) {
+      setMsg({ type: "err", field: "email", text: "Enter a valid email address, for example name@company.com." });
+      return;
+    }
+    setBusy(true);
+    setMsg(null);
+    const res = await submitUnlock(payloadFor(email, form.consent, "download"));
     setBusy(false);
     if (!res.ok) {
       setMsg({ type: "err", text: res.message });
@@ -133,24 +123,32 @@ export default function App() {
     await download(snap);
   };
 
+  // "Not sure what applies to you?": stores a contact lead and opens the page; no PDF download.
+  const sendContact = async (email) => {
+    const res = await submitUnlock(payloadFor(email, true, "contact"));
+    if (res.ok) { writeUnlocked(); setUnlocked(true); }
+    return res;
+  };
+
   const formProps = { form, setForm, onSubmit, busy, msg };
   const done = { fresh, pdfError, pdfLink, onDownload: () => download() };
 
   return (
     <UnlockContext.Provider value={{ unlocked, openGate }}>
-      <Cover />
+      <Cover>
+        <ScopeCheck scope={scope} setScope={setScope} />
+      </Cover>
       <ChapterNav />
       <main className="wrap">
-        <FastStrip />
-        {/* Spec v2.2 chapter order */}
-        <WhatChanged />
-        <WhoReports onNonEU={openNonEU} />
-        <ScopeCheck scope={scope} setScope={setScope} />
-        <NonEU hidden={!showNonEU} />
-        <Datapoints topics={topics} setTopics={setTopics} />
+        {/* Spec v2.4 chapter order */}
+        <WhoReports />
+        <NonEU />
+        <FindYourRow onContact={sendContact} />
         <Cases />
+        <WhatChanged />
         <Fy2026 />
-        <Roadmap A={scope.A} topics={topics} fyEnd={fyEnd} setFyEnd={setFyEnd} />
+        <Datapoints topics={topics} setTopics={setTopics} />
+        <Roadmap />
         <UnlockSection snap={snap} formProps={formProps} done={done} />
       </main>
       <About />

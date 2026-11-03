@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { CASES } from "../lib/data.js";
-import { Gated, LockIcon, useUnlock } from "./unlock.jsx";
 import { ChapterHead } from "./Icons.jsx";
 
 function Node({ n }) {
@@ -14,7 +13,6 @@ function Node({ n }) {
 }
 
 export default function Cases() {
-  const { unlocked } = useUnlock();
   const [cur, setCur] = useState(0);
   const c = CASES[cur];
   const why = (
@@ -26,12 +24,11 @@ export default function Cases() {
   );
   return (
     <section className="ch" id="cases">
-      <ChapterHead icon="people" eyebrow="Example cases" title="Parent, subsidiary, or neither?" short="Seven made-up groups. Find the one that looks like yours." />
+      <ChapterHead icon="people" eyebrow="Who is in scope · examples" title="Examples: parent, subsidiary or neither?" short="Seven made-up groups. Find the one that looks like yours and see what it means for you." />
       <div className="cases-tabs" role="group" aria-label="Example cases">
         {CASES.map((x, i) => (
           <button type="button" key={x.t} aria-pressed={i === cur} onClick={() => setCur(i)}>
             {x.t}
-            {!unlocked && i >= 2 && (<><LockIcon /><span className="sr-only"> (locked)</span></>)}
           </button>
         ))}
       </div>
@@ -53,7 +50,7 @@ export default function Cases() {
         </div>
         <div className="why">
           <div className="eyebrow">Why</div>
-          {cur < 2 ? why : <Gated label="Unlock all seven cases">{why}</Gated>}
+          {why}
         </div>
       </div>
     </section>

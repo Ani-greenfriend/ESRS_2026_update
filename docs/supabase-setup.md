@@ -41,7 +41,7 @@ This file is the schema source of truth. It is updated at every save point that 
 | superseded_by | uuid → unlocks.id | on delete set null; null while current |
 | anonymised_at | timestamptz | set by the clean-up job |
 | status | text | `current` → `superseded` → `anonymised` (default `current`) |
-| request_type | text | `download` (unlock form, PDF) or `contact` (the former "Leave your email" box, removed in spec v2.3; `submit-unlock` now accepts `download` only); default `download` |
+| request_type | text | `download` (unlock form, PDF) or `contact` ("Not sure what applies to you?" box under the example cases, builder request 3 Nov 2026; always with consent); default `download` |
 | created_by, updated_by | uuid → profiles.id | empty (no login) |
 | updated_at | timestamptz | kept current by trigger |
 

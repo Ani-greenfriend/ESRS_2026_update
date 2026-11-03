@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { TOPICS } from "../lib/data.js";
 import { estimate } from "../lib/estimator.js";
-import { Gated } from "./unlock.jsx";
 import { ChapterHead } from "./Icons.jsx";
 
 function DotGrid({ hl }) {
@@ -61,8 +60,6 @@ function FactSheet() {
           <summary>Why the numbers differ between sources</summary>
           <ul>
             <li><b>323 = 292 + 31.</b> All counts come from EFRAG's 2026 draft list and explanatory note. Other sources may use a different stage or basis.</li>
-            <li><b>More rows in EFRAG's sheet.</b> 30 heading rows (3 per topic) and 6 technical rows are not disclosures, so we skip them. E1: 87 rows, 84 datapoints.</li>
-            <li><b>Percentages.</b> 783 → 292 = −63%. 1,052 → 292 = −72%. 1,052 → 323 = −69%.</li>
           </ul>
         </details>
       </div>
@@ -70,12 +67,14 @@ function FactSheet() {
   );
 }
 
-function Bars({ o, n, u, max }) {
+function Bars({ o, n, u, max, total }) {
   return (
     <div className="bars">
       <div className="bar"><span>2023</span><span className="tr"><i style={{ width: `${(o / max) * 100}%`, background: "var(--sand)" }} /></span><b className="num">{o}</b></div>
       <div className="bar"><span>Revised</span><span className="tr"><i style={{ width: `${(n / max) * 100}%`, background: "var(--olive)" }} /></span><b className="num">{n}</b></div>
       <div className="bar"><span>Unconditional</span><span className="tr"><i style={{ width: `${(u / max) * 100}%`, background: "var(--terra)" }} /></span><b className="num">{u}</b></div>
+      {/* Builder request (3 Nov 2026): the total sits right under the numbers; no bar, because the 31 never enter the bars. */}
+      {total != null && <div className="bar total"><span>Total</span><span className="tnote">Revised {n} + 31 general datapoints</span><b className="num">{total}</b></div>}
     </div>
   );
 }
@@ -100,50 +99,29 @@ function Estimator({ topics, setTopics }) {
         <p className="headline">
           You go from <span className="num">{e.old}</span> to <em className="num">{e.now}</em> mandatory datapoints. That is <em className="num">{e.pct}%</em> fewer. Nice.
         </p>
-        <Gated label="See your full datapoint breakdown">
-          <Bars o={e.old} n={e.now} u={e.unc} max={e.old} />
+        {/* Builder request (3 Nov 2026): the breakdown is open, no lock. */}
+          <Bars o={e.old} n={e.now} u={e.unc} max={e.old} total={e.now + 31} />
           <p className="est-add">
-            <b>Plus 31 general datapoints</b> on policies, actions, targets and metrics. They apply whatever topics you tick, so your total is <b className="num">{e.now + 31}</b> ({e.now} + 31). With all ten topics ticked that is 323, the headline figure above.
+            <b>Plus 31 general datapoints</b> on policies, actions, targets and metrics. They apply whatever topics you tick.
           </p>
-        </Gated>
         <p className="qhelp">
-          ESRS 2 plus {e.topics.length} material topic{e.topics.length === 1 ? "" : "s"}
-          {e.topics.length ? ` (${e.topics.join(", ")})` : ""}. Counts from EFRAG's 2026 Draft List. Your real number also depends on which conditions apply to you.
+          Your real number also depends on which conditions apply to you.
         </p>
       </div>
     </div>
   );
 }
 
-const GDR = [
-  ["P", "Policies", "What rules do you have?", ["What it says", "Who it covers", "Standards followed", "Human rights policy"]],
-  ["A", "Actions", "What are you doing about it?", ["What and when", "Where", "Expected result", "Money involved"]],
-  ["M", "Metrics", "How do you measure it?", ["Number and unit", "How calculated", "Data sources", "Change over time"]],
-  ["T", "Targets", "Where do you want to get to?", ["Target level", "Baseline and year", "Milestones", "Methods used"]],
-];
 
 export default function Datapoints({ topics, setTopics }) {
   return (
     <section className="ch" id="datapoints">
-      <ChapterHead icon="grid" eyebrow="Datapoints" title="From 1,052 datapoints to 323" short="Short answer: a lot less to report. Try your own number below." />
+      <ChapterHead icon="grid" eyebrow="What: datapoints" title="From 1,052 datapoints to 323" short="Short answer: a lot less to report. Try your own number below." />
       <FactSheet />
 
       <h3>Your own number</h3>
       <Estimator topics={topics} setTopics={setTopics} />
 
-      <h3>What are the 31 general datapoints?</h3>
-      <p className="qhelp">Four questions you answer for every material topic. Together they make up the 31.</p>
-      <div className="gdr4">
-        {GDR.map(([l, h, q, chips]) => (
-          <div key={l}>
-            <span className="gl" aria-hidden="true">{l}</span>
-            <h4>{h}</h4>
-            <p className="gq">{q}</p>
-            <div className="chips2">{chips.map((c) => <span key={c}>{c}</span>)}</div>
-          </div>
-        ))}
-      </div>
-      <p className="tip"><b>Good to know</b> You report these points each time you cover a policy, action, metric or target for a material topic. EFRAG's draft list counts 31 in total; we show what they consist of, not the single datapoints. Source: revised ESRS 2, GDR-P, GDR-A, GDR-M and GDR-T (Delegated Regulation (EU) 2026/1563).</p>
     </section>
   );
 }

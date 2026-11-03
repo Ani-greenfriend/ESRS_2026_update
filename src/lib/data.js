@@ -42,16 +42,16 @@ export const TOT=[783,292,195];
 export const TOPICS=[["E1","Climate change",1],["E2","Pollution",0],["E3","Water",0],["E4","Biodiversity",0],["E5","Resource use",1],["S1","Own workforce",1],["S2","Value chain workers",1],["S3","Communities",0],["S4","Consumers",0],["G1","Business conduct",1]];
 
 export const G=[
- ["EU wave 1, still above both thresholds","Reported since FY2024",["rep","rep","rep","new","new"],["","","Choose route","Revised",""],
+ ["EU wave 1, still above both thresholds","Listed company, bank or insurer; reported since FY2024",["rep","rep","rep","new","new"],["","","Choose route","Revised",""],
   ["Reports under the pre-Omnibus (2023) ESRS.","Reports under the pre-Omnibus (2023) ESRS.","You choose one of three FY2026 routes. See FY2026 options below.","First year under the revised ESRS, mandatory from FY2027.","Reports under the revised ESRS."]],
- ["EU wave 1, now below a threshold","e.g. 600 employees",["rep","opt","opt","out","out"],["","MS option","MS option","Out",""],
-  ["Reported under the pre-Omnibus (2023) ESRS.","Member States may exempt these companies for FY2025 and FY2026. Check national law.","Member States may exempt these companies for FY2025 and FY2026. Check national law.","Below the new size criteria (over 1,000 employees and over €450M): no mandatory reporting.","Below the new size criteria: no mandatory reporting."]],
- ["Large EU company, not wave 1","Old wave 2, now >1,000 employees & >€450M",["out","out","out","new","new"],["","","","First year",""],
+ ["EU wave 1, now below a threshold","Listed company, bank or insurer; e.g. 600 employees",["rep","opt","opt","out","out"],["","MS option","MS option","Out|Voluntary standard optional","Out|Voluntary standard optional"],
+  ["Reported under the pre-Omnibus (2023) ESRS.","Member States may exempt these companies for FY2025 and FY2026. Check national law.","Member States may exempt these companies for FY2025 and FY2026. Check national law.","Below the new size criteria (over 1,000 employees and over €450M): no mandatory reporting. Optional: the voluntary standard (based on VSME).","Below the new size criteria: no mandatory reporting. Optional: the voluntary standard (based on VSME)."]],
+ ["Large EU company, not wave 1","Not listed, e.g. family-owned; old wave 2, now >1,000 employees & >€450M",["out","out","out","new","new"],["","","","First year",""],
   ["Not required to report yet.","Not required to report yet: the wave 2 start (FY2025) was postponed to FY2027.","Not required to report yet: the wave 2 start was postponed to FY2027.","First report under the revised ESRS, on FY2027 (published 2028).","Reports under the revised ESRS."]],
- ["Large EU company below new thresholds","Old wave 2, e.g. 400 employees",["out","out","out","out","out"],["","","","Voluntary standard",""],
-  ["Not required to report.","Not required to report.","Not required to report.","No mandatory reporting. The voluntary standard is available.","No mandatory reporting."]],
- ["Listed EU SME","Old wave 3",["out","out","out","out","out"],["","","","Out",""],
-  ["Not required to report.","Not required to report.","Not required to report.","Out of mandatory scope.","Out of mandatory scope."]],
+ ["Large EU company below new thresholds","Old wave 2, e.g. 400 employees",["out","out","out","out","out"],["","","","Out|Voluntary standard optional","Out|Voluntary standard optional"],
+  ["Not required to report.","Not required to report.","Not required to report.","No mandatory reporting. Optional: the voluntary standard (based on VSME).","No mandatory reporting. Optional: the voluntary standard (based on VSME)."]],
+ ["Listed EU SME","Old wave 3",["out","out","out","out","out"],["","","","Out|Voluntary standard optional","Out|Voluntary standard optional"],
+  ["Not required to report.","Not required to report.","Not required to report.","Out of mandatory scope. Optional: the voluntary standard (based on VSME).","Out of mandatory scope. Optional: the voluntary standard (based on VSME)."]],
  ["Non-EU group (Art. 40a)",">€450M EU turnover + €200M EU entity",["out","out","out","out","40a"],["","","","","First year"],
   ["Not required to report.","Not required to report.","Not required to report.","Not required to report yet. The EU subsidiary may be caught earlier.","First group-level report under Article 40a, on FY2028."]]];
 
@@ -88,6 +88,6 @@ export const CASES=[
 ];
 
 export const OPT=[
- {L:"A",t:"Keep it as it is",std:"Pre-Omnibus ESRS",src:"Article 2(1)(a), first option",d:"Report your 2026 year exactly like 2025.",eff:1,bi:"Your 2025 process works and you want to compare with last year."},
- {L:"B",t:"Keep it, with shortcuts",std:"Pre-Omnibus ESRS plus reliefs",src:"Article 2(1)(b)",d:"Same standards as 2025, but you may use up to eight shortcuts from the new rules.",eff:2,bi:"Your assessment is heavy, your value chain data has gaps, or you have acquisitions, disposals or joint operations in 2026.",more:"top-down materiality (27), undue cost and value chain limits in the assessment (32-33), acquisitions and disposals (74-75), non-significant activities (90), partial value chain scope (91), joint operations (92), Taxonomy appendix (106), executive summary (110). Numbers are ESRS 1 paragraphs."},
- {L:"C",t:"Switch early",std:"Revised ESRS in full",src:"Article 2(1)(a), second option",d:"Use the new, slimmer rules one year early. You get the fewest datapoints.",eff:3,bi:"You are starting with ESRS now, or you are redoing your assessment anyway and your systems and auditor are ready for the new structure."}];
+ {L:"A",t:"Keep it as it is",std:"Pre-Omnibus ESRS",src:"Article 2(1)(a), first option",d:"Report your 2026 year exactly like 2025.",bi:"Your 2025 process works and you want to compare with last year."},
+ {L:"B",t:"Keep it, with shortcuts",std:"Pre-Omnibus ESRS plus reliefs",src:"Article 2(1)(b)",d:"Same standards as 2025, but you may use up to eight shortcuts from the new rules.",bi:"Your assessment is heavy, your value chain data has gaps, or you have acquisitions, disposals or joint operations in 2026.",more:"top-down materiality (27), undue cost and value chain limits in the assessment (32-33), acquisitions and disposals (74-75), non-significant activities (90), partial value chain scope (91), joint operations (92), Taxonomy appendix (106), executive summary (110). Numbers are ESRS 1 paragraphs."},
+ {L:"C",t:"Switch early",std:"Revised ESRS in full",src:"Article 2(1)(a), second option",d:"Use the new, slimmer rules one year early. You get the fewest datapoints.",bi:"You are starting with ESRS now, or you are redoing your assessment anyway and your systems and auditor are ready for the new structure."}];
