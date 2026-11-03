@@ -38,11 +38,6 @@ export default function NonEU() {
           </div>
         ))}
       </div>
-      <details className="hov w2more">
-        <summary>Good to know</summary>
-        <p><b>No EU subsidiary?</b> Then your EU branch reports for the group.</p>
-        <p><b>Have an EU subsidiary?</b> It does not need its own report if your non-EU parent publishes a group report that covers it, under the full ESRS or an equivalent standard.</p>
-      </details>
     </section>
   );
 }
