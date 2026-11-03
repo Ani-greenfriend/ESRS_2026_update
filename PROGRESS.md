@@ -128,6 +128,7 @@ Carried over from session 3:
 - Builder request (3 Nov 2026): "Find your row" drops the "What are wave 1 and wave 2?" toggle and its Good to know line (years reported on, wave 1, transposition by 19 March 2027, where to find the national measures); the "This is not legal advice…" note moves from the non-EU block to just above the "Not sure on which level you report?" band.
 - Builder request (3 Nov 2026): the "Not sure what applies to you?" box under the example cases is removed (the contact form stays in the blue band after "Find your row"); the cases heading reads "Examples: parent, subsidiary or neither?".
 - Builder request (3 Nov 2026): "Which standard" drops the "Where this comes from" toggle (Article 2 and 3 lines, scope and dates note); each route card keeps its source behind the i icon.
+- Builder request (3 Nov 2026): the roadmap hover cards no longer show the yellow "greenfriend step n" pill (the `sv` values stay in the data, unused).
 [Rule: one line per decision made during the build that is not in the spec — prompt structures, field formats, naming choices, library picks. Future sessions depend on these to stay consistent.]
 
 ## Known issues

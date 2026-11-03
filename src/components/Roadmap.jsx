@@ -3,7 +3,6 @@ import { ChapterHead } from "./Icons.jsx";
 
 // When: roadmap (spec v2.4): one general plan for everyone, no dates. A snaking road with KICK-OFF, eight stops (strategy added) and
 // FINAL REPORT; details only in the hover card (hover, focus, tap). Port of renderMap() in the prototype.
-const SVN = ["Where you stand", "Double materiality", "Strategy", "Governance", "Reporting"];
 
 // Fine line icons (1.3 px stroke): magnifier, scales, signpost, checklist, two people, replay with play, document, shield with tick.
 const ICO = [
@@ -74,7 +73,6 @@ export default function Roadmap() {
                 <div className="sp" role="region" aria-label={x.t}>
                   <h3>{x.t}</h3>
                   <p>{x.d}</p>
-                  {x.sv != null && <span className="svp">greenfriend step {x.sv} · {SVN[x.sv]}</span>}
                 </div>
               </div>
             );
