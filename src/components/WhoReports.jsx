@@ -53,7 +53,7 @@ export default function WhoReports({ onNonEU }) {
           <span className="src" tabIndex={0} data-ftip="Old test: 250 employees and €50M turnover (any two of three criteria). Parent companies use consolidated group figures." aria-label="More info">i</span>
         </p>
       </div>
-      {/* Builder request (3 Nov 2026): one short line; the link still opens the hidden non-EU guide right below. */}
+      {/* Builder request (3 Nov 2026): one short line; the link jumps to "Outside the EU? Two ways in" below the table. */}
       <p className="nonline"><b>If you are outside the EU,</b> <a href="#noneu" className="nonlink" onClick={onNonEU}>keep reading below</a>.</p>
       <h3 className="gtitle">Find your row</h3>
       <div className="gantt">

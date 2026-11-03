@@ -1,60 +1,51 @@
 import { ChapterHead } from "./Icons.jsx";
 
-// v2.1 guided stepper. v2.2: not in the menu or the main flow; shown under "Check your scope" when the first
-// answer is "Outside the EU" or after "See the three questions" in "Who reports when".
-const STEPS = [
+// Builder request (3 Nov 2026): "Outside the EU? Two ways in" replaces the hidden three-question stepper.
+// Always visible, directly under "Who reports when".
+const ROUTES = [
   {
-    tag: "Route 1 · EU subsidiary · from FY2027",
-    q: "Do you have an EU subsidiary with over 1,000 employees and over €450M turnover?",
-    help: "Look at the subsidiary on its own (consolidated) figures. An EU sub-group parent counts too.",
-    yes: "That subsidiary reports like any EU company, from FY2027. Keep going: Route 2 can apply on top.",
-    no: "Route 1 does not apply. Go to question 2.",
-    more: ["The fine print", "It can be exempt if the non-EU parent voluntarily publishes a consolidated report under the full ESRS (or an equivalent standard) that covers it."],
+    k: "r1",
+    tag: "Route 1",
+    fy: "FY2027",
+    h: "Your EU subsidiary reports",
+    tests: ["> 1,000 employees", "> €450M net turnover"],
+    note: "Same thresholds as EU companies, tested on the subsidiary itself.",
   },
   {
-    tag: "Route 2 · Article 40a · from FY2028",
-    q: "Did your group earn over €450M in the EU, two years in a row?",
-    help: "Add up the net turnover of everything your group sells in the EU.",
-    yes: "Go to question 3.",
-    no: "Article 40a does not apply. You are done here.",
-  },
-  {
-    tag: "Route 2 · Article 40a · from FY2028",
-    q: "Do you have an EU subsidiary or branch with over €200M turnover?",
-    help: "There is no headcount criterion for this one.",
-    yes: "That entity reports for the whole group, from FY2028 (published in 2029).",
-    no: "Article 40a does not apply.",
-    more: ["Good to know", "Dedicated standards for non-EU groups are expected from October 2027 at the earliest. Financial holding undertakings can opt out."],
+    k: "r2",
+    tag: "Route 2 · Article 40a",
+    fy: "FY2028",
+    h: "Your EU entity reports for the group",
+    tests: ["> €450M net turnover in the EU in each of the last 2 consecutive financial years", "EU subsidiary > €200M, or qualifying EU branch > €200M"],
+    note: "Different thresholds. No employee threshold applies.",
   },
 ];
 
-export default function NonEU({ hidden }) {
+export default function NonEU() {
   return (
-    <section className="ch" id="noneu" hidden={hidden}>
-      <ChapterHead icon="globe" eyebrow="Non-EU groups" title="Outside the EU? Three questions" short="A non-EU group can be caught twice: via a large EU subsidiary (FY2027) and at group level, Article 40a (FY2028)." />
-      <div className="guide">
-        <p className="gintro">Answer in order. Stop as soon as one answer says it does not apply to you.</p>
-        <ol className="gsteps">
-          {STEPS.map((s, i) => (
-            <li key={s.q} className="gstep">
-              <span className="gno">{i + 1}</span>
-              <div className="gbody">
-                <div className="gtag">{s.tag}</div>
-                <h3>{s.q}</h3>
-                <p className="qhelp">{s.help}</p>
-                <div className="gouts">
-                  <div className="go yes"><b>Yes</b><span>{s.yes}</span></div>
-                  <div className="go no"><b>No</b><span>{s.no}</span></div>
-                </div>
-                {s.more && (
-                  <details className="hov"><summary>{s.more[0]}</summary><p>{s.more[1]}</p></details>
-                )}
-              </div>
-            </li>
-          ))}
-        </ol>
+    <section className="ch" id="noneu">
+      <ChapterHead icon="globe" eyebrow="Non-EU groups" title="Outside the EU? Two ways in" short="A non-EU group can fall under both routes. Check both." />
+      <div className="ways">
+        {ROUTES.map((r) => (
+          <div key={r.k} className={`way2 ${r.k}`}>
+            <div className="w2tag">{r.tag}</div>
+            <div className="w2fy">{r.fy}</div>
+            <h3>{r.h}</h3>
+            <div className="w2tests">
+              {r.tests.map((t) => <div key={t}>{t}</div>)}
+            </div>
+            <p className="w2note">{r.note}</p>
+          </div>
+        ))}
       </div>
-      <p className="advice"><b>Our tip</b> Start with your EU subsidiary. Its deadline comes first (FY2027). Not sure where you stand? Run the scope check above.</p>
+      <details className="hov w2more">
+        <summary>Good to know</summary>
+        <ul>
+          <li>Route 1: the EU subsidiary can be exempt if the non-EU parent voluntarily publishes a consolidated report under the full ESRS (or an equivalent standard) that covers it.</li>
+          <li>Route 2: dedicated standards for non-EU groups are expected from October 2027 at the earliest. Financial holding undertakings can opt out.</li>
+        </ul>
+      </details>
+      <p className="advice"><b>Our tip</b> Start with your EU subsidiary. Its deadline comes first (FY2027). Not sure where you stand? Run the <a href="#scope">scope check</a> above or <a href={`mailto:anikalerch@greenfriend.org?subject=${encodeURIComponent("ESRS update check: non-EU group")}`}>email us</a>.</p>
     </section>
   );
 }

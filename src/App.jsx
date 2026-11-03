@@ -41,13 +41,10 @@ export default function App() {
   const [pdfError, setPdfError] = useState(false);
   const [pdfLink, setPdfLink] = useState(null);
   const [gateOpen, setGateOpen] = useState(false);
-  // Non-EU groups: hidden until the first scope answer is "Outside the EU" or the visitor taps "See the three questions".
-  const [nonPinned, setNonPinned] = useState(false);
-  const showNonEU = scope.A.hq === "non" || nonPinned;
-  const openNonEU = useCallback((e) => {
+  // Non-EU groups ("Outside the EU? Two ways in") is always shown under "Who reports when" (builder request, 3 Nov 2026).
+  const toNonEU = useCallback((e) => {
     e.preventDefault();
-    setNonPinned(true);
-    setTimeout(() => document.getElementById("noneu")?.scrollIntoView({ behavior: "smooth", block: "start" }), 0);
+    document.getElementById("noneu")?.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
   }, []);
   const opener = useRef(null);
   const utm = useMemo(readUtm, []);
@@ -140,8 +137,8 @@ export default function App() {
       <ChapterNav />
       <main className="wrap">
         {/* Spec v2.4 chapter order */}
-        <WhoReports onNonEU={openNonEU} />
-        <NonEU hidden={!showNonEU} />
+        <WhoReports onNonEU={toNonEU} />
+        <NonEU />
         <Cases />
         <WhatChanged />
         <Fy2026 />
