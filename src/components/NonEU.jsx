@@ -43,7 +43,6 @@ export default function NonEU() {
         <p><b>No EU subsidiary?</b> Then your EU branch reports for the group.</p>
         <p><b>Have an EU subsidiary?</b> It does not need its own report if your non-EU parent publishes a group report that covers it, under the full ESRS or an equivalent standard.</p>
       </details>
-      <p className="advice w2tip">This is not legal advice. Start with your EU subsidiary, its deadline comes first (FY2027). If you are still unsure, check with your auditor or legal adviser, or <a href={`mailto:anikalerch@greenfriend.org?subject=${encodeURIComponent("ESRS update check: non-EU group")}`}>email us</a>.</p>
     </section>
   );
 }
