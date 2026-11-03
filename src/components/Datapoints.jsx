@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { TOPICS } from "../lib/data.js";
 import { estimate } from "../lib/estimator.js";
-import { Gated } from "./unlock.jsx";
 import { ChapterHead } from "./Icons.jsx";
 
 function DotGrid({ hl }) {
@@ -100,12 +99,11 @@ function Estimator({ topics, setTopics }) {
         <p className="headline">
           You go from <span className="num">{e.old}</span> to <em className="num">{e.now}</em> mandatory datapoints. That is <em className="num">{e.pct}%</em> fewer. Nice.
         </p>
-        <Gated label="Full breakdown comes with your free PDF">
+        {/* Builder request (3 Nov 2026): the breakdown is open, no lock. */}
           <Bars o={e.old} n={e.now} u={e.unc} max={e.old} />
           <p className="est-add">
             <b>Plus 31 general datapoints</b> on policies, actions, targets and metrics. They apply whatever topics you tick, so your total is <b className="num">{e.now + 31}</b> ({e.now} + 31). With all ten topics ticked that is 323, the headline figure above.
           </p>
-        </Gated>
         <p className="qhelp">
           ESRS 2 plus {e.topics.length} material topic{e.topics.length === 1 ? "" : "s"}
           {e.topics.length ? ` (${e.topics.join(", ")})` : ""}. Counts from EFRAG's 2026 Draft List. Your real number also depends on which conditions apply to you.
@@ -115,12 +113,6 @@ function Estimator({ topics, setTopics }) {
   );
 }
 
-const GDR = [
-  ["P", "Policies", "What rules do you have?", ["What it says", "Who it covers", "Standards followed", "Human rights policy"]],
-  ["A", "Actions", "What are you doing about it?", ["What and when", "Where", "Expected result", "Money involved"]],
-  ["M", "Metrics", "How do you measure it?", ["Number and unit", "How calculated", "Data sources", "Change over time"]],
-  ["T", "Targets", "Where do you want to get to?", ["Target level", "Baseline and year", "Milestones", "Methods used"]],
-];
 
 export default function Datapoints({ topics, setTopics }) {
   return (
@@ -131,19 +123,6 @@ export default function Datapoints({ topics, setTopics }) {
       <h3>Your own number</h3>
       <Estimator topics={topics} setTopics={setTopics} />
 
-      <h3>What are the 31 general datapoints?</h3>
-      <p className="qhelp">Four questions you answer for every material topic. Together they make up the 31.</p>
-      <div className="gdr4">
-        {GDR.map(([l, h, q, chips]) => (
-          <div key={l}>
-            <span className="gl" aria-hidden="true">{l}</span>
-            <h4>{h}</h4>
-            <p className="gq">{q}</p>
-            <div className="chips2">{chips.map((c) => <span key={c}>{c}</span>)}</div>
-          </div>
-        ))}
-      </div>
-      <p className="tip"><b>Good to know</b> You report these points each time you cover a policy, action, metric or target for a material topic. EFRAG's draft list counts 31 in total; we show what they consist of, not the single datapoints. Source: revised ESRS 2, GDR-P, GDR-A, GDR-M and GDR-T (Delegated Regulation (EU) 2026/1563).</p>
     </section>
   );
 }

@@ -47,7 +47,7 @@ export default function Roadmap() {
 
   return (
     <section className="ch" id="roadmap">
-      <ChapterHead icon="calendar" eyebrow="When: steps" title="What does your 2027 in the sustainability department look like?" short="The steps in order, from where you stand to assurance. No fixed dates: your own timing depends on your year-end, size, data and auditor." steps={[["Follow", "the steps in order"], ["See", "what runs alongside"], ["Tailor", "it with finance and your auditor"]]} />
+      <ChapterHead icon="calendar" eyebrow="When: steps" title="What does your 2027 in the sustainability department look like?" short="The steps in order, from where you stand to assurance. No fixed dates: your own timing depends on your year-end, size, data and auditor." />
       <div className="rsteps">
         <div className="snake">
           <svg viewBox="0 0 1000 590" preserveAspectRatio="none" aria-hidden="true">

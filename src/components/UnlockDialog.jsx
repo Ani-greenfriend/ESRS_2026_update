@@ -39,7 +39,7 @@ export default function UnlockDialog({ open, onClose, formProps, done }) {
           <UnlockDone {...done} withButton />
         ) : (
           <>
-            <p className="qhelp">One page with your scope result, FY2026 route, datapoint number, ready to forward to your CFO or board. Free, just your email. It also opens the blurred details on this page.</p>
+            <p className="qhelp">One page with your scope result, FY2026 route, datapoint number, ready to forward to your CFO or board. Free, just your email.</p>
             <UnlockForm id="gate" className="op-form" emailRef={emailRef} noteFirst {...formProps} />
           </>
         )}
