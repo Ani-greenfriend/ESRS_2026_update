@@ -89,7 +89,7 @@ export default function WhoReports({ onNonEU }) {
           <li><b>So</b> a company with more than 1,000 employees and €450M that was not wave 1 does not report on FY2026. It starts with FY2027.</li>
         </ul>
       </details>
-      <p className="tip"><b>Good to know</b> Years shown are the financial year reported on. Wave 1 means EU companies that already reported for FY2024. Member States must transpose Omnibus I by 19 March 2027, so check national law for the FY2025–2026 exemption. <a href="https://eur-lex.europa.eu/legal-content/EN/NIM/?uri=CELEX:32026L0470" target="_blank" rel="noopener">National transposition measures ↗</a></p>
+      <p className="tip"><b>Good to know</b> Years shown are the financial year reported on. Wave 1 means EU companies that already reported for FY2024. Member States must transpose Omnibus I by 19 March 2027, so check national law for the FY2025–2026 exemption. Each country's measures are listed on EUR-Lex, on the page of Directive (EU) 2026/470 under "National transposition".</p>
     </section>
   );
 }

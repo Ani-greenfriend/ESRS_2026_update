@@ -90,19 +90,12 @@ export default function App() {
     }
   };
 
-  const onSubmit = async () => {
-    const email = form.email.trim();
-    if (!isValidEmail(email)) {
-      setMsg({ type: "err", field: "email", text: "Enter a valid email address, for example name@company.com." });
-      return;
-    }
-    setBusy(true);
-    setMsg(null);
-    const payload = {
+  // One stored row per request; "contact" comes from the box under the example cases and always carries consent.
+  const payloadFor = (email, consent, requestType) => ({
       email,
       // v1 asks for email and consent only; company, industry and interests stay empty.
-      consent_contact: form.consent,
-      request_type: "download",
+      consent_contact: consent,
+      request_type: requestType,
       notice_version: NOTICE_VERSION,
       scope_badge: snap.scope?.badge ?? null,
       scope_headline: snap.scope?.head ?? null,
@@ -113,8 +106,17 @@ export default function App() {
       datapoints_unconditional: snap.est.unc,
       utm_source: utm.utm_source,
       utm_campaign: utm.utm_campaign,
-    };
-    const res = await submitUnlock(payload);
+  });
+
+  const onSubmit = async () => {
+    const email = form.email.trim();
+    if (!isValidEmail(email)) {
+      setMsg({ type: "err", field: "email", text: "Enter a valid email address, for example name@company.com." });
+      return;
+    }
+    setBusy(true);
+    setMsg(null);
+    const res = await submitUnlock(payloadFor(email, form.consent, "download"));
     setBusy(false);
     if (!res.ok) {
       setMsg({ type: "err", text: res.message });
@@ -124,6 +126,13 @@ export default function App() {
     setUnlocked(true);
     setFresh(true);
     await download(snap);
+  };
+
+  // "Not sure what applies to you?": stores a contact lead and opens the page; no PDF download.
+  const sendContact = async (email) => {
+    const res = await submitUnlock(payloadFor(email, true, "contact"));
+    if (res.ok) { writeUnlocked(); setUnlocked(true); }
+    return res;
   };
 
   const formProps = { form, setForm, onSubmit, busy, msg };
@@ -139,7 +148,7 @@ export default function App() {
         {/* Spec v2.4 chapter order */}
         <WhoReports onNonEU={toNonEU} />
         <NonEU />
-        <Cases />
+        <Cases onContact={sendContact} />
         <WhatChanged />
         <Fy2026 />
         <Datapoints topics={topics} setTopics={setTopics} />

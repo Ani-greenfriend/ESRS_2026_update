@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { CASES } from "../lib/data.js";
-import { Gated, LockIcon, useUnlock } from "./unlock.jsx";
+import { isValidEmail } from "../lib/constants.js";
 import { ChapterHead } from "./Icons.jsx";
 
 function Node({ n }) {
@@ -13,8 +13,50 @@ function Node({ n }) {
   );
 }
 
-export default function Cases() {
-  const { unlocked } = useUnlock();
+// Builder request (3 Nov 2026): all seven cases are open; under them a short explanation and an email field for a contact request.
+function ContactBox({ onContact }) {
+  const [email, setEmail] = useState("");
+  const [consent, setConsent] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState(null);
+  const [sent, setSent] = useState(false);
+  const submit = async (e) => {
+    e.preventDefault();
+    const v = email.trim();
+    if (!isValidEmail(v)) return setMsg({ type: "err", text: "Enter a valid email address, for example name@company.com." });
+    if (!consent) return setMsg({ type: "err", text: "Tick the box so we may contact you." });
+    setBusy(true);
+    setMsg(null);
+    const res = await onContact(v);
+    setBusy(false);
+    if (res.ok) setSent(true);
+    else setMsg({ type: "err", text: res.message });
+  };
+  return (
+    <div className="casecta">
+      <div className="cc-text">
+        <b>Not sure what applies to you?</b>
+        <span>Every group is set up differently. Leave your email address here and we will get back to you on whether you report as a parent, subsidiary or neither, and from which year.</span>
+      </div>
+      {sent ? (
+        <p className="op-msg ok" role="status">Thanks. We will be in touch soon.</p>
+      ) : (
+        <form className="cc-form" noValidate onSubmit={submit}>
+          <label htmlFor="cc-email" className="sr-only">Work email</label>
+          <div className="cc-row">
+            <input type="email" id="cc-email" autoComplete="email" placeholder="name@company.com" maxLength={254} value={email} onChange={(e) => setEmail(e.target.value)} aria-describedby="cc-msg" />
+            <button type="submit" className="btn pri" disabled={busy}>{busy ? "One moment…" : "Send"}</button>
+          </div>
+          <label className="chk consent"><input type="checkbox" checked={consent} onChange={(e) => { setConsent(e.target.checked); setMsg(null); }} /> greenfriend may contact me about my results</label>
+          <p className={`op-msg ${msg?.type || ""}`} id="cc-msg" role="status">{msg?.text || ""}</p>
+          <p className="op-note">We use your email only to answer your question. <a href="/privacy" target="_blank" rel="noopener">Privacy notice →</a></p>
+        </form>
+      )}
+    </div>
+  );
+}
+
+export default function Cases({ onContact }) {
   const [cur, setCur] = useState(0);
   const c = CASES[cur];
   const why = (
@@ -31,7 +73,6 @@ export default function Cases() {
         {CASES.map((x, i) => (
           <button type="button" key={x.t} aria-pressed={i === cur} onClick={() => setCur(i)}>
             {x.t}
-            {!unlocked && i >= 2 && (<><LockIcon /><span className="sr-only"> (locked)</span></>)}
           </button>
         ))}
       </div>
@@ -53,14 +94,10 @@ export default function Cases() {
         </div>
         <div className="why">
           <div className="eyebrow">Why</div>
-          {cur < 2 ? why : <Gated label="The other cases come with your free PDF">{why}</Gated>}
+          {why}
         </div>
       </div>
-      {/* v2.4: CTA under the example cases */}
-      <div className="rhelp top" style={{ marginTop: 20 }}>
-        <div><b>Not sure on which level you report?</b><span>We can help you find out whether you report as a parent, subsidiary or neither, and from which year. Send us a short email.</span></div>
-        <a className="pb pri" href={`mailto:anikalerch@greenfriend.org?subject=${encodeURIComponent("ESRS update check: on which level do we report?")}`}>Email us</a>
-      </div>
+      <ContactBox onContact={onContact} />
     </section>
   );
 }

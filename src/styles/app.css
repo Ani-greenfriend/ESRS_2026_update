@@ -995,3 +995,11 @@ body{overflow-x:clip}
 .w2more summary{font-size:1.05rem;color:var(--fg)}
 .w2more ul{margin:10px 0 0;padding-left:18px;display:grid;gap:6px;color:var(--muted);font-size:.93rem}
 #noneu .advice{margin-top:20px}
+/* Builder request (3 Nov 2026): contact box under the example cases */
+.casecta{margin-top:20px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px 28px;align-items:center;background:var(--surface);border:2px solid var(--olive);border-radius:16px;padding:20px 24px}
+@media (max-width:760px){.casecta{grid-template-columns:1fr}}
+.cc-text{display:grid;gap:4px}.cc-text b{font-family:var(--serif);font-size:1.25rem}.cc-text span{color:var(--muted);font-size:.95rem}
+.cc-form{display:grid;gap:6px}
+.cc-row{display:flex;gap:8px;flex-wrap:wrap}
+.cc-row input{flex:1 1 200px;min-width:0;font:inherit;padding:10px 14px;border:1.5px solid var(--line);border-radius:999px;background:var(--bg);color:var(--fg)}
+.cc-form .op-msg:empty{display:none}
