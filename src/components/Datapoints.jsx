@@ -69,12 +69,14 @@ function FactSheet() {
   );
 }
 
-function Bars({ o, n, u, max }) {
+function Bars({ o, n, u, max, total }) {
   return (
     <div className="bars">
       <div className="bar"><span>2023</span><span className="tr"><i style={{ width: `${(o / max) * 100}%`, background: "var(--sand)" }} /></span><b className="num">{o}</b></div>
       <div className="bar"><span>Revised</span><span className="tr"><i style={{ width: `${(n / max) * 100}%`, background: "var(--olive)" }} /></span><b className="num">{n}</b></div>
       <div className="bar"><span>Unconditional</span><span className="tr"><i style={{ width: `${(u / max) * 100}%`, background: "var(--terra)" }} /></span><b className="num">{u}</b></div>
+      {/* Builder request (3 Nov 2026): the total sits right under the numbers; no bar, because the 31 never enter the bars. */}
+      {total != null && <div className="bar total"><span>Total</span><span className="tnote">Revised {n} + 31 general datapoints</span><b className="num">{total}</b></div>}
     </div>
   );
 }
@@ -100,9 +102,9 @@ function Estimator({ topics, setTopics }) {
           You go from <span className="num">{e.old}</span> to <em className="num">{e.now}</em> mandatory datapoints. That is <em className="num">{e.pct}%</em> fewer. Nice.
         </p>
         {/* Builder request (3 Nov 2026): the breakdown is open, no lock. */}
-          <Bars o={e.old} n={e.now} u={e.unc} max={e.old} />
+          <Bars o={e.old} n={e.now} u={e.unc} max={e.old} total={e.now + 31} />
           <p className="est-add">
-            <b>Plus 31 general datapoints</b> on policies, actions, targets and metrics. They apply whatever topics you tick, so your total is <b className="num">{e.now + 31}</b> ({e.now} + 31). With all ten topics ticked that is 323, the headline figure above.
+            <b>Plus 31 general datapoints</b> on policies, actions, targets and metrics. They apply whatever topics you tick.
           </p>
         <p className="qhelp">
           ESRS 2 plus {e.topics.length} material topic{e.topics.length === 1 ? "" : "s"}

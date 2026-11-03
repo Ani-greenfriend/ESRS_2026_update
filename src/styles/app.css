@@ -1030,3 +1030,7 @@ body{overflow-x:clip}
 #who{padding-bottom:12px}
 #noneu{padding-top:20px}
 @media (max-width:640px){#who{padding-bottom:8px}#noneu{padding-top:16px}}
+/* Builder request (3 Nov 2026): total row under the estimator bars */
+.bar.total{border-top:1px solid var(--line);padding-top:10px;font-weight:700}
+.bar.total .tnote{font-weight:400;color:var(--muted);font-size:.8rem}
+.bar.total b{font-size:1.05rem}
