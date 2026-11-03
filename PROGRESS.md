@@ -123,6 +123,7 @@ Carried over from session 3:
 - Builder request (3 Nov 2026): "What are the 31 general datapoints?" (four P/A/M/T cards and Good to know) is removed, as in the v2.4 mockup; the "Plus 31 general datapoints" line in the estimator stays.
 - Builder request (3 Nov 2026): the roadmap drops its Follow / See / Tailor pill line, so no chapter has step pills any more.
 - Builder request (3 Nov 2026): the roadmap gets an eighth stop "Strategy development" (signpost icon, greenfriend step 2 · Strategy) right after the double materiality assessment; hover text ours ("Build your strategy on the material topics: an objective, a starting point and a target for each, with the policies and actions behind them. The targets then feed your yearly goals and the report."); "Report draft" no longer mentions linking topics to targets. The road now runs 3 + 3 + 2 stops, FINAL REPORT at the end of the third row, and "Runs alongside all steps" sits under the road.
+- Builder request (3 Nov 2026): "Who we are" drops the lede "From double materiality to a plan your teams actually use."; the pull quote sits next to the heading, centred on it (stacks under it on narrow screens).
 [Rule: one line per decision made during the build that is not in the spec — prompt structures, field formats, naming choices, library picks. Future sessions depend on these to stay consistent.]
 
 ## Known issues

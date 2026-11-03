@@ -1021,3 +1021,7 @@ body{overflow-x:clip}
 .salong.below{position:static;transform:none;width:auto;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 14px;margin:-4px 0 18px}
 .salong.below .alh{grid-column:1/-1}
 @media(max-width:760px){.salong.below{grid-template-columns:1fr;margin-top:0}}
+.pitch.pitch2{align-items:center;row-gap:10px}
+.pitch2>.eyebrow{grid-column:1/-1;justify-self:start}
+@media (max-width:820px){.pitch2 blockquote{margin-top:6px}}
+.pitch2>.eyebrow{background:var(--terra-soft);color:var(--terra);padding:5px 12px;border-radius:999px;width:fit-content}
