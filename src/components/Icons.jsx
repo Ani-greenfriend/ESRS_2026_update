@@ -28,7 +28,7 @@ export default function Icon({ name, size = 16 }) {
 export function ChapterHead({ icon, eyebrow, title, short, steps }) {
   return (
     <div className="chead">
-      <div className="eyebrow"><Icon name={icon} />{eyebrow}</div>
+      {eyebrow && <div className="eyebrow"><Icon name={icon} />{eyebrow}</div>}
       <h2>{title}</h2>
       {short && <p className="lede short">{short}</p>}
       {steps && (

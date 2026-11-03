@@ -39,14 +39,14 @@ function Label({ t }) {
   return <><span>{main}</span><small>{sub}</small></>;
 }
 
-export default function WhoReports({ onNonEU }) {
+export default function WhoReports() {
   return (
     <section className="ch" id="who">
       <ChapterHead icon="calendar" eyebrow="Who is in scope" title="Who reports when" short="Check the new legal thresholds that changed in 2026." />
-      {/* v2.4: the thresholds as one strip and non-EU groups in one line; "Find your row" follows the non-EU block */}
+      {/* "In the EU": the two thresholds (builder request, 3 Nov 2026); "Outside the EU? Two ways in" follows */}
       <div className="thrstrip">
         <div className="ts-l">
-          <span className="eyebrow" style={{ color: "var(--olive)" }}>The two thresholds behind the check</span>
+          <h3 className="ts-h">In the EU</h3>
           <div className="gate"><span className="g">&gt; 1,000 employees</span><span className="andop">AND</span><span className="g">&gt; €450M net turnover</span></div>
         </div>
         <p className="ts-r">
@@ -54,8 +54,6 @@ export default function WhoReports({ onNonEU }) {
           <span className="src" tabIndex={0} data-ftip="Old test: 250 employees and €50M turnover (any two of three criteria). Parent companies use consolidated group figures." aria-label="More info">i</span>
         </p>
       </div>
-      {/* Builder request (3 Nov 2026): one short line; the link jumps to "Outside the EU? Two ways in" right below. */}
-      <p className="nonline"><b>If you are outside the EU,</b> <a href="#noneu" className="nonlink" onClick={onNonEU}>keep reading below</a>.</p>
     </section>
   );
 }

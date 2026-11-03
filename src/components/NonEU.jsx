@@ -24,7 +24,7 @@ const ROUTES = [
 export default function NonEU() {
   return (
     <section className="ch" id="noneu">
-      <ChapterHead icon="globe" eyebrow="Non-EU groups" title="Outside the EU? Two ways in" short="A non-EU group can fall under both routes. Check both." />
+      <ChapterHead title="Outside the EU? Two ways in" short="A non-EU group can fall under both routes. Check both." />
       <div className="ways">
         {ROUTES.map((r) => (
           <div key={r.k} className={`way2 ${r.k}`}>

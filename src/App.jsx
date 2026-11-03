@@ -41,11 +41,6 @@ export default function App() {
   const [pdfError, setPdfError] = useState(false);
   const [pdfLink, setPdfLink] = useState(null);
   const [gateOpen, setGateOpen] = useState(false);
-  // Non-EU groups ("Outside the EU? Two ways in") is always shown under "Who reports when" (builder request, 3 Nov 2026).
-  const toNonEU = useCallback((e) => {
-    e.preventDefault();
-    document.getElementById("noneu")?.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
-  }, []);
   const opener = useRef(null);
   const utm = useMemo(readUtm, []);
 
@@ -146,7 +141,7 @@ export default function App() {
       <ChapterNav />
       <main className="wrap">
         {/* Spec v2.4 chapter order */}
-        <WhoReports onNonEU={toNonEU} />
+        <WhoReports />
         <NonEU />
         <FindYourRow onContact={sendContact} />
         <Cases onContact={sendContact} />
