@@ -32,16 +32,6 @@ export default function Fy2026() {
       <div className="fynotes">
       <p className="advice"><b>Our tip</b> Starting with ESRS now? Route C is usually the natural fit: you have no 2025 report to compare with, so you can begin on the slimmer standards. Whichever route you choose, agree it with your auditor early.</p>
       </div>
-      <details className="srcbox hov">
-        <summary>Where this comes from</summary>
-        <p>All three routes come from one legal text: Delegated Regulation (EU) 2026/1563 (Official Journal, 21 September 2026, in force from 10 November 2026). Article 2 sets the choice for FY2026.</p>
-        <ul>
-          <li><b>Route A and C</b> Article 2(1)(a): report FY2026 under the Pre-Omnibus ESRS (A) or the Revised ESRS (C).</li>
-          <li><b>Route B</b> Article 2(1)(b): Pre-Omnibus ESRS plus up to eight reliefs, taken from ESRS 1 paragraphs 27, 32-33, 74-75, 90, 91, 92, 106 and 110.</li>
-          <li><b>All routes</b> Article 2(2): state in your report which version you applied. Article 3: the Revised ESRS apply to all in scope from financial years starting on or after 1 January 2027.</li>
-        </ul>
-        <p className="srcnote"><b>Scope and dates</b> Who is in scope comes from the Omnibus I Directive (EU) 2026/470. Datapoint counts come from EFRAG's 2026 draft list and explanatory note.</p>
-      </details>
     </section>
   );
 }

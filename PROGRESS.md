@@ -127,6 +127,7 @@ Carried over from session 3:
 - Builder request (3 Nov 2026): the "If you are outside the EU, keep reading below." line and the "Non-EU groups" eyebrow are removed; the threshold strip is titled "In the EU" (replacing the small label "The two thresholds behind the check"), so the page reads "In the EU" then "Outside the EU? Two ways in". The cover hint for an "Outside the EU" answer still points to "Two ways in".
 - Builder request (3 Nov 2026): "Find your row" drops the "What are wave 1 and wave 2?" toggle and its Good to know line (years reported on, wave 1, transposition by 19 March 2027, where to find the national measures); the "This is not legal advice…" note moves from the non-EU block to just above the "Not sure on which level you report?" band.
 - Builder request (3 Nov 2026): the "Not sure what applies to you?" box under the example cases is removed (the contact form stays in the blue band after "Find your row"); the cases heading reads "Examples: parent, subsidiary or neither?".
+- Builder request (3 Nov 2026): "Which standard" drops the "Where this comes from" toggle (Article 2 and 3 lines, scope and dates note); each route card keeps its source behind the i icon.
 [Rule: one line per decision made during the build that is not in the spec — prompt structures, field formats, naming choices, library picks. Future sessions depend on these to stay consistent.]
 
 ## Known issues
