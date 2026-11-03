@@ -18,7 +18,7 @@ const ICO = [
 
 const MAIN = [
   { t: "Screening and scoping", sv: 0, d: "Check whether you report, from which year and on which standard route. Collect what you already have (policies, reports, data sources, owners) and bring sponsor, finance, HR, legal, IT and the data holders together." },
-  { t: "Double materiality assessment", sv: 1, d: "Refresh your last assessment or run a new one. Conclude at topic level: the lighter top-down approach no longer asks you to test every impact, risk and opportunity." },
+  { t: "Double materiality assessment", sv: 1, d: "Refresh your last assessment or run a new one. You may conclude at topic level: the lighter top-down approach no longer asks you to test every impact, risk and opportunity. IROs are still important." },
   { t: "Strategy development", sv: 2, d: "Build your strategy on the material topics: an objective, a starting point and a target for each, with the policies and actions behind them. The targets then feed your yearly goals and the report." },
   { t: "Data gap analysis", sv: 4, d: "Compare the datapoints for your material topics with the data you have today. List what is missing, where it could come from and how big the gap is." },
   { t: "Data set-up and owner mapping", sv: 4, d: "Name an owner for every datapoint. Set up templates, controls and a calendar so the data is captured during the year, not at the end." },
