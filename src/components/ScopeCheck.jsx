@@ -1,6 +1,5 @@
 import { Q } from "../lib/data.js";
 import { answerLines, nextQuestion, totalSteps, verdict } from "../lib/scope.js";
-import { Gated } from "./unlock.jsx";
 
 function Answers({ hist, A }) {
   return (
@@ -82,17 +81,13 @@ export default function ScopeCheck({ scope, setScope }) {
               <div className="verdict">
                 <span className={`vbadge ${v.c}`}>{v.b}</span>
                 <h3>{v.h}</h3>
-                <Gated label="Full reasons and next steps come with your free PDF">
-                  <ul className="vlist">
-                    {v.l.map((x) => (
-                      <li key={x}>{x}</li>
-                    ))}
-                  </ul>
-                </Gated>
-                <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                  {v.fy && <a href="#fy2026" className="btn pri" style={{ textDecoration: "none" }}>Pick your FY2026 route</a>}
-                  <a href="#onepager" className="btn pdfbtn" style={{ textDecoration: "none" }}>Get this as a PDF</a>
-                </div>
+                {/* Builder request (3 Nov 2026): the result shows in full here, with no lock and no buttons. */}
+                <ul className="vlist">
+                  {v.l.map((x) => (
+                    <li key={x}>{x}</li>
+                  ))}
+                </ul>
+                <p className="vnext">Run through this one-pager and download your personalized PDF below.</p>
               </div>
               <Answers hist={hist} A={A} />
               <p className="qhelp">Indicative only. National transposition is due by 19 March 2027.</p>

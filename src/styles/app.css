@@ -974,3 +974,5 @@ body{overflow-x:clip}
 .sl b,.salong .alh{color:var(--fg)}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .sl b{background:linear-gradient(transparent 58%,var(--mark) 58%)}}
 :root[data-theme="dark"] .sl b{background:linear-gradient(transparent 58%,var(--mark) 58%)}
+/* Builder request (3 Nov 2026): one line under the scope result instead of the lock and two buttons */
+.vnext{margin:4px 0 0;font-weight:600;color:var(--fg)}
