@@ -40,12 +40,10 @@ export default function NonEU() {
       </div>
       <details className="hov w2more">
         <summary>Good to know</summary>
-        <ul>
-          <li>Route 1: the EU subsidiary can be exempt if the non-EU parent voluntarily publishes a consolidated report under the full ESRS (or an equivalent standard) that covers it.</li>
-          <li>Route 2: dedicated standards for non-EU groups are expected from October 2027 at the earliest. Financial holding undertakings can opt out.</li>
-        </ul>
+        <p><b>No EU subsidiary?</b> Then your EU branch reports for the group.</p>
+        <p><b>Have an EU subsidiary?</b> It does not need its own report if your non-EU parent publishes a group report that covers it, under the full ESRS or an equivalent standard.</p>
       </details>
-      <p className="advice"><b>Our tip</b> Start with your EU subsidiary. Its deadline comes first (FY2027). Not sure where you stand? Run the <a href="#scope">scope check</a> above or <a href={`mailto:anikalerch@greenfriend.org?subject=${encodeURIComponent("ESRS update check: non-EU group")}`}>email us</a>.</p>
+      <p className="advice w2tip">This is not legal advice. Start with your EU subsidiary, its deadline comes first (FY2027). If you are still unsure, check with your auditor or legal adviser, or <a href={`mailto:anikalerch@greenfriend.org?subject=${encodeURIComponent("ESRS update check: non-EU group")}`}>email us</a>.</p>
     </section>
   );
 }

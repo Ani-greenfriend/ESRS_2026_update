@@ -37,7 +37,7 @@ function Chunk({ c, i, src }) {
 export default function WhatChanged() {
   return (
     <section className="ch" id="overview">
-      <ChapterHead icon="check" eyebrow="What changed" title="Six things changed in the ESRS 2026" short="Smaller scope, far fewer datapoints, a lighter assessment, plus the dates to put in your calendar." steps={[["Scan", "the six changes"], ["Tap", "a card for detail"], ["Note", "the key dates below"]]} />
+      <ChapterHead icon="check" eyebrow="What changed" title="Six things changed in the ESRS 2026" short="Smaller scope, far fewer datapoints, a lighter assessment, plus the dates to put in your calendar." />
       <div className="chunks">
         {CHUNKS.map((c, i) => (
           <Chunk key={c.t} c={c} i={i} src={REFS[i]} />
