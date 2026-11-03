@@ -1038,3 +1038,10 @@ body{overflow-x:clip}
 #roadmap{padding-bottom:12px}
 #onepager{padding-top:24px}
 @media (max-width:640px){#roadmap{padding-bottom:8px}#onepager{padding-top:20px}}
+/* Builder request (3 Nov 2026): intro + form on top, the PDF contents across the full width below */
+.op{row-gap:18px}
+.op-pdf{grid-column:1/-1;display:grid;gap:8px;border-top:1px solid var(--line);padding-top:16px}
+.op-pdf .optitle{margin:0}
+.op-pdf .optiles{grid-template-columns:repeat(4,minmax(0,1fr));max-width:none;margin:0}
+@media (max-width:900px){.op-pdf .optiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.op-pdf .optiles{grid-template-columns:1fr}}

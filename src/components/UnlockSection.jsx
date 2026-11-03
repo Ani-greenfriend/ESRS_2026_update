@@ -11,11 +11,10 @@ const TILES = [
   ["Dates to plan around", "The timeline from Omnibus I to FY2027, in one line."],
 ];
 
-// "Your results, as one PDF" (spec v2.4): four tiles that match the PDF, the format line, a live status list and the form;
+// "Your results, as one PDF" (spec v2.4): four tiles that match the PDF, the format line and the form (no status list, builder request 3 Nov 2026);
 // after an unlock the "Take your results with you" box with one Download PDF button (CLAUDE.md v2.4, Export).
 export default function UnlockSection({ snap, formProps, done }) {
   const { unlocked } = useUnlock();
-  const e = snap.est;
   return (
     <section className="ch" id="onepager">
       <div className="op">
@@ -23,6 +22,10 @@ export default function UnlockSection({ snap, formProps, done }) {
           <div className="eyebrow"><Icon name="doc" />Your PDF</div>
           <h2>Your results, as one PDF</h2>
           <p className="lede">Work through the checker and the guide above, then take everything away on one page. Free, just your email.</p>
+        </div>
+        {unlocked ? <UnlockDone {...done} /> : <UnlockForm id="op" className="op-form" {...formProps} />}
+        {/* Builder request (3 Nov 2026): the PDF contents run across the full width under the intro and the form. */}
+        <div className="op-pdf">
           <p className="optitle"><b>What is in your PDF</b></p>
           <div className="optiles">
             {TILES.map(([t, d], i) => (
@@ -30,20 +33,7 @@ export default function UnlockSection({ snap, formProps, done }) {
             ))}
           </div>
           <p className="optitle fmt">One page, A2 landscape, ready to print or forward to your CFO or board. The 2027 roadmap stays in the tool above. It includes a short disclaimer on liability, sources and AI use.</p>
-          <ul className="op-list" id="op-status">
-            <li className={snap.scope ? "done" : undefined}>
-              {snap.scope
-                ? <>Scope: <b>{snap.scope.badge}</b>. Your answers go into the PDF.</>
-                : <>Scope check not finished: your PDF will show a general guide. <a href="#scope">Finish it</a></>}
-            </li>
-            <li className={e.state === "own" ? "done" : undefined}>
-              {e.state === "own"
-                ? <>Datapoints: <b>{e.old} → {e.now}</b> for {e.codes.length} topic{e.codes.length === 1 ? "" : "s"}</>
-                : <>Topics not selected: your PDF will show the full range, 57 to 292. <a href="#datapoints">Select your topics</a></>}
-            </li>
-          </ul>
         </div>
-        {unlocked ? <UnlockDone {...done} /> : <UnlockForm id="op" className="op-form" {...formProps} />}
       </div>
       {unlocked && (
         <div className="deckbox">
