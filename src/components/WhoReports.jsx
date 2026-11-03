@@ -1,5 +1,6 @@
 import { G } from "../lib/data.js";
 import { ChapterHead } from "./Icons.jsx";
+import ContactBox from "./ContactBox.jsx";
 
 const YEARS = ["FY2024", "FY2025", "FY2026", "FY2027", "FY2028"];
 const KEY = [
@@ -61,7 +62,7 @@ export default function WhoReports({ onNonEU }) {
 
 
 // Builder request (3 Nov 2026): "Find your row" sits below "Outside the EU? Two ways in", before the example cases.
-export function FindYourRow() {
+export function FindYourRow({ onContact }) {
   return (
     <section className="ch" id="rows" aria-labelledby="rows-h">
       <h3 className="gtitle" id="rows-h">Find your row</h3>
@@ -99,11 +100,9 @@ export function FindYourRow() {
         </ul>
       </details>
       <p className="tip"><b>Good to know</b> Years shown are the financial year reported on. Wave 1 means EU companies that already reported for FY2024. Member States must transpose Omnibus I by 19 March 2027, so check national law for the FY2025–2026 exemption. Each country's measures are listed on EUR-Lex, on the page of Directive (EU) 2026/470 under "National transposition".</p>
-      {/* Builder request (3 Nov 2026): the "Email us" band closes the EU / non-EU / thresholds part, before the example cases. */}
-      <div className="rhelp top" style={{ marginTop: 20 }}>
-        <div><b>Not sure on which level you report?</b><span>We can help you find out whether you report as a parent, subsidiary or neither, and from which year. Send us a short email.</span></div>
-        <a className="pb pri" href={`mailto:anikalerch@greenfriend.org?subject=${encodeURIComponent("ESRS update check: on which level do we report?")}`}>Email us</a>
-      </div>
+      {/* Builder requests (3 Nov 2026): the band closes the EU / non-EU / thresholds part; an email field instead of "Email us". */}
+      <ContactBox id="rows" band onContact={onContact} title="Not sure on which level you report?"
+        text="We can help you find out whether you report as a parent, subsidiary or neither, and from which year. Leave your email address, we will reach out to you." />
     </section>
   );
 }

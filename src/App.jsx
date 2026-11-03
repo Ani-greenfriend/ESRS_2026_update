@@ -148,7 +148,7 @@ export default function App() {
         {/* Spec v2.4 chapter order */}
         <WhoReports onNonEU={toNonEU} />
         <NonEU />
-        <FindYourRow />
+        <FindYourRow onContact={sendContact} />
         <Cases onContact={sendContact} />
         <WhatChanged />
         <Fy2026 />

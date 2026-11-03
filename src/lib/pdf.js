@@ -139,8 +139,6 @@ function draw(jsPDF, snap) {
     T(o.t, X2 + 19, cy + 11, 13, true, INK);
     T(o.std, X2 + 19, cy + 16.5, 8, true, INDIGO);
     wrap(o.d, X2 + 19, cy + 22.5, 50, 7.8, false, MUTED, 3.4);
-    T("EFFORT NOW", X2 + 126, cy + 7.8, 5.6, true, MUTED, { align: "right" });
-    [1, 2, 3].forEach((n) => { d.setFillColor(...(n <= o.eff ? CORAL : SOFT)); d.circle(X2 + 129 + n * 3.6, cy + 7, 1.2, "F"); });
     const fx = X2 + 72;
     d.setFillColor(...YELLOW); d.roundedRect(fx, cy + 12, 10, 4, 2, 2, "F");
     T("FITS IF", fx + 5, cy + 14.8, 5.8, true, [42, 36, 0], { align: "center" });

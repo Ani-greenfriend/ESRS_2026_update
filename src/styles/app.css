@@ -1007,3 +1007,13 @@ body{overflow-x:clip}
 /* "Find your row" as its own block after the non-EU routes */
 #rows{padding-top:8px}
 #rows .gtitle{margin-top:0}
+/* Builder request (3 Nov 2026): the blue band after "Find your row" holds the contact form */
+.casecta.ccband{background:var(--olive);border-color:var(--olive);color:var(--surface)}
+.ccband .cc-text span{color:color-mix(in srgb,var(--surface) 88%,transparent)}
+.ccband .chk,.ccband .op-note,.ccband .op-note a{color:color-mix(in srgb,var(--surface) 90%,transparent)}
+.ccband .op-msg.ok{color:var(--surface)}
+.ccband .op-msg.err{color:#ffd9d2}
+.ccband .btn.pri{background:var(--mark-solid);color:var(--on-mark);border-color:var(--mark-solid)}
+.ccband .cc-row input{background:var(--surface);border-color:transparent}
+:root[data-theme="dark"] .casecta.ccband{color:#06201c}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .casecta.ccband{color:#0d1128}:root:not([data-theme="light"]) .ccband .cc-text span,:root:not([data-theme="light"]) .ccband .chk,:root:not([data-theme="light"]) .ccband .op-note,:root:not([data-theme="light"]) .ccband .op-note a{color:#0d1128}}

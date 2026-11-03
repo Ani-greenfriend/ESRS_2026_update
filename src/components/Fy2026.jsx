@@ -1,9 +1,7 @@
 import { OPT } from "../lib/data.js";
 import { ChapterHead } from "./Icons.jsx";
 
-const EFFORT = ["", "low", "medium", "high"];
-
-// Spec v2.0+: three fixed route cards, no questionnaire, no scoring, nothing locked.
+// Spec v2.0+: three fixed route cards, no questionnaire, no scoring, nothing locked. No effort dots (builder request, 3 Nov 2026).
 function RouteCard({ o }) {
   const src = `Source: Delegated Regulation (EU) 2026/1563, ${o.src}`;
   return (
@@ -13,12 +11,6 @@ function RouteCard({ o }) {
       <h3>{o.t}</h3>
       <small className="std2">{o.std}</small>
       <p>{o.d}</p>
-      <div className="eff">
-        <small>Effort now</small>
-        <span className="dots" role="img" aria-label={EFFORT[o.eff]}>
-          {[1, 2, 3].map((n) => <i key={n} className={n <= o.eff ? "on" : undefined} />)}
-        </span>
-      </div>
       <p className="mean"><b>Fits if</b> {o.bi}</p>
       {o.more && (
         <details className="o3more">

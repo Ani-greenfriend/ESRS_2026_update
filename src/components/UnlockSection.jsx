@@ -6,7 +6,7 @@ import { PDF_NAME } from "../lib/pdf.js";
 
 const TILES = [
   ["Scope", "Your answers, whether and from when you report, and what it means for you."],
-  ["FY2026 route options", "Routes A, B and C with the effort of each and when it fits."],
+  ["FY2026 route options", "Routes A, B and C and when each one fits."],
   ["Datapoints", "Your number, current ESRS against the revised ESRS, per topic you selected."],
   ["Dates to plan around", "The timeline from Omnibus I to FY2027, in one line."],
 ];
