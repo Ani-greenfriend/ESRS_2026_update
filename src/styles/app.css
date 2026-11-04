@@ -1103,3 +1103,10 @@ section.ch h2,section.about h2{font-family:var(--serif);font-weight:700;font-siz
 /* Builder request (4 Nov 2026): ESRS 2 as a fixed ticked box. */
 .estboxes label.always{cursor:default}
 .estboxes label.always input{opacity:1}
+/* Builder request (4 Nov 2026): breakdown under the bars: ESRS 2 + GDR, ticked topics, total. */
+.bdown{border-top:1px solid var(--line);padding-top:8px;display:grid;gap:2px}
+.brow{display:grid;grid-template-columns:minmax(0,1fr) auto 48px;gap:10px;align-items:center;font-size:.85rem;padding:3px 0}
+.brow b.num{text-align:right}
+.brow .tnote{color:var(--muted);font-size:.8rem}
+.brow.total{border-top:1px solid var(--line);margin-top:4px;padding-top:8px;font-weight:700}
+.brow.total b.num{font-size:1.05rem}

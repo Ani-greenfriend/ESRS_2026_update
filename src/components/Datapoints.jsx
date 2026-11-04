@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TOPICS } from "../lib/data.js";
+import { STAT, TOPICS } from "../lib/data.js";
 import { estimate } from "../lib/estimator.js";
 import { ChapterHead } from "./Icons.jsx";
 
@@ -67,13 +67,21 @@ function FactSheet() {
   );
 }
 
-function Bars({ o, n, max, total }) {
+function Bars({ o, n, max, topics }) {
+  const base = STAT["ESRS 2"][1] + 31;
   return (
     <div className="bars">
       <div className="bar"><span>2023</span><span className="tr"><i style={{ width: `${(o / max) * 100}%`, background: "var(--sand)" }} /></span><b className="num">{o}</b></div>
       <div className="bar"><span>Revised</span><span className="tr"><i style={{ width: `${(n / max) * 100}%`, background: "var(--olive)" }} /></span><b className="num">{n}</b></div>
-      {/* Builder request (3 Nov 2026): the total sits right under the numbers; no bar, because the 31 never enter the bars. */}
-      {total != null && <div className="bar total"><span>Total</span><span className="tnote">Revised {n} + 31 GDR</span><b className="num">{total}</b></div>}
+      {/* Builder request (4 Nov 2026): revised ESRS 2 plus the 31 GDR first, then each ticked topic, then the total. The 31 never enter the bars. */}
+      <div className="bdown">
+        <div className="brow"><span>ESRS 2 + GDR</span><span className="tnote">Revised {STAT["ESRS 2"][1]} + 31 GDR</span><b className="num">{base}</b></div>
+        {topics.map((c) => {
+          const name = TOPICS.find((t) => t[0] === c)[1];
+          return <div key={c} className="brow"><span><b>{c}</b> {name}</span><span className="tnote" /><b className="num">+{STAT[c][1]}</b></div>;
+        })}
+        <div className="brow total"><span>Total</span><span className="tnote" /><b className="num">{n + 31}</b></div>
+      </div>
     </div>
   );
 }
@@ -109,7 +117,7 @@ function Estimator({ topics, setTopics }) {
           You go from <span className="num">{e.old}</span> to <em className="num">{e.now}</em> mandatory datapoints. That is <em className="num">{e.pct}%</em> fewer.
         </p>
         {/* Builder request (3 Nov 2026): the breakdown is open, no lock. */}
-          <Bars o={e.old} n={e.now} max={e.old} total={e.now + 31} />
+          <Bars o={e.old} n={e.now} max={e.old} topics={e.topics} />
           <p className="est-add">
             <b>GDR (General Disclosure Requirements) are the 31 new general datapoints</b> on policies, actions, targets and metrics. They count once, whatever topics you tick, and stay out of the percentage.
           </p>
