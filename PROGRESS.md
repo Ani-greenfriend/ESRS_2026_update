@@ -158,6 +158,8 @@ Carried over from session 3:
 - About: step 0 tag "Kick-off" with a prepared 3–4 hour kick-off deliverable (20-minute call removed on the page; PDF footer still mentions it, open question); Anika chip "Founder greenfriend. · Ex-Just Eat Takeaway".
 - Who reports when short answer names "CSRD Omnibus I / 2026 revision".
 
+- Estimator: second fixed box "ESRS 2 GDR" (the 31 general datapoints); the line under the total explains GDR = the 31 new general datapoints, counted once, outside the percentage (replaces "Plus 31 general datapoints", builder request 4 Nov 2026).
+
 ## Known issues
 Before going public (builder): send EFRAG (digital-reporting@efrag.org) the courtesy note on using datapoint counts with attribution; have an auditor or partner read the scope logic; privacy contact signs off the notice.
 Clean-up job deferred (see Backlog): until it runs, nothing is anonymised after 30 days or deleted after 24 months automatically, although the privacy notice promises both.
