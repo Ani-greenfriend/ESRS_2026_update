@@ -1100,3 +1100,6 @@ section.ch h2,section.about h2{font-family:var(--serif);font-weight:700;font-siz
 .backup{display:flex;width:fit-content;align-items:center;gap:8px;margin:0 0 14px;padding:8px 14px;border-radius:12px;background:var(--surface,#fff);border:1px solid color-mix(in srgb,#3a3fd1 30%,transparent);color:#3a3fd1;font-weight:600;font-size:.95rem;text-decoration:none}
 .backup span{font-size:1.1rem;line-height:1}
 .backup:hover,.backup:focus-visible{background:color-mix(in srgb,#3a3fd1 10%,var(--surface,#fff))}
+/* Builder request (4 Nov 2026): ESRS 2 as a fixed ticked box. */
+.estboxes label.always{cursor:default}
+.estboxes label.always input{opacity:1}

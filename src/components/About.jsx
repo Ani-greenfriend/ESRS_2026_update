@@ -24,7 +24,7 @@ const List = ({ items }) => (
 );
 
 const DIFF = [
-  ["You work with us, not a junior team", "We do all the work ourselves. The people you meet are the people who deliver."],
+  ["You work with us, not a junior team", "We are hands-on and do all the work ourselves. The people you meet are the people who deliver, and we break down complexity so your teams can act on it."],
   ["Inside experience, consulting and tech", "We have led sustainability inside large companies, advised many others, and build our own tools. So our solutions work in practice and save manual work."],
   ["Strategy first, box-ticking last", "We go beyond compliance and help you build a strategy that creates real value for your business and the people who depend on it."],
 ];
