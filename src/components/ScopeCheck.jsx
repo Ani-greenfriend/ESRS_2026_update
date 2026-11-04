@@ -87,7 +87,6 @@ export default function ScopeCheck({ scope, setScope }) {
                     <li key={x}>{x}</li>
                   ))}
                 </ul>
-                <p className="vnext">Run through this one-pager and download your personalized PDF below.</p>
               </div>
               <p className="qhelp">Indicative only, not legal advice. National transposition is due by 19 March 2027.</p>
             </>
