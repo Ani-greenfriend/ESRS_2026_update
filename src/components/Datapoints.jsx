@@ -97,7 +97,7 @@ function Estimator({ topics, setTopics }) {
       </div>
       <div className="estout" aria-live="polite">
         <p className="headline">
-          You go from <span className="num">{e.old}</span> to <em className="num">{e.now}</em> mandatory datapoints. That is <em className="num">{e.pct}%</em> fewer. Nice.
+          You go from <span className="num">{e.old}</span> to <em className="num">{e.now}</em> mandatory datapoints. That is <em className="num">{e.pct}%</em> fewer.
         </p>
         {/* Builder request (3 Nov 2026): the breakdown is open, no lock. */}
           <Bars o={e.old} n={e.now} u={e.unc} max={e.old} total={e.now + 31} />
