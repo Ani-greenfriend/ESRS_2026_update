@@ -42,7 +42,7 @@ function Label({ t }) {
 export default function WhoReports() {
   return (
     <section className="ch" id="who">
-      <ChapterHead icon="calendar" eyebrow="Who is in scope" title="Who reports when" short="Check the new legal thresholds that changed in 2026." />
+      <ChapterHead icon="calendar" eyebrow="Who is in scope" title="Who reports when" short="Check the new legal thresholds that changed in 2026 (CSRD Omnibus I / 2026 revision)." />
       {/* "In the EU": the two thresholds (builder request, 3 Nov 2026); "Outside the EU? Two ways in" follows */}
       <div className="thrstrip eupanel">
         <div className="ts-l">
