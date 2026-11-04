@@ -153,6 +153,11 @@ Carried over from session 3:
 - Builder request (4 Nov 2026): step 3 "Make clear who owns what" drops ", for example ESRS for finance or greenwashing risks for marketing" and the deliverable "A peer benchmark with the pros and cons of each ownership model".
 [Rule: one line per decision made during the build that is not in the spec — prompt structures, field formats, naming choices, library picks. Future sessions depend on these to stay consistent.]
 
+- Cover: "Get your free PDF" button stays visible (builder decision, 4 Nov 2026); after that jump the PDF section shows "Back to the start of the guide" (to #who).
+- Estimator: ESRS 2 is a fixed ticked first box (always in the count); no Unconditional bar on the page (PDF unchanged).
+- About: step 0 tag "Kick-off" with a prepared 3–4 hour kick-off deliverable (20-minute call removed on the page; PDF footer still mentions it, open question); Anika chip "Founder greenfriend. · Ex-Just Eat Takeaway".
+- Who reports when short answer names "CSRD Omnibus I / 2026 revision".
+
 ## Known issues
 Before going public (builder): send EFRAG (digital-reporting@efrag.org) the courtesy note on using datapoint counts with attribution; have an auditor or partner read the scope logic; privacy contact signs off the notice.
 Clean-up job deferred (see Backlog): until it runs, nothing is anonymised after 30 days or deleted after 24 months automatically, although the privacy notice promises both.
