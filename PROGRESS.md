@@ -4,8 +4,8 @@
 > anything. Update it at every save point. Replace content — do not append.
 > History lives in git.
 
-**Session:** 7
-**Last updated:** 3 November 2026
+**Session:** 8
+**Last updated:** 4 November 2026
 **Live URL:** https://esrs2026update.netlify.app (Netlify default address until check.greenfriend.org is connected); release v1.0 = merge commit 1f047f6 on main [Rule: fill in after the first successful deploy]
 **Stage:** business logic and database [Rule: one of — business logic and database / second screen and access design / login and access rules together / deploy and maintain. Advance it when that stage's items are absorbed into Current state. The stage is decided by what exists, never by a week or a version number.]
 **Supabase project:** exists and built — "ESRS 2026 update tool", ref jfalwveuccerzeffxftx, URL https://jfalwveuccerzeffxftx.supabase.co, confirmed with the builder in session 1 [Rule: the only place project existence is recorded; CLAUDE.md never carries it]
@@ -147,7 +147,16 @@ Carried over from session 3:
 - Builder request (3 Nov 2026): "FY2027" / "FY2028" on the non-EU route cards use the same size and weight as the "In the EU" threshold boxes (Literata 700, up to 1.55 rem).
 - Builder request (3 Nov 2026): the blue band text drops "Leave your email address, we will reach out to you."; in "How we help, step by step" the + on any card folds all five cards out (and back) together, with equal card heights.
 - Builder request (3 Nov 2026): the PDF sign-up card uses the cover gradient with white text and a white email field so it stands out; "What is in your PDF" (tiles and format line) moves below the card as a small folded toggle, closed by default.
+- Builder requests (4 Nov 2026): a CTA in the cover under the scope check ("Get your free PDF ↓" to #onepager, with the tip "work through the page first. Your scope answers and datapoint topics go into your PDF."); the thresholds i icon lists the former criteria as any two of three: more than 250 employees, €50M net turnover, €25M total balance sheet assets; step 1 bullet "Draft and shortlist impacts, risks and opportunities"; step 3 "Map responsibilities together with your team", without "Help prepare quarterly board and committee updates…" and without the "one-page map of who owns what" deliverable; Elena's chip reads "Ex-FTSE 100 · Senior Director" (this reverses the 9 Oct correction that dropped FTSE 100; the "More about Elena" bullet still names Sage).
+- Builder request (4 Nov 2026): the line "Run through this one-pager and download your personalized PDF below." under the scope result is removed (the cover CTA "Get your free PDF ↓" replaces it).
+- Builder request (4 Nov 2026): the estimator headline ends "…% fewer." (no "Nice.").
+- Builder request (4 Nov 2026): step 3 "Make clear who owns what" drops ", for example ESRS for finance or greenwashing risks for marketing" and the deliverable "A peer benchmark with the pros and cons of each ownership model".
 [Rule: one line per decision made during the build that is not in the spec — prompt structures, field formats, naming choices, library picks. Future sessions depend on these to stay consistent.]
+
+- Cover: "Get your free PDF" button stays visible (builder decision, 4 Nov 2026); after that jump the PDF section shows "Back to the start of the guide" (to #who).
+- Estimator: ESRS 2 is a fixed ticked first box (always in the count); no Unconditional bar on the page (PDF unchanged).
+- About: step 0 tag "Kick-off" with a prepared 3–4 hour kick-off deliverable (20-minute call removed on the page; PDF footer still mentions it, open question); Anika chip "Founder greenfriend. · Ex-Just Eat Takeaway".
+- Who reports when short answer names "CSRD Omnibus I / 2026 revision".
 
 ## Known issues
 Before going public (builder): send EFRAG (digital-reporting@efrag.org) the courtesy note on using datapoint counts with attribution; have an auditor or partner read the scope logic; privacy contact signs off the notice.

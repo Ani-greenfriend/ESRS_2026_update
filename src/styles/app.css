@@ -1091,3 +1091,15 @@ section.ch h2,section.about h2{font-family:var(--serif);font-weight:700;font-siz
 @media (max-width:520px){.op-more .optiles{grid-template-columns:1fr}}
 .op-hero .eyebrow{width:fit-content;padding:5px 12px;border-radius:999px}
 #about .step .more[open]{margin-top:4px}
+/* Builder request (4 Nov 2026): CTA in the cover down to the PDF section */
+.cover-cta{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin-top:22px}
+.cover-cta .cta{margin-top:0;text-decoration:none}
+.cover-cta span{color:color-mix(in srgb,var(--on-band) 82%,transparent);font-size:.95rem;max-width:52ch}
+.cover .cover-cta a.cta{margin-top:0}
+/* Builder request (4 Nov 2026): arrow back up after the cover CTA jump to the PDF section. */
+.backup{display:flex;width:fit-content;align-items:center;gap:8px;margin:0 0 14px;padding:8px 14px;border-radius:12px;background:var(--surface,#fff);border:1px solid color-mix(in srgb,#3a3fd1 30%,transparent);color:#3a3fd1;font-weight:600;font-size:.95rem;text-decoration:none}
+.backup span{font-size:1.1rem;line-height:1}
+.backup:hover,.backup:focus-visible{background:color-mix(in srgb,#3a3fd1 10%,var(--surface,#fff))}
+/* Builder request (4 Nov 2026): ESRS 2 as a fixed ticked box. */
+.estboxes label.always{cursor:default}
+.estboxes label.always input{opacity:1}
