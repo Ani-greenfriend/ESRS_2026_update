@@ -1091,3 +1091,8 @@ section.ch h2,section.about h2{font-family:var(--serif);font-weight:700;font-siz
 @media (max-width:520px){.op-more .optiles{grid-template-columns:1fr}}
 .op-hero .eyebrow{width:fit-content;padding:5px 12px;border-radius:999px}
 #about .step .more[open]{margin-top:4px}
+/* Builder request (4 Nov 2026): CTA in the cover down to the PDF section */
+.cover-cta{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin-top:22px}
+.cover-cta .cta{margin-top:0;text-decoration:none}
+.cover-cta span{color:color-mix(in srgb,var(--on-band) 82%,transparent);font-size:.95rem;max-width:52ch}
+.cover .cover-cta a.cta{margin-top:0}

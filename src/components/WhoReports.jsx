@@ -51,7 +51,7 @@ export default function WhoReports() {
         </div>
         <p className="ts-r">
           Meet both and you report under the revised ESRS: keep going if you report today, first report <b>FY2027</b> if you are new. Parents use group figures.{" "}
-          <span className="src" tabIndex={0} data-ftip="Former criteria: 250 employees and €50M turnover (any two of three criteria). Parent companies use consolidated group figures." aria-label="More info">i</span>
+          <span className="src" tabIndex={0} data-ftip="Former criteria (any two of three): more than 250 employees, more than €50M net turnover, more than €25M total balance sheet assets. Parent companies use consolidated group figures." aria-label="More info">i</span>
         </p>
       </div>
     </section>
