@@ -1,5 +1,5 @@
 // Spec v2.4 cover: gradient band, brand line, H1, one line, and the scope check as the main focus of the page.
-export default function Cover({ children }) {
+export default function Cover({ children, onJump }) {
   return (
     <div className="cover">
       <header className="wrap top">
@@ -9,7 +9,7 @@ export default function Cover({ children }) {
         {children}
         {/* Builder request (4 Nov 2026): a way straight down to the PDF, with a hint to work through the page first. */}
         <div className="cover-cta">
-          <a className="cta" href="#onepager">Get your free PDF ↓</a>
+          <a className="cta" href="#onepager" onClick={onJump}>Get your free PDF ↓</a>
           <span>Tip: work through the page first. Your scope answers and datapoint topics go into your PDF.</span>
         </div>
       </header>

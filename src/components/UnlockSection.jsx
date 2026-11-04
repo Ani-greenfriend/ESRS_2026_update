@@ -13,10 +13,16 @@ const TILES = [
 
 // "Your results, as one PDF" (spec v2.4): four tiles that match the PDF, the format line and the form (no status list, builder request 3 Nov 2026);
 // after an unlock the "Take your results with you" box with one Download PDF button (CLAUDE.md v2.4, Export).
-export default function UnlockSection({ snap, formProps, done }) {
+export default function UnlockSection({ snap, formProps, done, fromTop, onBack }) {
   const { unlocked } = useUnlock();
   return (
     <section className="ch" id="onepager">
+      {/* Builder request (4 Nov 2026): after the cover's "Get your free PDF" jump, one arrow back up to the first section below the cover. */}
+      {fromTop && (
+        <a className="backup" href="#who" onClick={onBack}>
+          <span aria-hidden="true">↑</span> Back to the start of the guide
+        </a>
+      )}
       <div className="op op-hero">
         <div className="op-text">
           <div className="eyebrow"><Icon name="doc" />Your PDF</div>

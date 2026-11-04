@@ -30,6 +30,7 @@ const TOPIC_NAME = Object.fromEntries(TOPICS.map((t) => [t[0], t[1]]));
 export default function App() {
   const [unlocked, setUnlocked] = useState(readUnlocked);
   const [scope, setScope] = useState({ A: {}, hist: [] });
+  const [fromTop, setFromTop] = useState(false); // set by the cover CTA; shows the "back up" arrow in the PDF section
   const [topics, setTopicsRaw] = useState(DEFAULT_TOPICS);
   // The PDF tells an untouched default selection (an example) apart from the visitor's own (spec v2.3, estState()).
   const [topicsTouched, setTopicsTouched] = useState(false);
@@ -135,7 +136,7 @@ export default function App() {
 
   return (
     <UnlockContext.Provider value={{ unlocked, openGate }}>
-      <Cover>
+      <Cover onJump={() => setFromTop(true)}>
         <ScopeCheck scope={scope} setScope={setScope} />
       </Cover>
       <ChapterNav />
@@ -149,7 +150,7 @@ export default function App() {
         <Fy2026 />
         <Datapoints topics={topics} setTopics={setTopics} />
         <Roadmap />
-        <UnlockSection snap={snap} formProps={formProps} done={done} />
+        <UnlockSection snap={snap} formProps={formProps} done={done} fromTop={fromTop} onBack={() => setFromTop(false)} />
       </main>
       <About />
       <Footer />
