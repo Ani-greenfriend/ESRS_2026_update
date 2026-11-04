@@ -150,6 +150,7 @@ Carried over from session 3:
 - Builder requests (4 Nov 2026): a CTA in the cover under the scope check ("Get your free PDF ↓" to #onepager, with the tip "work through the page first. Your scope answers and datapoint topics go into your PDF."); the thresholds i icon lists the former criteria as any two of three: more than 250 employees, €50M net turnover, €25M total balance sheet assets; step 1 bullet "Draft and shortlist impacts, risks and opportunities"; step 3 "Map responsibilities together with your team", without "Help prepare quarterly board and committee updates…" and without the "one-page map of who owns what" deliverable; Elena's chip reads "Ex-FTSE 100 · Senior Director" (this reverses the 9 Oct correction that dropped FTSE 100; the "More about Elena" bullet still names Sage).
 - Builder request (4 Nov 2026): the line "Run through this one-pager and download your personalized PDF below." under the scope result is removed (the cover CTA "Get your free PDF ↓" replaces it).
 - Builder request (4 Nov 2026): the estimator headline ends "…% fewer." (no "Nice.").
+- Builder request (4 Nov 2026): step 3 "Make clear who owns what" drops ", for example ESRS for finance or greenwashing risks for marketing" and the deliverable "A peer benchmark with the pros and cons of each ownership model".
 [Rule: one line per decision made during the build that is not in the spec — prompt structures, field formats, naming choices, library picks. Future sessions depend on these to stay consistent.]
 
 ## Known issues
