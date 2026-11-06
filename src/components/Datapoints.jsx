@@ -77,7 +77,7 @@ function Bars({ o, n, max, topics }) {
       <div className="barkey"><span><i style={{ background: "var(--olive)" }} />Revised {n}</span><span><i className="gdrseg" />GDR 31</span></div>
       {/* Builder request (4 Nov 2026): revised ESRS 2 plus the 31 GDR first, then each ticked topic, then the total. The 31 never enter the bars. */}
       <div className="bdown">
-        <div className="brow"><span>ESRS 2 + GDR</span><span className="tnote">Revised {STAT["ESRS 2"][1]} + 31 GDR</span><b className="num">{base}</b></div>
+        <div className="brow"><span>ESRS 2 + GDR</span><span className="tnote" /><b className="num">{base}</b></div>
         {topics.map((c) => {
           const name = TOPICS.find((t) => t[0] === c)[1];
           return <div key={c} className="brow"><span><b>{c}</b> {name}</span><span className="tnote" /><b className="num">+{STAT[c][1]}</b></div>;
