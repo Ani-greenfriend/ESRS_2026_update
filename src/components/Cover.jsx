@@ -5,7 +5,7 @@ export default function Cover({ children, onJump }) {
       <header className="wrap top">
         <div className="brand">greenfriend.</div>
         <h1>Do you have to report?</h1>
-        <p className="lede">Free scope check in one minute. Read the guide below, then take your results away as one PDF. Parents: use group figures.</p>
+        <p className="lede">Free check in about 5 minutes: scope, datapoints and your 2027 roadmap. Take your results away as one PDF. Parents: use group figures.</p>
         {children}
         {/* Builder request (4 Nov 2026): a way straight down to the PDF, with a hint to work through the page first. */}
         <div className="cover-cta">
