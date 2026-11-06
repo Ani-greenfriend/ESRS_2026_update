@@ -72,7 +72,9 @@ function Bars({ o, n, max, topics }) {
   return (
     <div className="bars">
       <div className="bar"><span>2023</span><span className="tr"><i style={{ width: `${(o / max) * 100}%`, background: "var(--sand)" }} /></span><b className="num">{o}</b></div>
-      <div className="bar"><span>Revised</span><span className="tr"><i style={{ width: `${(n / max) * 100}%`, background: "var(--olive)" }} /></span><b className="num">{n}</b></div>
+      {/* Builder request (6 Nov 2026): revised plus the 31 GDR in one bar, split into two colours. */}
+      <div className="bar"><span>Revised + GDR</span><span className="tr split"><i style={{ width: `${(n / max) * 100}%`, background: "var(--olive)" }} /><i className="gdrseg" style={{ width: `${(31 / max) * 100}%` }} /></span><b className="num">{n + 31}</b></div>
+      <div className="barkey"><span><i style={{ background: "var(--olive)" }} />Revised {n}</span><span><i className="gdrseg" />GDR 31</span></div>
       {/* Builder request (4 Nov 2026): revised ESRS 2 plus the 31 GDR first, then each ticked topic, then the total. The 31 never enter the bars. */}
       <div className="bdown">
         <div className="brow"><span>ESRS 2 + GDR</span><span className="tnote">Revised {STAT["ESRS 2"][1]} + 31 GDR</span><b className="num">{base}</b></div>
@@ -117,7 +119,7 @@ function Estimator({ topics, setTopics }) {
           You go from <span className="num">{e.old}</span> to <em className="num">{e.now}</em> mandatory datapoints. That is <em className="num">{e.pct}%</em> fewer.
         </p>
         {/* Builder request (3 Nov 2026): the breakdown is open, no lock. */}
-          <Bars o={e.old} n={e.now} max={e.old} topics={e.topics} />
+          <Bars o={e.old} n={e.now} max={Math.max(e.old, e.now + 31)} topics={e.topics} />
           <p className="est-add">
             <b>GDR (General Disclosure Requirements) are the 31 new general datapoints</b> on policies, actions, targets and metrics. They count once, whatever topics you tick, and stay out of the percentage.
           </p>

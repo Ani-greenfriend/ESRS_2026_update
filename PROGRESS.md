@@ -160,6 +160,8 @@ Carried over from session 3:
 
 - Estimator: second fixed box "ESRS 2 GDR" (the 31 general datapoints); the line under the total explains GDR = the 31 new general datapoints, counted once, outside the percentage (replaces "Plus 31 general datapoints", builder request 4 Nov 2026).
 
+- Estimator: the second bar is "Revised + GDR" (n + 31), split indigo (revised) and teal (GDR) with a small key; headline and percentage stay mandatory only (builder request 6 Nov 2026; departs from the spec line that the 31 never enter the bars).
+
 ## Known issues
 Before going public (builder): send EFRAG (digital-reporting@efrag.org) the courtesy note on using datapoint counts with attribution; have an auditor or partner read the scope logic; privacy contact signs off the notice.
 Clean-up job deferred (see Backlog): until it runs, nothing is anonymised after 30 days or deleted after 24 months automatically, although the privacy notice promises both.

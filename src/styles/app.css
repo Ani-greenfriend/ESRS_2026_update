@@ -1110,3 +1110,13 @@ section.ch h2,section.about h2{font-family:var(--serif);font-weight:700;font-siz
 .brow .tnote{color:var(--muted);font-size:.8rem}
 .brow.total{border-top:1px solid var(--line);margin-top:4px;padding-top:8px;font-weight:700}
 .brow.total b.num{font-size:1.05rem}
+/* Builder request (6 Nov 2026): split bar, revised (indigo) + GDR (teal, as in the dot chart). */
+.bar{grid-template-columns:112px minmax(0,1fr) 48px}
+.bar .tr.split{display:flex}
+.bar .tr.split i{border-radius:0}
+.bar .tr.split i:first-child{border-radius:4px 0 0 4px}
+.bar .tr.split i:last-child{border-radius:0 4px 4px 0}
+.gdrseg{background:var(--info)}
+.barkey{display:flex;gap:14px;margin:-4px 0 0 122px;font-size:.75rem;color:var(--muted)}
+.barkey i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+@media (max-width:480px){.barkey{margin-left:0}}
