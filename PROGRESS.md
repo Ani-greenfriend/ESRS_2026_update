@@ -166,7 +166,7 @@ Carried over from session 3:
 
 - PDF: footer CTA "Want to make sure you are prepared for 2027? Reach out to us via Email" ("Email" underlined, mailto anikalerch@greenfriend.org) replaces the 20-minute call; disclaimer "A general starting point" softened: no liability sentence, auditor, legal department or greenfriend can help (builder request 9 Nov 2026).
 
-- PDF form: new required box "I have read the privacy notice (required)"; no sign-up and no PDF without it. The contact box stays a separate, optional box (builder decision 9 Nov 2026, chosen over making contact consent required; departs from spec "email and one optional box, nothing else"). The contact form under "Find your row" already requires its consent box.
+- PDF form: ONE required box "I have read the privacy notice and greenfriend may contact me about my results." No sign-up or PDF without it, so every download row carries consent_contact true. Builder decision 9 Nov 2026, made after being told it couples contact consent to the PDF (CLAUDE.md GDPR rule "consent is never a condition for the PDF"; GDPR Art. 7(4) risk). Short notice now "We use your email to send your results and to contact you about them." To revisit in the legal review; CLAUDE.md/spec still state the old rule.
 
 ## Known issues
 Before going public (builder): send EFRAG (digital-reporting@efrag.org) the courtesy note on using datapoint counts with attribution; have an auditor or partner read the scope logic; privacy contact signs off the notice.

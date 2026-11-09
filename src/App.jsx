@@ -110,8 +110,8 @@ export default function App() {
       setMsg({ type: "err", field: "email", text: "Enter a valid email address, for example name@company.com." });
       return;
     }
-    if (!form.privacy) {
-      setMsg({ type: "err", field: "privacy", text: "Tick the box to confirm you have read the privacy notice." });
+    if (!form.consent) {
+      setMsg({ type: "err", field: "consent", text: "Tick the box to get your PDF." });
       return;
     }
     setBusy(true);
