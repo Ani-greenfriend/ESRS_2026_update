@@ -1,4 +1,4 @@
-export const EMPTY_FORM = { email: "", consent: false };
+export const EMPTY_FORM = { email: "", privacy: false, consent: false };
 
 export function ShortNotice() {
   return (
@@ -18,6 +18,12 @@ export default function UnlockForm({ id, form, setForm, onSubmit, busy, msg, cla
       <input ref={emailRef} type="email" id={`${id}-email`} autoComplete="email" placeholder="name@company.com" required maxLength={254}
         value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })}
         aria-invalid={msg?.type === "err" && msg.field === "email" ? true : undefined} aria-describedby={`${id}-msg`} />
+      {/* Builder decision (9 Nov 2026): a required privacy box before the PDF; the contact box below stays optional (consent is never a condition for the PDF). */}
+      <label className="chk pnote">
+        <input type="checkbox" required checked={form.privacy} onChange={(e) => setForm({ ...form, privacy: e.target.checked })}
+          aria-invalid={msg?.type === "err" && msg.field === "privacy" ? true : undefined} />{" "}
+        <span>I have read the <a href="/privacy" target="_blank" rel="noopener">privacy notice</a> (required)</span>
+      </label>
       <label className="chk consent">
         <input type="checkbox" checked={form.consent} onChange={(e) => setForm({ ...form, consent: e.target.checked })} />{" "}
         greenfriend may contact me about my results (optional)

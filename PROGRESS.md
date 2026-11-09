@@ -166,6 +166,8 @@ Carried over from session 3:
 
 - PDF: footer CTA "Want to make sure you are prepared for 2027? Reach out to us via Email" ("Email" underlined, mailto anikalerch@greenfriend.org) replaces the 20-minute call; disclaimer "A general starting point" softened: no liability sentence, auditor, legal department or greenfriend can help (builder request 9 Nov 2026).
 
+- PDF form: new required box "I have read the privacy notice (required)"; no sign-up and no PDF without it. The contact box stays a separate, optional box (builder decision 9 Nov 2026, chosen over making contact consent required; departs from spec "email and one optional box, nothing else"). The contact form under "Find your row" already requires its consent box.
+
 ## Known issues
 Before going public (builder): send EFRAG (digital-reporting@efrag.org) the courtesy note on using datapoint counts with attribution; have an auditor or partner read the scope logic; privacy contact signs off the notice.
 Clean-up job deferred (see Backlog): until it runs, nothing is anonymised after 30 days or deleted after 24 months automatically, although the privacy notice promises both.

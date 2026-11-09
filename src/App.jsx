@@ -110,6 +110,10 @@ export default function App() {
       setMsg({ type: "err", field: "email", text: "Enter a valid email address, for example name@company.com." });
       return;
     }
+    if (!form.privacy) {
+      setMsg({ type: "err", field: "privacy", text: "Tick the box to confirm you have read the privacy notice." });
+      return;
+    }
     setBusy(true);
     setMsg(null);
     const res = await submitUnlock(payloadFor(email, form.consent, "download"));
