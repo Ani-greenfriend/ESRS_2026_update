@@ -208,12 +208,14 @@ function draw(jsPDF, snap) {
   d.addImage(gradURL(W, 15), "JPEG", 0, S - 15, W, 15);
   T("Report what you do.", M, S - 5.8, 13, true, [255, 255, 255]);
   // Builder request (9 Nov 2026): contact CTA with a mailto link instead of the call offer.
-  const MAIL = "anikalerch@greenfriend.org";
-  T(MAIL, W - M, S - 6, 9, true, YELLOW, { align: "right" });
+  // The word "Email" carries the mailto link and is underlined; the address itself is not shown.
+  const MAIL = "anikalerch@greenfriend.org", LBL = "Email";
+  T(LBL, W - M, S - 6, 9, true, YELLOW, { align: "right" });
   d.setFont("helvetica", "bold"); d.setFontSize(9);
-  const mw = d.getTextWidth(MAIL);
+  const mw = d.getTextWidth(LBL);
+  d.setDrawColor(...YELLOW); d.setLineWidth(0.25); d.line(W - M - mw, S - 5.2, W - M, S - 5.2);
   d0.link((W - M - mw) * K, (S - 10) * K, mw * K, 6 * K, { url: `mailto:${MAIL}` });
-  T("Want to make sure you are prepared for 2027? Reach out to us: ", W - M - mw - 1, S - 6, 9, false, [230, 232, 255], { align: "right" });
+  T("Want to make sure you are prepared for 2027? Reach out to us via ", W - M - mw - 0.6, S - 6, 9, false, [230, 232, 255], { align: "right" });
   return d0;
 }
 
