@@ -36,7 +36,7 @@ export default function ContactBox({ id, onContact, title, text, band = false })
             <input type="email" id={`${id}-email`} autoComplete="email" placeholder="name@company.com" maxLength={254} value={email} onChange={(e) => setEmail(e.target.value)} aria-describedby={`${id}-msg`} />
             <button type="submit" className="btn pri" disabled={busy}>{busy ? "One moment…" : "Send"}</button>
           </div>
-          <label className="chk consent"><input type="checkbox" checked={consent} onChange={(e) => { setConsent(e.target.checked); setMsg(null); }} /> greenfriend may contact me about my results</label>
+          <label className="chk consent"><input type="checkbox" checked={consent} onChange={(e) => { setConsent(e.target.checked); setMsg(null); }} /> greenfriend may contact me</label>
           <p className={`op-msg ${msg?.type || ""}`} id={`${id}-msg`} role="status">{msg?.text || ""}</p>
           <p className="op-note">We use your email only to answer your question. <a href="/privacy" target="_blank" rel="noopener">Privacy notice →</a></p>
         </form>
