@@ -162,6 +162,12 @@ Carried over from session 3:
 
 - Estimator: the second bar is "Revised + GDR" (n + 31), split indigo (revised) and teal (GDR) with a small key; headline and percentage stay mandatory only (builder request 6 Nov 2026; departs from the spec line that the 31 never enter the bars).
 
+- Unlock is no longer remembered in the browser (no `esrs-unlocked` flag, no browser storage at all): every new visit needs an email before the PDF (builder request 9 Nov 2026; departs from CLAUDE.md/spec "remembered as esrs-unlocked"). Privacy notice line about the remembered unlock removed. The contact-consent box stays optional: consent is never a condition for the PDF (CLAUDE.md GDPR rule).
+
+- PDF: footer CTA "Want to make sure you are prepared for 2027? Reach out to us via Email" ("Email" underlined, mailto anikalerch@greenfriend.org) replaces the 20-minute call; disclaimer "A general starting point" softened: no liability sentence, auditor, legal department or greenfriend can help (builder request 9 Nov 2026).
+
+- PDF form: ONE required box "I have read the privacy notice and greenfriend may contact me about my results." No sign-up or PDF without it, so every download row carries consent_contact true. Builder decision 9 Nov 2026, made after being told it couples contact consent to the PDF (CLAUDE.md GDPR rule "consent is never a condition for the PDF"; GDPR Art. 7(4) risk). Short notice now "We use your email to send your results and to contact you about them." To revisit in the legal review; CLAUDE.md/spec still state the old rule.
+
 ## Known issues
 Before going public (builder): send EFRAG (digital-reporting@efrag.org) the courtesy note on using datapoint counts with attribution; have an auditor or partner read the scope logic; privacy contact signs off the notice.
 Clean-up job deferred (see Backlog): until it runs, nothing is anonymised after 30 days or deleted after 24 months automatically, although the privacy notice promises both.

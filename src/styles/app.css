@@ -1120,3 +1120,6 @@ section.ch h2,section.about h2{font-family:var(--serif);font-weight:700;font-siz
 .barkey{display:flex;gap:14px;margin:-4px 0 0 122px;font-size:.75rem;color:var(--muted)}
 .barkey i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
 @media (max-width:480px){.barkey{margin-left:0}}
+/* Required privacy box in the PDF form (9 Nov 2026). */
+.op-hero .chk.pnote a{color:#fff;text-decoration:underline}
+.op-form label.chk.pnote span{font-weight:inherit;color:inherit;flex:1}

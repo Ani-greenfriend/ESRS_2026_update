@@ -39,7 +39,7 @@ const GENERAL_SCOPE = [
   "Reported for FY2024? Check your national rules for FY2025 and FY2026.",
 ];
 const DISCLAIMER = [
-  ["A GENERAL STARTING POINT", "This PDF is built automatically from your answers and gives general information only. It is not legal advice. Every company is different, so come to us with your specific situation and we take the time to look into it with you. greenfriend accepts no liability for the information or for decisions taken on the basis of it. Please also confirm your position with your auditor or legal adviser."],
+  ["A GENERAL STARTING POINT", "This PDF is built automatically from your answers and gives general information only. It is not legal advice and does not replace advice on your specific case. Every company is different, so your auditor, your legal department or we at greenfriend can help you confirm your position and next steps."],
   ["SOURCES AND COPYRIGHT", "Based on Directive (EU) 2026/470 and the revised ESRS (Delegated Regulation (EU) 2026/1563). greenfriend does not own, and claims no copyright in, the ESRS, EFRAG materials or the legal texts. We describe their content in our own words. For the exact wording, please see the official texts."],
   ["CREATED WITH AI", "This document was created with the help of AI and reviewed by greenfriend. AI can make mistakes, so please check anything you rely on against the original sources."],
 ];
@@ -207,7 +207,15 @@ function draw(jsPDF, snap) {
   DISCLAIMER.forEach(([h, t], k) => { const cx = M + k * (dw + 8); T(h, cx, fy + 9, 6, true, FINE); wrap(t, cx, fy + 13, dw, 7.2, false, FINE, 3.2); });
   d.addImage(gradURL(W, 15), "JPEG", 0, S - 15, W, 15);
   T("Report what you do.", M, S - 5.8, 13, true, [255, 255, 255]);
-  T("Want a second opinion? Book a free 20-minute call at greenfriend.org", W - M, S - 6, 9, false, [230, 232, 255], { align: "right" });
+  // Builder request (9 Nov 2026): contact CTA with a mailto link instead of the call offer.
+  // The word "Email" carries the mailto link and is underlined; the address itself is not shown.
+  const MAIL = "anikalerch@greenfriend.org", LBL = "Email";
+  T(LBL, W - M, S - 6, 9, true, YELLOW, { align: "right" });
+  d.setFont("helvetica", "bold"); d.setFontSize(9);
+  const mw = d.getTextWidth(LBL);
+  d.setDrawColor(...YELLOW); d.setLineWidth(0.25); d.line(W - M - mw, S - 5.2, W - M, S - 5.2);
+  d0.link((W - M - mw) * K, (S - 10) * K, mw * K, 6 * K, { url: `mailto:${MAIL}` });
+  T("Want to make sure you are prepared for 2027? Reach out to us via ", W - M - mw - 0.6, S - 6, 9, false, [230, 232, 255], { align: "right" });
   return d0;
 }
 
