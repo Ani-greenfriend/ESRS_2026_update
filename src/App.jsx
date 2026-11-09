@@ -20,7 +20,6 @@ import { TOPICS } from "./lib/data.js";
 import { answerLines, verdict } from "./lib/scope.js";
 import { DEFAULT_TOPICS, estimate } from "./lib/estimator.js";
 import { isValidEmail, NOTICE_VERSION } from "./lib/constants.js";
-import { readUnlocked, writeUnlocked } from "./lib/storage.js";
 import { readUtm } from "./lib/utm.js";
 import { submitUnlock } from "./lib/submit.js";
 import { downloadPdf, pdfUrl } from "./lib/pdf.js";
@@ -28,7 +27,8 @@ import { downloadPdf, pdfUrl } from "./lib/pdf.js";
 const TOPIC_NAME = Object.fromEntries(TOPICS.map((t) => [t[0], t[1]]));
 
 export default function App() {
-  const [unlocked, setUnlocked] = useState(readUnlocked);
+  // Builder request (9 Nov 2026): the unlock lasts for this page visit only, so every new visit asks for the email again.
+  const [unlocked, setUnlocked] = useState(false);
   const [scope, setScope] = useState({ A: {}, hist: [] });
   const [fromTop, setFromTop] = useState(false); // set by the cover CTA; shows the "back up" arrow in the PDF section
   const [topics, setTopicsRaw] = useState(DEFAULT_TOPICS);
@@ -118,7 +118,6 @@ export default function App() {
       setMsg({ type: "err", text: res.message });
       return;
     }
-    writeUnlocked();
     setUnlocked(true);
     setFresh(true);
     await download(snap);
@@ -127,7 +126,7 @@ export default function App() {
   // "Not sure what applies to you?": stores a contact lead and opens the page; no PDF download.
   const sendContact = async (email) => {
     const res = await submitUnlock(payloadFor(email, true, "contact"));
-    if (res.ok) { writeUnlocked(); setUnlocked(true); }
+    if (res.ok) setUnlocked(true);
     return res;
   };
 

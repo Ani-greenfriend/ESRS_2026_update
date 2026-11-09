@@ -162,6 +162,8 @@ Carried over from session 3:
 
 - Estimator: the second bar is "Revised + GDR" (n + 31), split indigo (revised) and teal (GDR) with a small key; headline and percentage stay mandatory only (builder request 6 Nov 2026; departs from the spec line that the 31 never enter the bars).
 
+- Unlock is no longer remembered in the browser (no `esrs-unlocked` flag, no browser storage at all): every new visit needs an email before the PDF (builder request 9 Nov 2026; departs from CLAUDE.md/spec "remembered as esrs-unlocked"). Privacy notice line about the remembered unlock removed. The contact-consent box stays optional: consent is never a condition for the PDF (CLAUDE.md GDPR rule).
+
 ## Known issues
 Before going public (builder): send EFRAG (digital-reporting@efrag.org) the courtesy note on using datapoint counts with attribution; have an auditor or partner read the scope logic; privacy contact signs off the notice.
 Clean-up job deferred (see Backlog): until it runs, nothing is anonymised after 30 days or deleted after 24 months automatically, although the privacy notice promises both.
