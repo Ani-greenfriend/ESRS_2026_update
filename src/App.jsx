@@ -43,8 +43,6 @@ export default function App() {
   const [pdfError, setPdfError] = useState(false);
   const [pdfLink, setPdfLink] = useState(null);
   const [gateOpen, setGateOpen] = useState(false);
-  // Which locked area opened the email dialog: "cases" or "datapoints" (builder request, 10 Nov 2026); null = the PDF.
-  const [gateKind, setGateKind] = useState(null);
   const opener = useRef(null);
   const utm = useMemo(readUtm, []);
 
@@ -60,9 +58,8 @@ export default function App() {
     };
   }, [scope, topics, topicsTouched]);
 
-  const openGate = useCallback((el, kind = null) => {
+  const openGate = useCallback((el) => {
     opener.current = el || document.activeElement;
-    setGateKind(kind);
     setMsg(null);
     setGateOpen(true);
   }, []);
@@ -108,32 +105,34 @@ export default function App() {
       utm_campaign: utm.utm_campaign,
   });
 
-  // kind "cases" / "datapoints": an email unlock from the dialog, stored as unlock_<kind>, no automatic PDF download.
-  const onSubmit = async (kind = null) => {
+  const onSubmit = async () => {
     const email = form.email.trim();
     if (!isValidEmail(email)) {
       setMsg({ type: "err", field: "email", text: "Enter a valid email address, for example name@company.com." });
       return;
     }
     if (!form.consent) {
-      setMsg({ type: "err", field: "consent", text: kind ? "Tick the box to continue." : "Tick the box to get your PDF." });
+      setMsg({ type: "err", field: "consent", text: "Tick the box to get your PDF." });
       return;
     }
     setBusy(true);
     setMsg(null);
-    const res = await submitUnlock(payloadFor(email, form.consent, kind ? `unlock_${kind}` : "download"));
+    const res = await submitUnlock(payloadFor(email, form.consent, "download"));
     setBusy(false);
     if (!res.ok) {
       setMsg({ type: "err", text: res.message });
       return;
     }
     setUnlocked(true);
-    if (kind) {
-      closeGate();
-      return;
-    }
     setFresh(true);
     await download(snap);
+  };
+
+  // Inline email unlock beside the blurred examples and datapoint result (builder request, 10 Nov 2026); the box carries consent.
+  const unlockInline = async (kind, email) => {
+    const res = await submitUnlock(payloadFor(email, true, `unlock_${kind}`));
+    if (res.ok) setUnlocked(true);
+    return res;
   };
 
   // "Not sure what applies to you?": stores a contact lead and opens the page; no PDF download.
@@ -143,12 +142,11 @@ export default function App() {
     return res;
   };
 
-  const formProps = { form, setForm, onSubmit: () => onSubmit(), busy, msg };
-  const gateFormProps = { ...formProps, onSubmit: () => onSubmit(gateKind), submitLabel: gateKind ? "Show me" : undefined };
+  const formProps = { form, setForm, onSubmit, busy, msg };
   const done = { fresh, pdfError, pdfLink, onDownload: () => download() };
 
   return (
-    <UnlockContext.Provider value={{ unlocked, openGate }}>
+    <UnlockContext.Provider value={{ unlocked, openGate, unlockInline }}>
       <Cover onJump={() => setFromTop(true)}>
         <ScopeCheck scope={scope} setScope={setScope} />
       </Cover>
@@ -168,7 +166,7 @@ export default function App() {
       <About />
       <Footer />
       <FloatingTip />
-      <UnlockDialog open={gateOpen} kind={gateKind} onClose={closeGate} formProps={gateFormProps} done={done} />
+      <UnlockDialog open={gateOpen} onClose={closeGate} formProps={formProps} done={done} />
     </UnlockContext.Provider>
   );
 }

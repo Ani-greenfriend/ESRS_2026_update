@@ -57,7 +57,7 @@ export default function Cases() {
         ))}
       </div>
       {/* Builder request (10 Nov 2026): the first example is open; examples 2 to 7 open with an email (stored as unlock_cases). */}
-      {cur === 0 ? caseView : <Gated kind="cases" label="Enter your email address to see this example" button="Show me">{caseView}</Gated>}
+      {cur === 0 ? caseView : <Gated kind="cases" label="Enter your email address to unlock the other examples.">{caseView}</Gated>}
     </section>
   );
 }

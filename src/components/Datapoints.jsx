@@ -129,7 +129,7 @@ function Estimator({ topics, setTopics }) {
         {unlocked ? result : (
           <>
             <div className="bdown open"><div className="brow total"><span>ESRS 2 + GDR</span><span className="tnote">always apply</span><b className="num">{STAT["ESRS 2"][1] + 31}</b></div></div>
-            <Gated kind="datapoints" label={e.topics.length ? "Enter your email address to see your full number" : "Tick your topics, then enter your email address to see your full number"} button="Show me">{result}</Gated>
+            <Gated kind="datapoints" label="Tick your topics, then enter your email address to see your full number.">{result}</Gated>
           </>
         )}
           <p className="est-add">
