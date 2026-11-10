@@ -18,7 +18,7 @@ import { EMPTY_FORM } from "./components/UnlockForm.jsx";
 import { UnlockContext } from "./components/unlock.jsx";
 import { TOPICS } from "./lib/data.js";
 import { answerLines, verdict } from "./lib/scope.js";
-import { DEFAULT_TOPICS, estimate } from "./lib/estimator.js";
+import { estimate } from "./lib/estimator.js";
 import { isValidEmail, NOTICE_VERSION } from "./lib/constants.js";
 import { readUtm } from "./lib/utm.js";
 import { submitUnlock } from "./lib/submit.js";
@@ -31,7 +31,8 @@ export default function App() {
   const [unlocked, setUnlocked] = useState(false);
   const [scope, setScope] = useState({ A: {}, hist: [] });
   const [fromTop, setFromTop] = useState(false); // set by the cover CTA; shows the "back up" arrow in the PDF section
-  const [topics, setTopicsRaw] = useState(DEFAULT_TOPICS);
+  // Builder request (10 Nov 2026): start with ESRS 2 and GDR only; the visitor ticks the topics.
+  const [topics, setTopicsRaw] = useState([]);
   // The PDF tells an untouched default selection (an example) apart from the visitor's own (spec v2.3, estState()).
   const [topicsTouched, setTopicsTouched] = useState(false);
   const setTopics = useCallback((t) => { setTopicsRaw(t); setTopicsTouched(true); }, []);
@@ -127,6 +128,13 @@ export default function App() {
     await download(snap);
   };
 
+  // Inline email unlock beside the blurred examples and datapoint result (builder request, 10 Nov 2026); the box carries consent.
+  const unlockInline = async (kind, email) => {
+    const res = await submitUnlock(payloadFor(email, true, `unlock_${kind}`));
+    if (res.ok) setUnlocked(true);
+    return res;
+  };
+
   // "Not sure what applies to you?": stores a contact lead and opens the page; no PDF download.
   const sendContact = async (email) => {
     const res = await submitUnlock(payloadFor(email, true, "contact"));
@@ -138,7 +146,7 @@ export default function App() {
   const done = { fresh, pdfError, pdfLink, onDownload: () => download() };
 
   return (
-    <UnlockContext.Provider value={{ unlocked, openGate }}>
+    <UnlockContext.Provider value={{ unlocked, openGate, unlockInline }}>
       <Cover onJump={() => setFromTop(true)}>
         <ScopeCheck scope={scope} setScope={setScope} />
       </Cover>

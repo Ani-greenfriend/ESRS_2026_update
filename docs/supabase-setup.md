@@ -41,7 +41,7 @@ This file is the schema source of truth. It is updated at every save point that 
 | superseded_by | uuid → unlocks.id | on delete set null; null while current |
 | anonymised_at | timestamptz | set by the clean-up job |
 | status | text | `current` → `superseded` → `anonymised` (default `current`) |
-| request_type | text | `download` (unlock form, PDF) or `contact` ("Not sure what applies to you?" box under the example cases, builder request 3 Nov 2026; always with consent); default `download` |
+| request_type | text | `download` (unlock form, PDF), `contact` ("Not sure on which level you report?" box, builder request 3 Nov 2026; always with consent), `unlock_cases` (email unlock of example cases 2–7) or `unlock_datapoints` (email unlock of the datapoint result), the last two from 10 Nov 2026; default `download` |
 | created_by, updated_by | uuid → profiles.id | empty (no login) |
 | updated_at | timestamptz | kept current by trigger |
 
@@ -124,7 +124,8 @@ The builder entered these by hand in Netlify (not through the extension). To ver
 - Supabase's advisor reports "RLS enabled, no policy" (INFO) on both tables. That is intended: default deny.
 - New tables get default grants to anon and authenticated from Supabase; every future migration must `revoke all … from anon, authenticated` right after `create table`.
 - Spec v1.7+: the form sends only email, consent and results. `company`, `industry` and `interests` stay in the table, empty (company and industry null, interests `{}`), for a later version.
-- `request_type` separates the two kinds of lead: filter on `request_type = 'contact'` for people who asked for help, `download` for PDF unlocks. A contact request also unlocks the page; it is one row like any unlock, so the supersede rule applies across both kinds (the newest row for an email is the current one).
+- `request_type` separates the kinds of lead: `contact` for people who asked for help, `download` for PDF unlocks, `unlock_cases` / `unlock_datapoints` for the email unlocks of the examples and the datapoint result. A contact request also unlocks the page; it is one row like any unlock, so the supersede rule applies across both kinds (the newest row for an email is the current one).
+- View `public.leads` (created 9 Nov 2026 outside this repo, `security_invoker = true`, no grants to anon or authenticated): the current rows in German column names for the dashboard export; column `anlass` names the request type. Its two 9 Nov migration files are not in `supabase/migrations/`; `20261110135857_leads_view_label_unlock_types.sql` holds the view's full current definition.
 - Free plan: no backups. Monthly CSV export of `unlocks` by the builder; restore a paused project in the dashboard.
 
 ## 10. Change log
@@ -137,3 +138,6 @@ The builder entered these by hand in Netlify (not through the extension). To ver
 | 20261009090335_add_request_type_to_unlocks.sql | adds `unlocks.request_type` (download / contact, default download) and the contact-needs-consent check |
 | 20261021112904_make_route_columns_optional.sql | drops NOT NULL on `route`, `route_from_example`, `route_answers` (spec v2.0+: no route questionnaire) |
 | pending/create_cleanup_job.sql | **not applied** — clean-up function and daily job |
+| 20261109100554_create_leads_view.sql / 20261109132741_leads_view_add_group_year_topics.sql | applied outside this repo on 9 Nov 2026 (files not committed): view `public.leads` |
+| 20261110135832_allow_unlock_request_types.sql | `request_type` also allows `unlock_cases` and `unlock_datapoints` |
+| 20261110135857_leads_view_label_unlock_types.sql | `public.leads` labels the two unlock types (full view definition) |

@@ -1,30 +1,35 @@
 import { createContext, useContext } from "react";
+import InlineUnlock from "./InlineUnlock.jsx";
 
-export const UnlockContext = createContext({ unlocked: false, openGate: () => {} });
+export const UnlockContext = createContext({ unlocked: false, openGate: () => {}, unlockInline: async () => ({ ok: false }) });
 export const useUnlock = () => useContext(UnlockContext);
 
-export function UnlockButton() {
+export function UnlockButton({ kind = null, children = "Get your free PDF" }) {
   const { openGate } = useUnlock();
   return (
-    <button type="button" className="unlock" onClick={(e) => openGate(e.currentTarget)}>
-      Get your free PDF
+    <button type="button" className="unlock" onClick={(e) => openGate(e.currentTarget, kind)}>
+      {children}
     </button>
   );
 }
 
 // Blurs locked content behind an unlock bar until the visitor unlocks.
-export function Gated({ label, children }) {
+export function Gated({ label, kind = null, children }) {
   const { unlocked } = useUnlock();
   if (unlocked) return children;
   return (
-    <div className="gated">
+    <div className={kind ? "gated inline" : "gated"}>
       <div className="blur" aria-hidden="true" inert="">
         {children}
       </div>
-      <div className="lockbar">
-        <span>{label}</span>
-        <UnlockButton />
-      </div>
+      {kind ? (
+        <InlineUnlock kind={kind} text={label} />
+      ) : (
+        <div className="lockbar">
+          <span>{label}</span>
+          <UnlockButton />
+        </div>
+      )}
     </div>
   );
 }

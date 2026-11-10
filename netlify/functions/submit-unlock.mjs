@@ -62,7 +62,8 @@ function validate(b) {
   // 'download' = PDF unlock; 'contact' = "Not sure what applies to you?" under the example cases (builder request,
   // 3 Nov 2026), which needs contact consent (the database checks the same).
   const requestType = b.request_type ?? "download";
-  need(requestType === "download" || requestType === "contact");
+  // 'unlock_cases' / 'unlock_datapoints' = email unlock of example cases 2-7 or the datapoint result (builder request, 10 Nov 2026).
+  need(["download", "contact", "unlock_cases", "unlock_datapoints"].includes(requestType));
   need(requestType === "download" || b.consent_contact === true);
   need(b.notice_version === NOTICE_VERSION);
 

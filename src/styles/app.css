@@ -1123,3 +1123,16 @@ section.ch h2,section.about h2{font-family:var(--serif);font-weight:700;font-siz
 /* Required privacy box in the PDF form (9 Nov 2026). */
 .op-hero .chk.pnote a{color:#fff;text-decoration:underline}
 .op-form label.chk.pnote span{font-weight:inherit;color:inherit;flex:1}
+/* Builder request (10 Nov 2026): email unlock for example cases 2-7 and the datapoint result. */
+#cases .gated .blur{max-height:260px}
+.estout .gated{margin-top:10px}
+.bdown.open{border-top:0;padding-top:0}
+/* Builder request (10 Nov 2026): inline email form beside the blurred content (no pop-up). */
+.gated.inline .blur{max-height:none}
+.gatecard{position:absolute;top:50%;right:16px;transform:translateY(-50%);width:min(380px,calc(100% - 32px));display:grid;gap:8px;padding:16px 18px;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:0 6px 20px rgba(17,26,61,.08)}
+.gatecard .gc-h{font-weight:600;font-size:.95rem}
+.gatecard .chk{font-size:.85rem!important}
+.gatecard .chk a{color:var(--olive)}
+.gatecard .op-msg:empty{display:none}
+.estout .gated.inline .gatecard{right:0;left:0;margin:auto;width:auto;max-width:380px}
+@media (max-width:640px){.gatecard{position:relative;z-index:1;top:auto;right:auto;transform:none;width:auto;margin-top:-40px}.gated.inline .blur{max-height:220px;overflow:hidden}}
