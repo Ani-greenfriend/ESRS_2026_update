@@ -2,6 +2,7 @@ import { useState } from "react";
 import { STAT, TOPICS } from "../lib/data.js";
 import { estimate } from "../lib/estimator.js";
 import { ChapterHead } from "./Icons.jsx";
+import { Gated, useUnlock } from "./unlock.jsx";
 
 function DotGrid({ hl }) {
   // 108 dots, each about 10 datapoints: 29 kept mandatory, 3 new general, 49 removed mandatory, 27 removed voluntary.
@@ -90,6 +91,15 @@ function Bars({ o, n, max, topics }) {
 
 function Estimator({ topics, setTopics }) {
   const e = estimate(topics);
+  const { unlocked } = useUnlock();
+  const result = (
+    <>
+      <p className="headline">
+        You go from <span className="num">{e.old}</span> to <em className="num">{e.now}</em> mandatory datapoints. That is <em className="num">{e.pct}%</em> fewer.
+      </p>
+      <Bars o={e.old} n={e.now} max={Math.max(e.old, e.now + 31)} topics={e.topics} />
+    </>
+  );
   const toggle = (code) => setTopics(topics.includes(code) ? topics.filter((t) => t !== code) : [...topics, code]);
   return (
     <div className="est">
@@ -115,11 +125,13 @@ function Estimator({ topics, setTopics }) {
         </div>
       </div>
       <div className="estout" aria-live="polite">
-        <p className="headline">
-          You go from <span className="num">{e.old}</span> to <em className="num">{e.now}</em> mandatory datapoints. That is <em className="num">{e.pct}%</em> fewer.
-        </p>
-        {/* Builder request (3 Nov 2026): the breakdown is open, no lock. */}
-          <Bars o={e.old} n={e.now} max={Math.max(e.old, e.now + 31)} topics={e.topics} />
+        {/* Builder request (10 Nov 2026): ESRS 2 + GDR is always shown; the rest of the result opens with an email (stored as unlock_datapoints). */}
+        {unlocked ? result : (
+          <>
+            <div className="bdown open"><div className="brow total"><span>ESRS 2 + GDR</span><span className="tnote">always apply</span><b className="num">{STAT["ESRS 2"][1] + 31}</b></div></div>
+            <Gated kind="datapoints" label={e.topics.length ? "Enter your email address to see your full number" : "Tick your topics, then enter your email address to see your full number"} button="Show me">{result}</Gated>
+          </>
+        )}
           <p className="est-add">
             <b>GDR (General Disclosure Requirements) are the 31 new general datapoints</b> on policies, actions, targets and metrics. They count once, whatever topics you tick, and stay out of the percentage.
           </p>

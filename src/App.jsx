@@ -18,7 +18,7 @@ import { EMPTY_FORM } from "./components/UnlockForm.jsx";
 import { UnlockContext } from "./components/unlock.jsx";
 import { TOPICS } from "./lib/data.js";
 import { answerLines, verdict } from "./lib/scope.js";
-import { DEFAULT_TOPICS, estimate } from "./lib/estimator.js";
+import { estimate } from "./lib/estimator.js";
 import { isValidEmail, NOTICE_VERSION } from "./lib/constants.js";
 import { readUtm } from "./lib/utm.js";
 import { submitUnlock } from "./lib/submit.js";
@@ -31,7 +31,8 @@ export default function App() {
   const [unlocked, setUnlocked] = useState(false);
   const [scope, setScope] = useState({ A: {}, hist: [] });
   const [fromTop, setFromTop] = useState(false); // set by the cover CTA; shows the "back up" arrow in the PDF section
-  const [topics, setTopicsRaw] = useState(DEFAULT_TOPICS);
+  // Builder request (10 Nov 2026): start with ESRS 2 and GDR only; the visitor ticks the topics.
+  const [topics, setTopicsRaw] = useState([]);
   // The PDF tells an untouched default selection (an example) apart from the visitor's own (spec v2.3, estState()).
   const [topicsTouched, setTopicsTouched] = useState(false);
   const setTopics = useCallback((t) => { setTopicsRaw(t); setTopicsTouched(true); }, []);
@@ -42,6 +43,8 @@ export default function App() {
   const [pdfError, setPdfError] = useState(false);
   const [pdfLink, setPdfLink] = useState(null);
   const [gateOpen, setGateOpen] = useState(false);
+  // Which locked area opened the email dialog: "cases" or "datapoints" (builder request, 10 Nov 2026); null = the PDF.
+  const [gateKind, setGateKind] = useState(null);
   const opener = useRef(null);
   const utm = useMemo(readUtm, []);
 
@@ -57,8 +60,9 @@ export default function App() {
     };
   }, [scope, topics, topicsTouched]);
 
-  const openGate = useCallback((el) => {
+  const openGate = useCallback((el, kind = null) => {
     opener.current = el || document.activeElement;
+    setGateKind(kind);
     setMsg(null);
     setGateOpen(true);
   }, []);
@@ -104,25 +108,30 @@ export default function App() {
       utm_campaign: utm.utm_campaign,
   });
 
-  const onSubmit = async () => {
+  // kind "cases" / "datapoints": an email unlock from the dialog, stored as unlock_<kind>, no automatic PDF download.
+  const onSubmit = async (kind = null) => {
     const email = form.email.trim();
     if (!isValidEmail(email)) {
       setMsg({ type: "err", field: "email", text: "Enter a valid email address, for example name@company.com." });
       return;
     }
     if (!form.consent) {
-      setMsg({ type: "err", field: "consent", text: "Tick the box to get your PDF." });
+      setMsg({ type: "err", field: "consent", text: kind ? "Tick the box to continue." : "Tick the box to get your PDF." });
       return;
     }
     setBusy(true);
     setMsg(null);
-    const res = await submitUnlock(payloadFor(email, form.consent, "download"));
+    const res = await submitUnlock(payloadFor(email, form.consent, kind ? `unlock_${kind}` : "download"));
     setBusy(false);
     if (!res.ok) {
       setMsg({ type: "err", text: res.message });
       return;
     }
     setUnlocked(true);
+    if (kind) {
+      closeGate();
+      return;
+    }
     setFresh(true);
     await download(snap);
   };
@@ -134,7 +143,8 @@ export default function App() {
     return res;
   };
 
-  const formProps = { form, setForm, onSubmit, busy, msg };
+  const formProps = { form, setForm, onSubmit: () => onSubmit(), busy, msg };
+  const gateFormProps = { ...formProps, onSubmit: () => onSubmit(gateKind), submitLabel: gateKind ? "Show me" : undefined };
   const done = { fresh, pdfError, pdfLink, onDownload: () => download() };
 
   return (
@@ -158,7 +168,7 @@ export default function App() {
       <About />
       <Footer />
       <FloatingTip />
-      <UnlockDialog open={gateOpen} onClose={closeGate} formProps={formProps} done={done} />
+      <UnlockDialog open={gateOpen} kind={gateKind} onClose={closeGate} formProps={gateFormProps} done={done} />
     </UnlockContext.Provider>
   );
 }

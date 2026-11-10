@@ -1123,3 +1123,7 @@ section.ch h2,section.about h2{font-family:var(--serif);font-weight:700;font-siz
 /* Required privacy box in the PDF form (9 Nov 2026). */
 .op-hero .chk.pnote a{color:#fff;text-decoration:underline}
 .op-form label.chk.pnote span{font-weight:inherit;color:inherit;flex:1}
+/* Builder request (10 Nov 2026): email unlock for example cases 2-7 and the datapoint result. */
+#cases .gated .blur{max-height:260px}
+.estout .gated{margin-top:10px}
+.bdown.open{border-top:0;padding-top:0}

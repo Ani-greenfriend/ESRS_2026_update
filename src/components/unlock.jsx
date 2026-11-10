@@ -3,17 +3,17 @@ import { createContext, useContext } from "react";
 export const UnlockContext = createContext({ unlocked: false, openGate: () => {} });
 export const useUnlock = () => useContext(UnlockContext);
 
-export function UnlockButton() {
+export function UnlockButton({ kind = null, children = "Get your free PDF" }) {
   const { openGate } = useUnlock();
   return (
-    <button type="button" className="unlock" onClick={(e) => openGate(e.currentTarget)}>
-      Get your free PDF
+    <button type="button" className="unlock" onClick={(e) => openGate(e.currentTarget, kind)}>
+      {children}
     </button>
   );
 }
 
 // Blurs locked content behind an unlock bar until the visitor unlocks.
-export function Gated({ label, children }) {
+export function Gated({ label, kind = null, button, children }) {
   const { unlocked } = useUnlock();
   if (unlocked) return children;
   return (
@@ -23,7 +23,7 @@ export function Gated({ label, children }) {
       </div>
       <div className="lockbar">
         <span>{label}</span>
-        <UnlockButton />
+        <UnlockButton kind={kind}>{button}</UnlockButton>
       </div>
     </div>
   );

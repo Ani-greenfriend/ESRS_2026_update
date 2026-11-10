@@ -3,7 +3,13 @@ import { useUnlock } from "./unlock.jsx";
 import UnlockForm from "./UnlockForm.jsx";
 import UnlockDone from "./UnlockDone.jsx";
 
-export default function UnlockDialog({ open, onClose, formProps, done }) {
+// Dialog copy per locked area (builder request, 10 Nov 2026); null = the PDF.
+const COPY = {
+  cases: { eyebrow: "Examples", h: "See all seven examples", p: "Enter your email address to open examples 2 to 7. One sign-up opens everything on this page, including your PDF." },
+  datapoints: { eyebrow: "Your number", h: "See your full datapoint number", p: "Enter your email address to see your number per topic and in total. One sign-up opens everything on this page, including your PDF." },
+};
+
+export default function UnlockDialog({ open, kind = null, onClose, formProps, done }) {
   const { unlocked } = useUnlock();
   const card = useRef(null);
   const emailRef = useRef(null);
@@ -33,13 +39,13 @@ export default function UnlockDialog({ open, onClose, formProps, done }) {
     <div className="gate-modal" role="dialog" aria-modal="true" aria-labelledby="gate-h" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
       <div className="gate-card" ref={card}>
         <button type="button" className="gate-x" aria-label="Close" onClick={onClose}>×</button>
-        <div className="eyebrow">Your PDF</div>
-        <h3 id="gate-h">Get your results as one PDF</h3>
+        <div className="eyebrow">{COPY[kind]?.eyebrow || "Your PDF"}</div>
+        <h3 id="gate-h">{COPY[kind]?.h || "Get your results as one PDF"}</h3>
         {unlocked ? (
           <UnlockDone {...done} withButton />
         ) : (
           <>
-            <p className="qhelp">One page with your scope result, FY2026 route, datapoint number, ready to forward to your CFO or board. Free, just your email.</p>
+            <p className="qhelp">{COPY[kind]?.p || "One page with your scope result, FY2026 route, datapoint number, ready to forward to your CFO or board. Free, just your email."}</p>
             <UnlockForm id="gate" className="op-form" emailRef={emailRef} noteFirst {...formProps} />
           </>
         )}
